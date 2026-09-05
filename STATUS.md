@@ -10,6 +10,7 @@ Last updated: 2026-09-05
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - Global copies are installed for Codex, Claude Code, and Antigravity.
 - The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all three global installations.
+- The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 
 ## Verification
 
@@ -27,10 +28,9 @@ Last updated: 2026-09-05
 - Documentation was reviewed and reconciled against the canonical skill files and installation layout.
 - Both canonical skill folders passed `quick_validate.py`; each canonical `SKILL.md` hash matches its Codex, Claude Code, and Antigravity installation.
 - Markdown scanning found no stale legacy Antigravity paths, conflict markers, or trailing whitespace.
-- Git commit and push were not performed because `C:\dev\wrap-up-bootstrap` is not a Git repository and has no configured remote.
+- After the initial closeout exposed the missing repository, the directory was initialized, the private GitHub repository `aaabot1205/wrap-up-bootstrap` was created, and `main` was pushed to `origin/main`.
 
 ## Remaining work
 
 - No functional work is currently required.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
-- Decide whether this standalone source directory should be initialized as a Git repository and connected to a remote before expecting future full `wrap-up` runs to commit and push.

@@ -10,7 +10,9 @@ The skills explicitly require every agent to continue existing project documents
 
 Isolated reciprocal tests verified both directions: `wrap-up ncp` continued ChatGPT/Codex-authored documents while reading Claude guidance, and Codex `bootstrap` continued Claude-authored status and spec files without editing them.
 
-The 2026-09-05 full closeout reviewed the project documentation and installation state. Both skills passed validation, their canonical hashes matched all three global installations, and Markdown checks found no stale legacy path, conflict marker, or trailing whitespace. Commit and push remain unavailable because the canonical directory is not a Git repository and has no remote.
+The 2026-09-05 full closeout reviewed the project documentation and installation state. Both skills passed validation, their canonical hashes matched all three global installations, and Markdown checks found no stale legacy path, conflict marker, or trailing whitespace.
+
+The canonical directory is now a Git repository on `main`. Its `origin` is the private repository `https://github.com/aaabot1205/wrap-up-bootstrap.git`, and the branch tracks `origin/main`.
 
 ## Canonical working copy
 
@@ -33,4 +35,4 @@ Installed global copies:
 
 ## Next action
 
-Decide whether to initialize `C:\dev\wrap-up-bootstrap` as a Git repository and connect it to a remote. If version control is not desired, no functional action is required. When a platform changes its discovery rules, update `INSTALL.md`, synchronize the global copies, and re-run validation.
+No immediate action is required. When a platform changes its discovery rules, update `INSTALL.md`, synchronize the global copies, re-run validation, and push the resulting commit to `origin/main`.
