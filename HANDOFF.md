@@ -14,6 +14,8 @@ The 2026-09-05 full closeout reviewed the project documentation and installation
 
 The canonical directory is now a Git repository on `main`. Its `origin` is the private repository `https://github.com/aaabot1205/wrap-up-bootstrap.git`, and the branch tracks `origin/main`.
 
+The repository also contains portable global response-language rules and an idempotent Windows `install.ps1`. A new machine can clone the private repository and run the installer to configure Codex, Claude Code, and Antigravity together. A two-run isolated-user-root test confirmed that the installer creates exactly six skill entries and one managed response-language block per platform without second-run changes.
+
 ## Canonical working copy
 
 `C:\dev\wrap-up-bootstrap`
@@ -32,6 +34,7 @@ Installed global copies:
 4. Copy both folders to all three global locations.
 5. Compare hashes for each installed `SKILL.md` against the canonical copy.
 6. Run isolated forward tests after behavioral changes.
+7. Run the installer twice against an isolated test user root after changing installation logic; verify no duplicated managed blocks and no second-run changes.
 
 ## Next action
 

@@ -15,6 +15,24 @@ This bundle contains two skills based on the open `SKILL.md` format:
 
 Copy both `wrap-up/` and `bootstrap/` folders into each platform directory. Keep each `SKILL.md` directly inside its named folder.
 
+## Automated Windows installation
+
+On another machine, authenticate GitHub CLI and run:
+
+```powershell
+gh auth login --hostname github.com --git-protocol https --web --scopes repo
+gh repo clone aaabot1205/wrap-up-bootstrap C:\dev\wrap-up-bootstrap
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\install.ps1
+```
+
+`install.ps1` installs both skills and merges the managed response-language block into:
+
+- Codex: `~/.codex/AGENTS.md`
+- Claude Code: `~/.claude/CLAUDE.md`
+- Antigravity: `~/.gemini/GEMINI.md`
+
+The installer is idempotent. It preserves unrelated rule content and creates timestamped backups before changing different existing files.
+
 ## Invocation
 
 | Action | Codex | Claude Code | Antigravity |

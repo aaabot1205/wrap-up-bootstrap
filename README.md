@@ -16,6 +16,19 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `wrap-up/SKILL.md`: portable wrap-up workflow.
 - `bootstrap/SKILL.md`: portable session bootstrap workflow.
 - `agents/openai.yaml` inside each skill: optional Codex/ChatGPT UI metadata; other hosts can ignore it.
+- `global-rules/`: portable source copies of the global response-language rules for all three platforms.
+- `install.ps1`: idempotent Windows installer for all skills and global rules.
 - `STATUS.md`: current implementation and verification state.
 - `HANDOFF.md`: concise context for the next maintenance session.
 - `AGENTS.md`: maintenance rules for any AI agent working in this directory.
+
+## Install on another Windows machine
+
+After authenticating GitHub CLI as `aaabot1205`, run:
+
+```powershell
+gh repo clone aaabot1205/wrap-up-bootstrap C:\dev\wrap-up-bootstrap
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\install.ps1
+```
+
+The installer preserves unrelated global instructions, updates only its marked response-language block, and creates timestamped backups before replacing different existing files. Start new sessions in all three platforms afterward.

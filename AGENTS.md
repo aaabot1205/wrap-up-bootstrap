@@ -3,6 +3,8 @@
 These files are maintained as one cross-platform project. Apply these instructions in Codex, Claude Code, Antigravity, and other Agent Skills-compatible hosts.
 
 - Treat `wrap-up/SKILL.md` and `bootstrap/SKILL.md` in this directory as the canonical skill sources.
+- Treat `global-rules/AGENTS.md`, `global-rules/CLAUDE.md`, and `global-rules/GEMINI.md` as the canonical portable sources for the response-language preference.
+- Keep `install.ps1` idempotent and non-destructive toward unrelated global rules and skill files.
 - Preserve the open `SKILL.md` frontmatter contract with only `name` and `description` in each skill's frontmatter.
 - Keep both skills platform-neutral. Do not fork their behavior by host unless a documented platform limitation requires a small compatibility layer.
 - Treat project documentation as project-owned, not agent-owned. Continue existing files from any AI platform instead of creating redundant platform-specific copies.
