@@ -4,6 +4,7 @@ Last updated: 2026-09-06
 
 ## Current state
 
+- The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation, verification, scoped commit, and push. The `ncp` argument prohibits staging, committing, and pushing.
@@ -26,15 +27,18 @@ Last updated: 2026-09-06
 
 ## Latest closeout
 
-- Date: 2026-09-05
+- Date: 2026-09-06
 - Mode: full `wrap-up`
-- Documentation was reviewed and reconciled against the canonical skill files and installation layout.
-- Both canonical skill folders passed `quick_validate.py`; each canonical `SKILL.md` hash matches its Codex, Claude Code, and Antigravity installation.
-- Markdown scanning found no stale legacy Antigravity paths, conflict markers, or trailing whitespace.
-- After the initial closeout exposed the missing repository, the directory was initialized, the private GitHub repository `aaabot1205/wrap-up-bootstrap` was created, and `main` was pushed to `origin/main`.
+- The staged roadmap was converted into `IMPLEMENTATION_PLAN.md` with Phase 0 through Phase 5, explicit deliverables, acceptance criteria, migration constraints, and the next implementation action.
+- `README.md`, `STATUS.md`, and `HANDOFF.md` were reconciled so they consistently describe the project as usable now with planned incremental hardening.
+- No skill behavior, installer behavior, or global installation was changed during this documentation-only phase.
 
 ## Remaining work
 
-- No functional work is currently required.
+- Phase 0: add `VERSION`, tag the verified baseline, and make the future Git publishing policy an explicit decision.
+- Phase 1: add automated verification and update tooling.
+- Phase 2: define the optional `PROJECT_CONTEXT.yaml` contract while retaining discovery fallback.
+- Phase 3: introduce and evaluate safer explicit publishing semantics without silently breaking `v1.x` behavior.
+- Phase 4: add evidence labels and complete cross-platform regression fixtures.
+- Phase 5: add macOS/Linux distribution when there is a concrete need.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
-- Re-run the installer fixture test after changing `install.ps1` or any file under `global-rules/`.
