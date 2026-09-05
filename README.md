@@ -32,3 +32,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\ins
 ```
 
 The installer preserves unrelated global instructions, updates only its marked response-language block, and creates timestamped backups before replacing different existing files. Start new sessions in all three platforms afterward.
+
+Alternatively, open Codex on the new machine and paste this single request:
+
+```text
+Authenticate GitHub as aaabot1205 if needed, clone the private repository aaabot1205/wrap-up-bootstrap to C:\dev\wrap-up-bootstrap, run its install.ps1, verify all six skill installations and three global response-language rules, then report any platform that needs a restart.
+```
