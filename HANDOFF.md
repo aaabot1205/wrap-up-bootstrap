@@ -1,0 +1,36 @@
+# Handoff
+
+## Purpose
+
+Maintain two AI-platform-neutral skills that make end-of-phase documentation and new-session takeover reliable across Codex, Claude Code, and Google Antigravity.
+
+## Current state
+
+The skills explicitly require every agent to continue existing project documents regardless of which AI created them. They forbid platform-specific duplicate status/spec/handoff sets and distinguish shared project facts from host-specific behavioral instructions.
+
+Isolated reciprocal tests verified both directions: `wrap-up ncp` continued ChatGPT/Codex-authored documents while reading Claude guidance, and Codex `bootstrap` continued Claude-authored status and spec files without editing them.
+
+The 2026-09-05 full closeout reviewed the project documentation and installation state. Both skills passed validation, their canonical hashes matched all three global installations, and Markdown checks found no stale legacy path, conflict marker, or trailing whitespace. Commit and push remain unavailable because the canonical directory is not a Git repository and has no remote.
+
+## Canonical working copy
+
+`C:\dev\wrap-up-bootstrap`
+
+Installed global copies:
+
+- Codex: `C:\Users\User\.agents\skills\{wrap-up,bootstrap}`
+- Claude Code: `C:\Users\User\.claude\skills\{wrap-up,bootstrap}`
+- Antigravity IDE: `C:\Users\User\.gemini\antigravity\skills\{wrap-up,bootstrap}`
+
+## Maintenance procedure
+
+1. Edit the canonical `wrap-up/` and `bootstrap/` folders.
+2. Update `STATUS.md` and this handoff when behavior or installation changes.
+3. Validate both skills with the Skill Creator validator.
+4. Copy both folders to all three global locations.
+5. Compare hashes for each installed `SKILL.md` against the canonical copy.
+6. Run isolated forward tests after behavioral changes.
+
+## Next action
+
+Decide whether to initialize `C:\dev\wrap-up-bootstrap` as a Git repository and connect it to a remote. If version control is not desired, no functional action is required. When a platform changes its discovery rules, update `INSTALL.md`, synchronize the global copies, and re-run validation.

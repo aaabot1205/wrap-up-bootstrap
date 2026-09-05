@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wrap Up"
+  short_description: "Synchronize docs, verify, commit, and push"
+  default_prompt: "Use $wrap-up to close the current project phase and prepare a reliable handoff."
