@@ -5,6 +5,7 @@ Last updated: 2026-09-06
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
+- Phase 0 is complete. `VERSION` records `1.0.0`, and tag `v1.0.0` identifies the recoverable baseline.
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation, verification, scoped commit, and push. The `ncp` argument prohibits staging, committing, and pushing.
@@ -14,6 +15,7 @@ Last updated: 2026-09-06
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language rule files live under `global-rules/`.
 - `install.ps1` installs or updates all six global skill copies and all three global rule files on Windows while preserving unrelated content.
+- Decision D-001 preserves the existing default publishing behavior throughout `v1.x` and selects explicit `wrap-up publish` semantics for `v2.0.0`; no skill behavior changed in Phase 0.
 
 ## Verification
 
@@ -28,17 +30,17 @@ Last updated: 2026-09-06
 ## Latest closeout
 
 - Date: 2026-09-06
-- Mode: full `wrap-up`
-- The staged roadmap was converted into `IMPLEMENTATION_PLAN.md` with Phase 0 through Phase 5, explicit deliverables, acceptance criteria, migration constraints, and the next implementation action.
-- `README.md`, `STATUS.md`, and `HANDOFF.md` were reconciled so they consistently describe the project as usable now with planned incremental hardening.
-- No skill behavior, installer behavior, or global installation was changed during this documentation-only phase.
+- Milestone: Phase 0 baseline and publishing-policy decision
+- Added `VERSION` with release `1.0.0` and established Git tag `v1.0.0` as the recoverable baseline.
+- Documented the current command contract and accepted Decision D-001 for the future `v2.0.0` publishing model.
+- Both skills passed the Skill Creator validator, canonical and installed skill hashes matched, and each global rule retained exactly one matching managed block.
+- No skill behavior, installer behavior, or global installation changed during Phase 0.
 
 ## Remaining work
 
-- Phase 0: add `VERSION`, tag the verified baseline, and make the future Git publishing policy an explicit decision.
 - Phase 1: add automated verification and update tooling.
 - Phase 2: define the optional `PROJECT_CONTEXT.yaml` contract while retaining discovery fallback.
-- Phase 3: introduce and evaluate safer explicit publishing semantics without silently breaking `v1.x` behavior.
+- Phase 3: implement the accepted explicit publishing semantics for `v2.0.0` without changing `v1.x` behavior.
 - Phase 4: add evidence labels and complete cross-platform regression fixtures.
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.

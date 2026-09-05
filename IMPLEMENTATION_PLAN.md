@@ -12,6 +12,8 @@ This roadmap turns the currently usable cross-platform `wrap-up` and `bootstrap`
 
 ## Phase 0: Baseline and policy decision
 
+Status: Complete in `1.0.0` on 2026-09-06.
+
 ### Goal
 
 Freeze the current working implementation as a recoverable baseline and decide how Git publishing should evolve.
@@ -31,6 +33,13 @@ Freeze the current working implementation as a recoverable baseline and decide h
 - All three platforms continue discovering both skills.
 - The current behavior is documented and recoverable by version or tag.
 - No default Git behavior changes without an explicit decision.
+
+### Outcome
+
+- `VERSION` records `1.0.0`, and Git tag `v1.0.0` identifies the verified baseline.
+- The current command contract is documented in `README.md`, `INSTALL.md`, and `DECISIONS.md`.
+- Decision D-001 preserves the current publishing behavior throughout `v1.x` and selects the explicit `wrap-up publish` model for `v2.0.0`.
+- Phase 3 owns the migration and regression work; no skill behavior changed in Phase 0.
 
 ## Phase 1: Automated verification and updates
 
@@ -84,6 +93,8 @@ Let large projects identify their authoritative documents and verification comma
 
 Reduce accidental commits or pushes while keeping closeout convenient.
 
+Phase 0 decision D-001 accepted the following contract for `v2.0.0`. Phase 3 implements and validates it; `v1.x` remains unchanged.
+
 ### Proposed command contract
 
 - `bootstrap`: load context.
@@ -103,8 +114,8 @@ Reduce accidental commits or pushes while keeping closeout convenient.
 
 1. Keep the existing `v1.x` behavior.
 2. Introduce and document `wrap-up publish` without changing the default.
-3. Announce the proposed safer default.
-4. Change the default only in `v2.0.0` after explicit approval.
+3. Announce the accepted safer default and provide migration guidance.
+4. Change the default only in `v2.0.0` after the required safeguards and regression coverage pass.
 
 ### Acceptance criteria
 
@@ -156,13 +167,13 @@ Support repeatable installation beyond the current Windows environment.
 
 ## Recommended delivery order
 
-1. Complete Phase 0.
+1. Preserve the completed `v1.0.0` Phase 0 baseline.
 2. Deliver Phase 1 and Phase 2 together as the next useful increment, tentatively `v1.1.0`.
 3. Use the skills on several real projects and collect failure cases.
-4. Make the Phase 3 policy decision from that evidence.
+4. Use that evidence to refine the Phase 3 safeguards without changing decision D-001 silently.
 5. Add Phase 4 regression coverage before releasing behavior changes.
 6. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Start a new session with `bootstrap`, execute Phase 0, and leave the existing `wrap-up` Git behavior unchanged until the publishing-policy decision is explicitly approved.
+Implement Phase 1 automated verification first by adding `verify.ps1`, then add the guarded update workflow. Preserve decision D-001 and the `v1.x` command contract.

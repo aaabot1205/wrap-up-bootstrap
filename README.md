@@ -7,6 +7,16 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
+Current baseline version: `1.0.0` (`v1.0.0`).
+
+## Version 1 command contract
+
+- `bootstrap` gathers project context without editing during the bootstrap phase and may then begin a supplied follow-on task.
+- `wrap-up` reconciles documentation, verifies the completed phase, commits scoped changes, and pushes.
+- `wrap-up ncp` reconciles documentation and verifies without staging, committing, or pushing.
+
+This behavior is frozen for `v1.x`. The accepted future publishing direction is recorded in `DECISIONS.md`; it does not change the current commands.
+
 ## Design contract
 
 Project documents belong to the project, not to the AI that created them. Every supported platform must discover and continue the existing source of truth even when another platform chose its filename or last updated it. The skills therefore search by document purpose and repository conventions rather than imposing separate ChatGPT, Claude, or Gemini documentation sets.
@@ -20,6 +30,8 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `agents/openai.yaml` inside each skill: optional Codex/ChatGPT UI metadata; other hosts can ignore it.
 - `global-rules/`: portable source copies of the global response-language rules for all three platforms.
 - `install.ps1`: idempotent Windows installer for all skills and global rules.
+- `VERSION`: current release version.
+- `DECISIONS.md`: accepted compatibility and publishing-policy decisions.
 - `IMPLEMENTATION_PLAN.md`: phased roadmap from the usable baseline to a versioned, verifiable, safer, and cross-OS system.
 - `STATUS.md`: current implementation and verification state.
 - `HANDOFF.md`: concise context for the next maintenance session.
