@@ -1,0 +1,34 @@
+# Optional repository-root context for wrap-up and bootstrap.
+# Paths and exclusion patterns are relative to the repository root.
+schema_version: 1
+project_name: wrap-up-bootstrap
+
+documents:
+  status:
+    - STATUS.md
+  handoff:
+    - HANDOFF.md
+  plans:
+    - IMPLEMENTATION_PLAN.md
+  specs: []
+  decisions:
+    - DECISIONS.md
+
+verification:
+  # Run commands from the repository root in the listed order.
+  commands:
+    - powershell -NoProfile -ExecutionPolicy Bypass -File .\verify.ps1
+    - git diff --check
+
+git:
+  default_branch: main
+  # skill-default follows the active skill version. Other values: explicit, never.
+  publish_policy: skill-default
+
+cautions:
+  - Preserve unrelated global rules and skill files during installation or updates.
+  - Keep the v1.x wrap-up publishing contract unchanged.
+
+exclusions:
+  - .git/
+  - "**/*.backup-*"

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "PROJECT_CONTEXT.schema.json",
+  "title": "PROJECT_CONTEXT.yaml version 1",
+  "description": "Optional repository-root routing and policy context for wrap-up and bootstrap.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_name"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "description": "Contract version understood by the skills."
+    },
+    "project_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "documents": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/pathList"
+        },
+        "handoff": {
+          "$ref": "#/$defs/pathList"
+        },
+        "plans": {
+          "$ref": "#/$defs/pathList"
+        },
+        "specs": {
+          "$ref": "#/$defs/pathList"
+        },
+        "decisions": {
+          "$ref": "#/$defs/pathList"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "git": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "default_branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publish_policy": {
+          "type": "string",
+          "enum": [
+            "skill-default",
+            "explicit",
+            "never"
+          ]
+        }
+      }
+    },
+    "cautions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "pathList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

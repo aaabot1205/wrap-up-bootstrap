@@ -1,13 +1,38 @@
 [CmdletBinding()]
 param(
-    [string]$UserRoot = [Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile)
+    [string]$UserRoot
 )
 
 Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+    $UserRoot = [Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile)
+}
+if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+    $UserRoot = [Environment]::GetEnvironmentVariable('USERPROFILE')
+}
+if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+    throw 'Unable to determine the user profile directory. Pass -UserRoot explicitly.'
+}
+$UserRoot = [System.IO.Path]::GetFullPath($UserRoot)
 
 $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+
+function Get-UniqueBackupPath {
+    param([string]$DestinationPath)
+
+    $BasePath = "$DestinationPath.backup-$Timestamp"
+    $BackupPath = $BasePath
+    $Suffix = 1
+    while (Test-Path -LiteralPath $BackupPath) {
+        $BackupPath = "$BasePath-$Suffix"
+        $Suffix++
+    }
+    return $BackupPath
+}
 
 function Backup-FileIfChanged {
     param(
@@ -22,7 +47,9 @@ function Backup-FileIfChanged {
     $SourceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $SourcePath).Hash
     $DestinationHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $DestinationPath).Hash
     if ($SourceHash -ne $DestinationHash) {
-        Copy-Item -LiteralPath $DestinationPath -Destination "$DestinationPath.backup-$Timestamp" -ErrorAction Stop
+        $BackupPath = Get-UniqueBackupPath -DestinationPath $DestinationPath
+        Copy-Item -LiteralPath $DestinationPath -Destination $BackupPath -ErrorAction Stop
+        Write-Output "Backed up: $DestinationPath -> $BackupPath"
     }
 }
 
@@ -65,11 +92,11 @@ function Install-ManagedRule {
 
     $Pattern = '(?s)' + [regex]::Escape($BeginMarker) + '.*?' + [regex]::Escape($EndMarker)
     if ($Existing -match $Pattern) {
-        $Updated = [regex]::Replace(
-            $Existing,
-            $Pattern,
-            [System.Text.RegularExpressions.MatchEvaluator]{ param($Match) $ManagedBlock }
-        )
+        $ManagedRegex = New-Object System.Text.RegularExpressions.Regex($Pattern)
+        $Placeholder = "<!-- wrap-up-bootstrap-placeholder-$([guid]::NewGuid().ToString('N')) -->"
+        $Updated = $ManagedRegex.Replace($Existing, $Placeholder, 1)
+        $Updated = $ManagedRegex.Replace($Updated, '')
+        $Updated = $Updated.Replace($Placeholder, $ManagedBlock)
     } elseif ($Existing.Trim() -eq $UnmarkedBlock) {
         $Updated = "$ManagedBlock`n"
     } elseif ([string]::IsNullOrWhiteSpace($Existing)) {
@@ -85,7 +112,9 @@ function Install-ManagedRule {
     $DestinationParent = Split-Path -Parent $DestinationPath
     New-Item -ItemType Directory -Force -Path $DestinationParent -ErrorAction Stop | Out-Null
     if (Test-Path -LiteralPath $DestinationPath) {
-        Copy-Item -LiteralPath $DestinationPath -Destination "$DestinationPath.backup-$Timestamp" -ErrorAction Stop
+        $BackupPath = Get-UniqueBackupPath -DestinationPath $DestinationPath
+        Copy-Item -LiteralPath $DestinationPath -Destination $BackupPath -ErrorAction Stop
+        Write-Output "Backed up: $DestinationPath -> $BackupPath"
     }
     [System.IO.File]::WriteAllText($DestinationPath, $Updated, $Utf8NoBom)
 }

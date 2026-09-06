@@ -25,7 +25,18 @@ Treat durable context as project-owned, never AI-platform-owned. Continue from r
 2. Read applicable instruction files first, including `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and instruction files they reference. Respect their directory scope and precedence.
 3. Do not modify files during the bootstrap phase. Do not fetch, pull, switch branches, stash, reset, install dependencies, or run destructive commands merely to gather context.
 
-## 2. Inspect live state
+## 2. Load optional project context
+
+After locating the root, check for a root-level `PROJECT_CONTEXT.yaml` before broader document discovery.
+
+- If it is absent, continue with automatic discovery unchanged.
+- If it is present, read it fully and support `schema_version: 1`. Treat its repository-relative document paths, verification commands, default branch, publishing policy, cautions, and exclusions as authoritative routing and policy context, not as proof that planned work is implemented or verified.
+- Resolve every configured path against the repository root. Reject paths that escape it. Read listed status, handoff, plan, spec, and decision files first, then use targeted discovery to find relevant unlisted context.
+- Respect exclusions during broad searches and avoid reading excluded content unless the user's current request requires it. Never let an exclusion hide applicable instruction files, Git metadata needed for safety, or a path explicitly listed under `documents`.
+- Recognize `git.publish_policy` values `skill-default`, `explicit`, and `never`. Record the active value in the brief; do not perform Git publishing during bootstrap context gathering.
+- If the file is malformed, uses an unsupported schema version, contains unsafe paths, or points to missing files, report the exact issue and fall back to automatic discovery where safe. Do not silently treat an invalid file as absent or invent replacement paths.
+
+## 3. Inspect live state
 
 If the project uses Git, inspect at minimum:
 
@@ -37,9 +48,9 @@ Treat uncommitted changes as important handoff context. Never assume they belong
 
 Inspect the project structure, primary configuration and manifests, entry points, and documented test/build/run commands. Keep exploration targeted; avoid reading large generated, vendored, cache, dependency, or binary trees.
 
-## 3. Discover and read the durable context
+## 4. Discover and read the durable context
 
-Find the project's actual documentation conventions instead of relying on one platform's standard names. Prioritize:
+Use valid `PROJECT_CONTEXT.yaml` document mappings first when present. Otherwise find the project's actual documentation conventions instead of relying on one platform's standard names. Prioritize:
 
 1. current-state and handoff artifacts such as `HANDOFF.md`, `STATUS.md`, `*_STATUS.md`, TODO, milestone, and progress files;
 2. active plans, requirements, specs, PRDs, RFCs, ADRs, and roadmaps;
@@ -48,7 +59,7 @@ Find the project's actual documentation conventions instead of relying on one pl
 
 Follow document links when they are relevant. Do not load every document indiscriminately. Search for the active feature, milestone, pending checklist items, blockers, and terminology in the handoff.
 
-## 4. Reconcile conflicts
+## 5. Reconcile conflicts
 
 Do not repeat documentation claims as facts without checking them against live repository evidence. Use this default priority when sources conflict:
 
@@ -61,7 +72,7 @@ Do not repeat documentation claims as facts without checking them against live r
 
 Treat planned behavior as planned, not implemented. Identify stale or contradictory documentation explicitly. Make a reasonable evidence-based interpretation when safe; ask only when the ambiguity would materially change the requested work.
 
-## 5. Produce the bootstrap brief
+## 6. Produce the bootstrap brief
 
 Before starting any follow-on task, give a concise brief containing:
 
@@ -72,11 +83,12 @@ Before starting any follow-on task, give a concise brief containing:
 - in-progress and remaining tasks in priority order;
 - important decisions, architecture, commands, and acceptance criteria;
 - blockers, risks, unknowns, and documentation conflicts;
+- `PROJECT_CONTEXT.yaml` status, active Git policy, and any configured verification commands or exclusions;
 - the exact recommended next action.
 
 Use file references and evidence where helpful. Keep the brief dense enough to act on but short enough to preserve context for the work.
 
-## 6. Continue or hand off control
+## 7. Continue or hand off control
 
 - If the invocation has a follow-on task, begin it after the brief, following normal safety and repository rules. Do not stop merely to ask whether to proceed when the request is already clear.
 - If no follow-on task is supplied, stop after the brief and state that the project is ready to continue from the recommended next action.
