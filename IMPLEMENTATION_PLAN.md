@@ -186,6 +186,37 @@ Prevent multiple AI platforms from consistently propagating the same incorrect p
 - Shared raw templates plus six manifests cover every directed takeover among Codex, Claude Code, and Antigravity without duplicating fixture content.
 - Six fresh-agent forward tests passed. Each receiver updated exactly the existing status, spec, and handoff documents, executed the local check, created no replacement files, and left Git unstaged and uncommitted.
 
+## Version 2.1: Bilingual GitHub README global preference
+
+Status: Complete and verified in the `2.1.0-dev` development line; scoped development-line publication was authorized on 2026-09-07, while the final `2.1.0` release remains separate work.
+
+### Goal
+
+Extend the portable global preferences beyond response language so GitHub repositories receive a complete English README followed by a complete Traditional Chinese version.
+
+### Deliverables
+
+- Add the bilingual README requirement to the existing managed global rule files for Codex, Claude Code, and Antigravity.
+- Preserve the historical managed-marker identifier so existing installations upgrade in place instead of receiving a second block.
+- Extend `verify.ps1` to require aligned canonical global rule files containing both preferences.
+- Document that existing global instruction content remains untouched outside the managed block.
+- Forward-test `update.ps1` from an installed `2.0.0` fixture to `2.1.0-dev`.
+
+### Acceptance criteria
+
+- The three canonical global rule files are identical and require both Traditional Chinese responses and bilingual GitHub READMEs.
+- Updating an existing installation preserves unrelated `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` content, replaces exactly one managed block, and creates backups before changes.
+- A second update is idempotent and creates no additional backups.
+- The live installation and all relevant repository checks pass.
+
+### Outcome
+
+- The repository README preserves its complete English content and adds a complete Traditional Chinese version below it.
+- `install.ps1` continues to append or replace only its marker-delimited block, while user-facing output and documentation now describe the broader global preferences accurately.
+- `verify.ps1` validates the required canonical preference content before checking each installed managed block.
+- An isolated upstream/client fixture passed the `2.0.0` to `2.1.0-dev` fast-forward, unrelated-content preservation, backup, verifier, and second-run idempotency checks.
+- An Antigravity IDE 1.107.0 session passed an isolated behavior observation by producing a complete English-first, Traditional-Chinese-second README from an English-only prompt. The user deferred the unauthenticated Claude Code observation as low priority.
+
 ## Phase 5: Cross-operating-system distribution
 
 Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.0.0` release.
@@ -210,10 +241,10 @@ Support repeatable installation beyond the current Windows environment.
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
-2. Keep the completed Phase 1 through Phase 4 work together in the released `2.0.0` line.
-3. Treat the 2026-09-06 release-readiness closeout as the final Windows-scoped Version 2 gate; it found no source release blocker.
-4. Preserve annotated tag `v2.0.0` as the Version 2 release point; start Phase 5 when macOS or Linux use becomes concrete.
+2. Preserve annotated tag `v2.0.0` as the Version 2 release point containing the completed Phase 1 through Phase 4 work.
+3. Publish the verified `2.1.0-dev` development line under explicit authorization, observe it in normal use, and create the final `2.1.0` version and tag only with separate explicit release authorization.
+4. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Observe the `v2.0.0` release during normal Windows use. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Observe the published `2.1.0-dev` development line in normal use. Keep the Claude Code behavior observation deferred unless its priority changes, and run the isolated Codex observation only if it becomes part of the release gate. Create the final `2.1.0` version and annotated tag only with separate explicit authorization. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

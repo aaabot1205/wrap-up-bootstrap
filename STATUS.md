@@ -1,12 +1,13 @@
 # Status
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
 - Version `2.0.0` is the current release, identified by annotated tag `v2.0.0`; the intermediate `v1.1.0` release was not created.
+- Version `2.1.0-dev` is the current development line. It adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
 - Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
 - Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
@@ -18,9 +19,9 @@ Last updated: 2026-09-06
 - Global copies are installed for Codex, Claude Code, and Antigravity.
 - The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all three global installations.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
-- Portable source copies of the three response-language rule files live under `global-rules/`.
+- Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
 - `install.ps1` installs or updates all six global skill copies and all three global rule files on Windows while preserving unrelated content.
-- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, the evidence contract, all six takeover manifests, all global entry files and hashes, managed rules, and restart guidance.
+- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, canonical global-preference content, the evidence contract, all six takeover manifests, all global entry files and hashes, managed rules, and restart guidance.
 - `update.ps1` allows only clean, upstream-backed, non-ahead fast-forward updates before backed-up installation and verification.
 - `install.ps1` reports every changed-file backup and repairs duplicate managed rules to one canonical block without removing unrelated content.
 - `PROJECT_CONTEXT.schema.json` and `PROJECT_CONTEXT.example.yaml` define repository-relative document routing, verification commands, Git policy, cautions, and exclusions.
@@ -57,18 +58,22 @@ Last updated: 2026-09-06
 
 ## Latest closeout
 
-- Date: 2026-09-06
-- `Observed`: Version 2 publication began from `main` at `0ad5853`, synchronized with `origin/main`; the only pre-existing changes were the three release-readiness documents produced by the immediately preceding closeout.
-- `Verified`: the Skill Creator `quick_validate.py` validator accepted both canonical skills during the Version 2 release workflow.
-- `Verified`: `verify.ps1` reported 22 passes with no warnings or failures; the canonical skills and all Codex, Claude Code, and Antigravity global copies match.
-- `Verified`: all four PowerShell entry scripts passed AST parsing, `PROJECT_CONTEXT.example.yaml` validated against the Draft 2020-12 schema, `test-regressions.ps1 -Mode Validate` accepted all six directed fixtures, and `git diff --check` returned exit code 0.
-- `Verified`: a fresh isolated user root completed two `install.ps1` runs without any second-run file or timestamp change, then passed all 22 `verify.ps1` checks; the temporary root was removed afterward.
-- `Observed`: `VERSION`, the README, accepted decisions, roadmap, status, and handoff consistently identify `2.0.0` and annotated tag `v2.0.0` as the current release. Phase 5 remains deferred and is not part of this Windows-scoped release.
-- `Not run`: the six fresh-agent takeover workflows and the isolated updater fixture were not repeated because no skill, fixture, installation, or update behavior changed after their recorded passing runs.
-- `Blocked`: none for the authorized Version 2 release publication.
+- Date: 2026-09-07
+- `Observed`: the user explicitly authorized `wrap-up publish` for the completed `2.1.0-dev` global-preference increment and deferred the Claude Code behavior observation as low priority. This authorization covers a scoped commit and push of the development line, not a `v2.1.0` release tag.
+- `Observed`: after `git fetch origin`, local `main` and `origin/main` both remained at `fd5a927` with ahead/behind `0/0`; no files were staged or untracked, and no merge or rebase was active before publication.
+- `Verified`: `VERSION` is `2.1.0-dev`, and live `verify.ps1` reported 23 passes with no warnings or failures. The installed Codex, Claude Code, and Antigravity skill entries and managed global-preference blocks match the canonical source.
+- `Verified`: the Skill Creator validator accepted both skills; all four PowerShell scripts passed AST parsing; `PROJECT_CONTEXT.example.yaml` passed Draft 2020-12 schema validation; `test-regressions.ps1 -Mode Validate` accepted all six directed fixtures; and `git diff --check` passed.
+- `Verified`: a fresh isolated user root completed two `install.ps1` runs without any second-run file, hash, or timestamp change, then passed all 23 isolated verifier checks. The temporary root was removed afterward.
+- `Verified`: an Antigravity IDE 1.107.0 agent session created the primary `README.md` in an otherwise empty isolated Git repository from an English prompt that did not request bilingual output. It produced a complete English version followed by a complete Traditional Chinese version, preserved commands and technical identifiers across both versions, created no other files, and made no commit.
+- `Observed`: the earlier isolated updater fixture remains historical evidence that a clean installed `2.0.0` checkout fast-forwarded to `2.1.0-dev`, preserved unrelated global instructions, created expected backups, passed verification, and remained idempotent on a second update.
+- `Not run`: the Claude Code 2.1.221 observation remains unauthenticated and was explicitly deferred by the user as low priority; it is not a development-line publication blocker.
+- `Not run`: the isolated Codex README behavior observation was not required for this development-line publication.
+- `Not run`: the six fresh-agent takeover workflows were not repeated because neither skill nor takeover behavior changed.
+- `Blocked`: none for the authorized `2.1.0-dev` scoped commit and push. A final `2.1.0` version change and release tag remain separate work requiring explicit release authorization.
 
 ## Remaining work
 
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Observe `v2.0.0` on normal Windows use and record any release follow-up before starting another behavior change.
+- Observe the published `2.1.0-dev` development line in normal use. Antigravity IDE has passed the isolated behavior check; Claude Code is explicitly deferred as low priority, and the isolated Codex behavior check remains optional unless promoted into the release gate.
+- Create the final `2.1.0` version change and annotated tag only with separate explicit release authorization.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.

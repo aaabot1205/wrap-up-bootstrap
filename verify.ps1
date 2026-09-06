@@ -245,11 +245,52 @@ function Test-ManagedRule {
         return
     }
     if ($ManagedBlocks[0].Value.Trim() -cne $SourceBlock) {
-        Add-Failure "$PlatformName managed response-language block differs from the canonical source."
+        Add-Failure "$PlatformName managed global-preferences block differs from the canonical source."
         return
     }
 
-    Add-Pass "$PlatformName has exactly one matching managed response-language block."
+    Add-Pass "$PlatformName has exactly one matching managed global-preferences block."
+}
+
+function Test-CanonicalGlobalRules {
+    $FailureCountBefore = $script:FailureCount
+    $RulePaths = @(
+        (Join-Path $ProjectRoot 'global-rules\AGENTS.md'),
+        (Join-Path $ProjectRoot 'global-rules\CLAUDE.md'),
+        (Join-Path $ProjectRoot 'global-rules\GEMINI.md')
+    )
+    $TraditionalChineseText = -join @([char]0x7E41, [char]0x9AD4, [char]0x4E2D, [char]0x6587)
+    $RequiredFragments = @(
+        "Use Traditional Chinese ($TraditionalChineseText) for all user-facing prose by default.",
+        'When creating or materially updating the primary `README.md` for a GitHub repository',
+        "a complete English version and a complete Traditional Chinese ($TraditionalChineseText) version",
+        'Place the English version first and the Traditional Chinese version below it'
+    )
+    $ReferenceText = $null
+
+    foreach ($RulePath in $RulePaths) {
+        if (-not (Test-Path -LiteralPath $RulePath -PathType Leaf)) {
+            Add-Failure "Canonical global preference rule is missing: $RulePath"
+            continue
+        }
+
+        $RuleText = (Get-Content -Raw -Encoding UTF8 -LiteralPath $RulePath).Trim()
+        foreach ($RequiredFragment in $RequiredFragments) {
+            if ($RuleText.IndexOf($RequiredFragment, [System.StringComparison]::Ordinal) -lt 0) {
+                Add-Failure "$RulePath is missing required global preference text: $RequiredFragment"
+            }
+        }
+
+        if ($null -eq $ReferenceText) {
+            $ReferenceText = $RuleText
+        } elseif ($RuleText -cne $ReferenceText) {
+            Add-Failure "$RulePath differs from the other canonical global preference rules."
+        }
+    }
+
+    if ($script:FailureCount -eq $FailureCountBefore) {
+        Add-Pass 'Canonical global preference rules are aligned and require Traditional Chinese responses plus bilingual GitHub READMEs.'
+    }
 }
 
 function Test-ProjectContextArtifacts {
@@ -390,6 +431,7 @@ Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'w
 Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('bootstrap', 'initialize', 'resume', 'take over')
 Test-OpenAiMetadata -SkillName 'wrap-up' -MetadataPath (Join-Path $ProjectRoot 'wrap-up\agents\openai.yaml')
 Test-OpenAiMetadata -SkillName 'bootstrap' -MetadataPath (Join-Path $ProjectRoot 'bootstrap\agents\openai.yaml')
+Test-CanonicalGlobalRules
 Test-ProjectContextArtifacts
 Test-RegressionArtifacts
 

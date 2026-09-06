@@ -3,7 +3,7 @@
 These files are maintained as one cross-platform project. Apply these instructions in Codex, Claude Code, Antigravity, and other Agent Skills-compatible hosts.
 
 - Treat `wrap-up/SKILL.md` and `bootstrap/SKILL.md` in this directory as the canonical skill sources.
-- Treat `global-rules/AGENTS.md`, `global-rules/CLAUDE.md`, and `global-rules/GEMINI.md` as the canonical portable sources for the response-language preference.
+- Treat `global-rules/AGENTS.md`, `global-rules/CLAUDE.md`, and `global-rules/GEMINI.md` as the canonical portable sources for the response-language and bilingual GitHub README preferences.
 - Treat `PROJECT_CONTEXT.schema.json` and `PROJECT_CONTEXT.example.yaml` as the canonical optional project-context contract. Never make `PROJECT_CONTEXT.yaml` mandatory or remove automatic discovery fallback.
 - Treat `test-regressions.ps1` and `tests/fixtures/takeover/` as the canonical cross-platform takeover regression system. Keep all six directed platform pairs.
 - Keep `install.ps1` idempotent and non-destructive toward unrelated global rules and skill files.

@@ -7,7 +7,7 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current release: `2.0.0` (`v2.0.0`). The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`); the completed Phase 1 through Phase 4 work is included in Version 2.
+Current development version: `2.1.0-dev`. Latest release: `2.0.0` (`v2.0.0`). The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`); the completed Phase 1 through Phase 4 work is included in Version 2.
 
 ## Version 2 command contract
 
@@ -53,7 +53,7 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `wrap-up/SKILL.md`: portable wrap-up workflow.
 - `bootstrap/SKILL.md`: portable session bootstrap workflow.
 - `agents/openai.yaml` inside each skill: optional Codex/ChatGPT UI metadata; other hosts can ignore it.
-- `global-rules/`: portable source copies of the global response-language rules for all three platforms.
+- `global-rules/`: portable source copies of the response-language and bilingual GitHub README preferences for all three platforms.
 - `install.ps1`: idempotent Windows installer for all skills and global rules.
 - `verify.ps1`: installation, hash, managed-rule, frontmatter, metadata, evidence-contract, fixture-matrix, and restart-guidance checks.
 - `update.ps1`: guarded fast-forward update, backed-up installation, verification, and version-transition reporting.
@@ -78,12 +78,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\ins
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The installer preserves unrelated global instructions, updates only its marked response-language block, and creates timestamped backups before replacing different existing files. Start new sessions in all three platforms afterward.
+The installer preserves unrelated global instructions, appends the marked global-preferences block when it is absent, replaces only that block when it already exists, removes duplicate managed blocks, and creates timestamped backups before changing an existing file. Start new sessions in all three platforms afterward.
 
 Alternatively, open Codex on the new machine and paste this single request:
 
 ```text
-Authenticate GitHub as aaabot1205 if needed, clone the private repository aaabot1205/wrap-up-bootstrap to C:\dev\wrap-up-bootstrap, run its install.ps1, verify all six skill installations and three global response-language rules, then report any platform that needs a restart.
+Authenticate GitHub as aaabot1205 if needed, clone the private repository aaabot1205/wrap-up-bootstrap to C:\dev\wrap-up-bootstrap, run its install.ps1, verify all six skill installations and three global preference rule files, then report any platform that needs a restart.
 ```
 
 ## Update an existing Windows installation
@@ -95,3 +95,103 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\upd
 ```
 
 The updater fetches the configured upstream, permits only a fast-forward, refuses dirty, detached, untracked, ahead, or divergent local state, then runs `install.ps1` and `verify.ps1`. Changed existing global files receive timestamped side-by-side backups, and the final report includes the version transition and restart guidance.
+
+---
+
+# Wrap-up 與 Bootstrap Skills（繁體中文）
+
+本專案維護兩個供 Codex、Claude Code 與 Google Antigravity 使用的全域、跨平台 Agent Skills：
+
+- `wrap-up`：結束專案階段、同步持久化文件並驗證成果；只有在明確要求時才會發布。
+- `bootstrap`：在新 session 中重建可靠的專案脈絡，並可選擇直接開始指定的後續工作。
+
+目前實作已可正常使用。其餘可靠性、安全性、專案脈絡與作業系統支援改善，均整理於 `IMPLEMENTATION_PLAN.md`，可在不影響現有穩定基準的前提下逐步完成。
+
+目前開發版本：`2.1.0-dev`。最新 release：`2.0.0`（`v2.0.0`）。可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）；Phase 1 至 Phase 4 的完整成果已包含在 Version 2 中。
+
+## Version 2 指令契約
+
+- `bootstrap` 會在 bootstrap 階段以唯讀方式蒐集專案脈絡，之後可開始使用者指定的後續工作。
+- `wrap-up` 會同步專案文件並驗證已完成的階段，但不會 stage、commit 或 push。
+- `wrap-up publish` 會在必要驗證成功後，執行具安全防護且範圍明確的 commit 與 push。
+- `wrap-up ncp` 保留為非發布預設模式的相容別名。
+
+已發布的 `v1.x` 使用者仍適用舊版的預設發布契約。遷移至 Version 2 時，原本預期 commit 與 push 的自動化或 prompt 必須加入 `publish`。未加參數的 `wrap-up` 現在會在文件同步與驗證完成後停止。
+
+發布前，skill 會檢查 branch、upstream、remote、unstaged 與 staged diffs，建立明確的本階段檔案清單，並阻擋範圍不明、無關或疑似包含敏感資料的檔案。必要驗證失敗時，除非使用者已看到失敗內容並明確允許 override，否則不得發布。此流程絕不 force-push、reset、捨棄工作或使用廣泛 staging shortcut。
+
+## 選用的專案脈絡設定
+
+Repository 可以將 `PROJECT_CONTEXT.example.yaml` 複製為根目錄下的 `PROJECT_CONTEXT.yaml`，並依需求設定 authoritative documents、verification commands、default branch、publishing policy、cautions 與 discovery exclusions。此契約為選用功能，並透過 `schema_version` 管理版本；未提供此檔案的專案會繼續使用自動探索。
+
+所有設定路徑都必須相對於 repository root。有效設定只負責引導文件與 policy routing，不能作為功能已實作或已驗證的證據。若設定無效或版本不受支援，skills 會明確報告問題，並在安全範圍內回退至自動探索。
+
+`git.publish_policy` 支援 `skill-default`、`explicit` 與 `never`。使用者目前的指示仍具有最高優先順序，兩個 skills 也不會只為了符合 configured default 而切換 branch。
+
+## 證據契約
+
+兩個 skills 都使用以下五個固定 label 來標示重要專案敘述：
+
+- `Verified`：本次 session 已實際執行檢查，並記錄 command 或 check 與結果；
+- `Observed`：直接檢視目前 Git、configuration、source 或檔案所得的狀態；
+- `Assumption`：仍未驗證的推論，並附上可確認或否定它的方法；
+- `Not run`：預期的檢查未執行，並記錄略過或無法執行的原因；
+- `Blocked`：工作或驗證尚未完成，並記錄 blocker 與恢復方式。
+
+前一個 session 的通過結果，在重新執行前只能視為歷史 `Observed` 證據。單一且範圍狹窄的檢查不能驗證更廣泛的 milestone；若目前證據不足以解決矛盾，則必須保留互相競爭且附有 label 的敘述。
+
+Regression matrix 涵蓋 Codex、Claude Code 與 Antigravity 之間每一個有方向性的 takeover 組合。`test-regressions.ps1` 會驗證六份 fixture 定義、建立隔離的 Git workspaces，並檢查接手的 session 是否沿用既有 status、spec 與 handoff 文件，同時不發布或建立平台專屬的替代文件。
+
+## 設計契約
+
+專案文件屬於專案，而非建立文件的 AI。即使既有 source of truth 是由另一個平台命名或最後更新，每個受支援平台都必須找到並延續它。因此，skills 會依文件用途與 repository conventions 搜尋，而不會強制建立彼此獨立的 ChatGPT、Claude 或 Gemini 文件組。
+
+安裝、呼叫、停用與重新啟用方式請參閱 `INSTALL.md`。
+
+## 專案結構
+
+- `wrap-up/SKILL.md`：可攜式 wrap-up workflow。
+- `bootstrap/SKILL.md`：可攜式 session bootstrap workflow。
+- 每個 skill 中的 `agents/openai.yaml`：選用的 Codex/ChatGPT UI metadata；其他 hosts 可忽略。
+- `global-rules/`：三個平台之回應語言與 GitHub README 中英雙版本偏好的可攜式 source copies。
+- `install.ps1`：安裝所有 skills 與 global rules 的 idempotent Windows installer。
+- `verify.ps1`：檢查安裝、hash、managed rules、frontmatter、metadata、evidence contract、fixture matrix 與 restart guidance。
+- `update.ps1`：具防護的 fast-forward update、備份安裝、驗證與版本轉換報告。
+- `test-regressions.ps1`：驗證、準備及檢查六方向 cross-platform takeover matrix。
+- `tests/fixtures/takeover/`：共用原始 fixture templates，以及每個平台方向的一份 manifest。
+- `PROJECT_CONTEXT.schema.json`：選用 project context Version 1 契約的 machine-readable schema。
+- `PROJECT_CONTEXT.example.yaml`：附有說明的 repository-root 設定範例。
+- `VERSION`：目前 source version；release tags 用來標示已發布的 baselines。
+- `DECISIONS.md`：已接受的相容性與 publishing-policy decisions。
+- `IMPLEMENTATION_PLAN.md`：從可用基準演進至具版本、可驗證、更安全且支援跨 OS 系統的 phased roadmap。
+- `STATUS.md`：目前實作與驗證狀態。
+- `HANDOFF.md`：供下一個維護 session 使用的精簡脈絡。
+- `AGENTS.md`：所有 AI agent 在此目錄工作時必須遵守的維護規則。
+
+## 在另一台 Windows 電腦安裝
+
+以 `aaabot1205` 完成 GitHub CLI 驗證後，執行：
+
+```powershell
+gh repo clone aaabot1205/wrap-up-bootstrap C:\dev\wrap-up-bootstrap
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\install.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
+```
+
+Installer 會保留無關的全域 instructions；managed global-preferences block 不存在時會附加在檔案尾端，已存在時只替換該 block，並移除重複的 managed blocks。變更既有檔案前會先建立附 timestamp 的備份。完成後請在三個平台開始新 session 或重新啟動。
+
+也可以在新電腦開啟 Codex，貼上以下單一要求：
+
+```text
+需要時先以 aaabot1205 驗證 GitHub，將 private repository aaabot1205/wrap-up-bootstrap clone 到 C:\dev\wrap-up-bootstrap，執行 install.ps1，驗證六個 skill installations 與三份 global preference rule files，最後報告哪些平台需要重新啟動。
+```
+
+## 更新既有 Windows 安裝
+
+請從 worktree clean、目前 named branch 已設定 upstream，且沒有尚未發布 local commits 的 checkout 執行 guarded updater：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\update.ps1
+```
+
+Updater 會 fetch configured upstream，只允許 fast-forward，並拒絕 dirty、detached、untracked、ahead 或 divergent local state，之後才執行 `install.ps1` 與 `verify.ps1`。內容不同的既有 global files 會取得附 timestamp 的 side-by-side backups，最終報告則包含版本轉換與 restart guidance。

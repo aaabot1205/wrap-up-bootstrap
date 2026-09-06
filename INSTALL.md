@@ -25,13 +25,13 @@ gh repo clone aaabot1205/wrap-up-bootstrap C:\dev\wrap-up-bootstrap
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\install.ps1
 ```
 
-`install.ps1` installs both skills and merges the managed response-language block into:
+`install.ps1` installs both skills and merges the managed global-preferences block into:
 
 - Codex: `~/.codex/AGENTS.md`
 - Claude Code: `~/.claude/CLAUDE.md`
 - Antigravity: `~/.gemini/GEMINI.md`
 
-The installer is idempotent. It preserves unrelated rule content and creates timestamped backups before changing different existing files.
+The installer is idempotent. If a destination file already contains unrelated instructions, they remain in place: the installer appends the managed block when absent, replaces only the managed block when present, and removes duplicate managed blocks. It creates a timestamped backup before changing any existing destination file. The marker retains its historical `response-language` identifier for upgrade compatibility even though the block now contains both response-language and bilingual GitHub README preferences.
 
 ## Verify an installation
 
@@ -41,7 +41,7 @@ Run:
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the evidence-label contract, all six takeover manifests, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching response-language managed block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session.
+The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the canonical global-preference content, the evidence-label contract, all six takeover manifests, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching managed global-preferences block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session.
 
 Use `-UserRoot <path>` with `install.ps1`, `verify.ps1`, or `update.ps1` to operate on an isolated profile during testing.
 
