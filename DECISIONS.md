@@ -5,7 +5,7 @@
 - Status: Accepted
 - Date: 2026-09-06
 - Baseline: `1.0.0`
-- Implemented in source: `2.0.0-dev` on 2026-09-06
+- Released in: `2.0.0` on 2026-09-06
 
 ### Decision
 
@@ -27,7 +27,7 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 
 - The `1.0.0` baseline remains behaviorally identical to the implementation verified before this decision.
 - Documentation and tests must state the active major-version contract unambiguously.
-- The unreleased Phase 1 and Phase 2 work is folded into `2.0.0-dev`; no `v1.1.0` tag was created.
+- The Phase 1 and Phase 2 work was folded into the Version 2 development line and released in `2.0.0`; no `v1.1.0` tag was created.
 - Version 1 automation that expects publication must add the standalone `publish` argument when migrating to Version 2.
 - Phase 3 adds pre-publish repository, scope, secret, verification, and destination checks; a blocker must be reported with a recovery action before any retry.
 
@@ -60,7 +60,7 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 
 - Status: Accepted
 - Date: 2026-09-06
-- Implemented in source: `2.0.0-dev`
+- Released in: `2.0.0`
 
 ### Decision
 

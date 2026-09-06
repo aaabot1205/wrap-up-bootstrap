@@ -8,29 +8,46 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 The implementation is ready for normal use on the current Windows machine. The remaining work is incremental hardening rather than a blocker to using `wrap-up` and `bootstrap` now.
 
-Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Decision D-001 preserves that Version 1 behavior and now governs the implemented `2.0.0-dev` contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
+Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.0.0`, identified by annotated tag `v2.0.0`, is the current release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
-Phase 1 is complete in the `2.0.0-dev` working line. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
+Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
-Phase 2 is also complete in `2.0.0-dev`. The optional root-level `PROJECT_CONTEXT.yaml` Version 1 contract can route status, handoff, plan, spec, and decision documents; declare verification commands, default branch, publishing policy, cautions, and exclusions; and preserve discovery fallback when absent. Decision D-002 and the schema define path-safety, invalid-config, exclusion, and `skill-default`/`explicit`/`never` semantics. The intermediate `v1.1.0` release was not created; all unreleased Phase 1 and Phase 2 work is folded into Version 2.
+Phase 2 is also released in `2.0.0`. The optional root-level `PROJECT_CONTEXT.yaml` Version 1 contract can route status, handoff, plan, spec, and decision documents; declare verification commands, default branch, publishing policy, cautions, and exclusions; and preserve discovery fallback when absent. Decision D-002 and the schema define path-safety, invalid-config, exclusion, and `skill-default`/`explicit`/`never` semantics. The intermediate `v1.1.0` release was not created; its planned work was folded into Version 2.
 
-Phase 3 is complete in source. Publishing now requires inspection of repository state and destination, positive phase-owned file scope, sensitive-material review, successful mandatory checks, explicit-path staging, and a final staged-diff review. Detached HEAD, merge state, branch or remote ambiguity, unclear ownership, likely secrets, and failed verification stop publication; the workflow forbids broad staging, force-push, reset, history rewrite, and discarding user work.
+Phase 3 is released in `2.0.0`. Publishing now requires inspection of repository state and destination, positive phase-owned file scope, sensitive-material review, successful mandatory checks, explicit-path staging, and a final staged-diff review. Detached HEAD, merge state, branch or remote ambiguity, unclear ownership, likely secrets, and failed verification stop publication; the workflow forbids broad staging, force-push, reset, history rewrite, and discarding user work.
 
 Four independent Phase 3 forward tests covered the non-publishing default, successful explicit publication, `publish_policy: never` with an untouched `.env`, and a mandatory verification failure without override. Direct Git checks confirmed unchanged refs and empty staging for every non-publishing or blocked case. The successful case committed exactly its two closeout documents plus the completed result and synchronized the local and remote `main` refs.
 
-Phase 4 is complete in source. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
+Phase 4 is released in `2.0.0`. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
 
 `test-regressions.ps1` maintains the complete six-direction takeover matrix through shared raw templates and per-direction manifests. Its three modes validate definitions, prepare isolated one-commit repositories, and assert post-run evidence labels, stale-claim reconciliation, exact reuse of the existing status/spec/handoff files, verification execution, and non-publishing Git state.
 
 Six fresh-agent forward tests passed every Codex, Claude Code, and Antigravity source-to-receiver direction. The final checker reported 6 passes with no failures, and a separate prepare smoke test produced six clean repositories. Both skills pass Skill Creator validation. An isolated installation passed all 22 verifier checks; global synchronization created `20260906-125758` backups and updated all six skill copies.
 
-Publication closeout evidence on 2026-09-06:
+Historical Phase 4 publication closeout evidence on 2026-09-06:
 
 - `Verified`: the Skill Creator validator accepted both skills; all four PowerShell scripts passed AST parsing; fixture validation passed; the global verifier reported 22 passes with no warnings or failures; and `git diff --check` passed.
 - `Verified`: six fresh receiving agents exercised all directed platform pairs. The post-run checker rejected one missing `Blocked` label, then reported 6 passes and no failures after the fixture record was corrected.
-- `Observed`: the source version remains `2.0.0-dev`; Phase 4 is complete while the separate `v2.0.0` release decision remains future work.
+- `Observed`: at that closeout, the source version remained `2.0.0-dev`; Phase 4 was complete while the separate `v2.0.0` release decision remained future work.
 - `Not run`: Phase 5 macOS/Linux distribution tests and release tagging were outside the Phase 4 publication scope.
 - `Blocked`: none for publishing the Phase 4 source changes.
+
+Historical Version 2 release-readiness closeout on 2026-09-06:
+
+- `Observed`: the closeout started from clean `main` at `0ad5853`, synchronized with `origin/main`; at that point `VERSION` remained `2.0.0-dev`, and `v1.0.0` remained the only release tag.
+- `Verified`: the Skill Creator validator accepted both canonical skills; all four PowerShell entry scripts passed AST parsing; the optional project-context example passed Draft 2020-12 schema validation; the six fixture definitions passed `test-regressions.ps1 -Mode Validate`; live `verify.ps1` reported 22 passes with no warnings or failures; and `git diff --check` returned exit code 0.
+- `Verified`: a fresh isolated user root passed two-run installation idempotency without file or timestamp changes on the second run, followed by all 22 verifier checks. The temporary root was removed after the test.
+- `Observed`: the completed Version 2 feature set and its current Windows installation path are ready for release. Phase 5 is a separately planned macOS/Linux distribution milestone and is not required before the Windows-scoped `v2.0.0` release.
+- `Not run`: the six fresh-agent takeover workflows and isolated updater fixture were not repeated because this closeout changed no skill, fixture, installer, or updater behavior; their earlier passes remain historical observed evidence.
+- `Blocked`: none for release readiness. Publication was intentionally pending explicit authorization to change the version, create the release commit and tag, and push them.
+
+Version 2 release publication on 2026-09-06:
+
+- `Observed`: the authorized release scope consists only of `VERSION`, `README.md`, `DECISIONS.md`, `STATUS.md`, `HANDOFF.md`, and `IMPLEMENTATION_PLAN.md`; no skill source, fixture, installer, updater, or unrelated user file is included.
+- `Verified`: both Skill Creator validations, the four-script AST check, Draft 2020-12 project-context schema validation, six-fixture definition validation, live 22-check verifier, isolated two-run installation, and `git diff --check` passed for the release candidate.
+- `Observed`: the release candidate sets `VERSION` to `2.0.0`, defines annotated tag `v2.0.0` as its release identifier, and has explicit current authorization to publish `main` and the tag to `origin`.
+- `Not run`: fresh-agent takeover workflows and the isolated updater fixture were not repeated because their covered behavior did not change for this release.
+- `Blocked`: none. Phase 5 remains an optional future macOS/Linux distribution milestone.
 
 The skills explicitly require every agent to continue existing project documents regardless of which AI created them. They forbid platform-specific duplicate status/spec/handoff sets and distinguish shared project facts from host-specific behavioral instructions.
 
@@ -66,4 +83,4 @@ Installed global copies:
 
 ## Next action
 
-Run a Version 2 release-readiness closeout and decide whether Phase 5 cross-operating-system support is required first. Change `VERSION`, create a release tag, and publish only with explicit authorization.
+Observe `v2.0.0` during normal Windows use. Start Phase 5 only when macOS or Linux distribution has a concrete user need; otherwise recheck platform discovery and disable locations only when a host changes its skill specification.

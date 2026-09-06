@@ -6,9 +6,11 @@ Last updated: 2026-09-06
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Phase 1 and Phase 2 are implemented and verified in the `2.0.0-dev` source line; the intermediate `v1.1.0` release was not created, and `v1.0.0` remains the latest tag.
-- Phase 3 is implemented and verified in `2.0.0-dev`, activating the accepted Version 2 explicit-publishing contract.
-- Phase 4 is implemented and verified in `2.0.0-dev`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
+- Version `2.0.0` is the current release, identified by annotated tag `v2.0.0`; the intermediate `v1.1.0` release was not created.
+- Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
+- Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
+- Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
+- The Version 2 release-readiness closeout is complete for the current Windows distribution. No source blocker was found; Phase 5 macOS/Linux distribution remains a deferred post-Version 2 milestone.
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation and verification without publishing. `wrap-up publish` enables the safeguarded scoped commit-and-push workflow, and `ncp` remains a non-publishing compatibility alias.
@@ -56,16 +58,17 @@ Last updated: 2026-09-06
 ## Latest closeout
 
 - Date: 2026-09-06
-- `Observed`: the Phase 4 milestone adds the five-label evidence contract, Decision D-003, six directed fixture manifests, shared raw artifacts, and the `Validate`/`Prepare`/`Check` regression runner in `2.0.0-dev`.
-- `Verified`: the Skill Creator validator accepted both skills during the publication closeout.
-- `Verified`: six fresh receiving agents completed every directed platform pair; the deterministic post-run check initially rejected a missing `Blocked` label and then reported 6 passes with no failures after correction.
-- `Verified`: PowerShell AST checks passed for all four scripts, `test-regressions.ps1 -Mode Validate` passed, `verify.ps1` reported 22 passes with no warnings or failures, and `git diff --check` passed.
-- `Observed`: both updated skills are synchronized to Codex, Claude Code, and Antigravity; the installer created timestamped backups before replacement.
-- `Not run`: Phase 5 macOS/Linux distribution tests and the `v2.0.0` release/tag workflow are outside this Phase 4 publication scope.
-- `Blocked`: none for publishing the completed Phase 4 source changes.
+- `Observed`: Version 2 publication began from `main` at `0ad5853`, synchronized with `origin/main`; the only pre-existing changes were the three release-readiness documents produced by the immediately preceding closeout.
+- `Verified`: the Skill Creator `quick_validate.py` validator accepted both canonical skills during the Version 2 release workflow.
+- `Verified`: `verify.ps1` reported 22 passes with no warnings or failures; the canonical skills and all Codex, Claude Code, and Antigravity global copies match.
+- `Verified`: all four PowerShell entry scripts passed AST parsing, `PROJECT_CONTEXT.example.yaml` validated against the Draft 2020-12 schema, `test-regressions.ps1 -Mode Validate` accepted all six directed fixtures, and `git diff --check` returned exit code 0.
+- `Verified`: a fresh isolated user root completed two `install.ps1` runs without any second-run file or timestamp change, then passed all 22 `verify.ps1` checks; the temporary root was removed afterward.
+- `Observed`: `VERSION`, the README, accepted decisions, roadmap, status, and handoff consistently identify `2.0.0` and annotated tag `v2.0.0` as the current release. Phase 5 remains deferred and is not part of this Windows-scoped release.
+- `Not run`: the six fresh-agent takeover workflows and the isolated updater fixture were not repeated because no skill, fixture, installation, or update behavior changed after their recorded passing runs.
+- `Blocked`: none for the authorized Version 2 release publication.
 
 ## Remaining work
 
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Run a release-readiness closeout and release `v2.0.0` only with explicit authorization.
+- Observe `v2.0.0` on normal Windows use and record any release follow-up before starting another behavior change.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.

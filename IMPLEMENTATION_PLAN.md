@@ -43,7 +43,7 @@ Freeze the current working implementation as a recoverable baseline and decide h
 
 ## Phase 1: Automated verification and updates
 
-Status: Complete in the `2.0.0-dev` working version on 2026-09-06; this unreleased work was folded into the Version 2 development line.
+Status: Complete and released in `2.0.0` on 2026-09-06.
 
 ### Goal
 
@@ -75,7 +75,7 @@ Make installation health observable and make upgrades repeatable on another Wind
 
 ## Phase 2: Optional project context contract
 
-Status: Complete in the `2.0.0-dev` working version on 2026-09-06; this unreleased work was folded into the Version 2 development line.
+Status: Complete and released in `2.0.0` on 2026-09-06.
 
 ### Goal
 
@@ -109,7 +109,7 @@ Let large projects identify their authoritative documents and verification comma
 
 ## Phase 3: Git publishing safety model
 
-Status: Complete and verified in the `2.0.0-dev` working version on 2026-09-06; release remains separate closeout work.
+Status: Complete, verified, and released in `2.0.0` on 2026-09-06.
 
 ### Goal
 
@@ -155,7 +155,7 @@ Phase 0 decision D-001 accepted the following contract for `v2.0.0`. Phase 3 imp
 
 ## Phase 4: Evidence quality and cross-platform regression tests
 
-Status: Complete and verified in the `2.0.0-dev` working version on 2026-09-06.
+Status: Complete, verified, and released in `2.0.0` on 2026-09-06.
 
 ### Goal
 
@@ -188,6 +188,8 @@ Prevent multiple AI platforms from consistently propagating the same incorrect p
 
 ## Phase 5: Cross-operating-system distribution
 
+Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.0.0` release.
+
 ### Goal
 
 Support repeatable installation beyond the current Windows environment.
@@ -208,10 +210,10 @@ Support repeatable installation beyond the current Windows environment.
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
-2. Keep the completed Phase 1 through Phase 4 work together in the `2.0.0-dev` line.
-3. Exercise the Version 2 contract on real projects and resolve any release blockers.
-4. Release `v2.0.0` only after final closeout; start Phase 5 when macOS or Linux use becomes concrete.
+2. Keep the completed Phase 1 through Phase 4 work together in the released `2.0.0` line.
+3. Treat the 2026-09-06 release-readiness closeout as the final Windows-scoped Version 2 gate; it found no source release blocker.
+4. Preserve annotated tag `v2.0.0` as the Version 2 release point; start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Run a Version 2 release-readiness closeout, decide whether any Phase 5 cross-operating-system work is required before release, and publish `v2.0.0` only with explicit authorization.
+Observe the `v2.0.0` release during normal Windows use. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

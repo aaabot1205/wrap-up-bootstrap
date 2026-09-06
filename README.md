@@ -7,7 +7,7 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current source version: `2.0.0-dev`. Latest tagged baseline: `1.0.0` (`v1.0.0`). The completed but unreleased Phase 1 and Phase 2 work is folded into this Version 2 development line.
+Current release: `2.0.0` (`v2.0.0`). The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`); the completed Phase 1 through Phase 4 work is included in Version 2.
 
 ## Version 2 command contract
 
