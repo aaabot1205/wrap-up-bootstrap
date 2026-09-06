@@ -1,0 +1,11 @@
+{
+  "id": "antigravity-to-claude",
+  "source_platform": "Antigravity",
+  "receiver_platform": "Claude Code",
+  "instruction_file": "GEMINI.md",
+  "documents": {
+    "status": "MILESTONE.md",
+    "spec": "REQUIREMENTS.md",
+    "handoff": "CONTEXT.md"
+  }
+}

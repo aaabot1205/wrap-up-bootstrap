@@ -1,0 +1,11 @@
+{
+  "id": "codex-to-antigravity",
+  "source_platform": "Codex",
+  "receiver_platform": "Antigravity",
+  "instruction_file": "AGENTS.md",
+  "documents": {
+    "status": "STATUS.md",
+    "spec": "SEARCH_SPEC.md",
+    "handoff": "HANDOFF.md"
+  }
+}

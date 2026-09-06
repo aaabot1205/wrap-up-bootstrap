@@ -18,7 +18,19 @@ Phase 3 is complete in source. Publishing now requires inspection of repository 
 
 Four independent Phase 3 forward tests covered the non-publishing default, successful explicit publication, `publish_policy: never` with an untouched `.env`, and a mandatory verification failure without override. Direct Git checks confirmed unchanged refs and empty staging for every non-publishing or blocked case. The successful case committed exactly its two closeout documents plus the completed result and synchronized the local and remote `main` refs.
 
-Both skills pass Skill Creator validation. All six global skill copies are synchronized; changed wrap-up files received `20260906-110734` backups, and `verify.ps1` reports 21 passes with no warnings or failures.
+Phase 4 is complete in source. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
+
+`test-regressions.ps1` maintains the complete six-direction takeover matrix through shared raw templates and per-direction manifests. Its three modes validate definitions, prepare isolated one-commit repositories, and assert post-run evidence labels, stale-claim reconciliation, exact reuse of the existing status/spec/handoff files, verification execution, and non-publishing Git state.
+
+Six fresh-agent forward tests passed every Codex, Claude Code, and Antigravity source-to-receiver direction. The final checker reported 6 passes with no failures, and a separate prepare smoke test produced six clean repositories. Both skills pass Skill Creator validation. An isolated installation passed all 22 verifier checks; global synchronization created `20260906-125758` backups and updated all six skill copies.
+
+Publication closeout evidence on 2026-09-06:
+
+- `Verified`: the Skill Creator validator accepted both skills; all four PowerShell scripts passed AST parsing; fixture validation passed; the global verifier reported 22 passes with no warnings or failures; and `git diff --check` passed.
+- `Verified`: six fresh receiving agents exercised all directed platform pairs. The post-run checker rejected one missing `Blocked` label, then reported 6 passes and no failures after the fixture record was corrected.
+- `Observed`: the source version remains `2.0.0-dev`; Phase 4 is complete while the separate `v2.0.0` release decision remains future work.
+- `Not run`: Phase 5 macOS/Linux distribution tests and release tagging were outside the Phase 4 publication scope.
+- `Blocked`: none for publishing the Phase 4 source changes.
 
 The skills explicitly require every agent to continue existing project documents regardless of which AI created them. They forbid platform-specific duplicate status/spec/handoff sets and distinguish shared project facts from host-specific behavioral instructions.
 
@@ -28,7 +40,7 @@ The canonical directory is a Git repository on `main`. Its `origin` is the priva
 
 The repository also contains portable global response-language rules and idempotent Windows install, verify, and update scripts. A new machine can clone the private repository and run the installer and verifier to configure Codex, Claude Code, and Antigravity together. An isolated local-remote fixture confirmed two-run installation and update idempotency, fast-forward version reporting, changed-file backups, preservation of unrelated rules and skills, corruption detection and repair, and refusal of dirty or unpublished ahead state.
 
-`IMPLEMENTATION_PLAN.md` records the Phase 0 through Phase 5 roadmap. Phases 0 through 3 are complete in their recorded source lines; Phase 4 adds evidence-quality labels and the complete cross-platform regression matrix, and Phase 5 covers eventual macOS/Linux distribution. `DECISIONS.md` is the durable source for publishing and project-context contract decisions.
+`IMPLEMENTATION_PLAN.md` records the Phase 0 through Phase 5 roadmap. Phases 0 through 4 are complete in their recorded source lines; Phase 5 covers eventual macOS/Linux distribution. `DECISIONS.md` is the durable source for publishing, project-context, and evidence-quality decisions.
 
 ## Canonical working copy
 
@@ -50,7 +62,8 @@ Installed global copies:
 6. Run isolated forward tests after behavioral changes.
 7. Run the installer twice against an isolated test user root after changing installation logic; verify no duplicated managed blocks and no second-run changes.
 8. Run the updater against an isolated upstream and confirm fast-forward-only behavior, backup reporting, version transition, and dirty/ahead refusal after changing update logic.
+9. Run `test-regressions.ps1 -Mode Validate` after skill or fixture changes. For continuity or evidence changes, prepare fresh workspaces, forward-test all six receiving directions, and require `-Mode Check` to pass.
 
 ## Next action
 
-Implement Phase 4 evidence labels and the complete cross-platform takeover regression matrix. After the remaining Version 2 validation work passes, run an explicit release closeout for `v2.0.0`.
+Run a Version 2 release-readiness closeout and decide whether Phase 5 cross-operating-system support is required first. Change `VERSION`, create a release tag, and publish only with explicit authorization.

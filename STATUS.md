@@ -8,6 +8,7 @@ Last updated: 2026-09-06
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
 - Phase 1 and Phase 2 are implemented and verified in the `2.0.0-dev` source line; the intermediate `v1.1.0` release was not created, and `v1.0.0` remains the latest tag.
 - Phase 3 is implemented and verified in `2.0.0-dev`, activating the accepted Version 2 explicit-publishing contract.
+- Phase 4 is implemented and verified in `2.0.0-dev`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation and verification without publishing. `wrap-up publish` enables the safeguarded scoped commit-and-push workflow, and `ncp` remains a non-publishing compatibility alias.
@@ -17,12 +18,14 @@ Last updated: 2026-09-06
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language rule files live under `global-rules/`.
 - `install.ps1` installs or updates all six global skill copies and all three global rule files on Windows while preserving unrelated content.
-- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, all global entry files and hashes, managed rules, and restart guidance.
+- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, the evidence contract, all six takeover manifests, all global entry files and hashes, managed rules, and restart guidance.
 - `update.ps1` allows only clean, upstream-backed, non-ahead fast-forward updates before backed-up installation and verification.
 - `install.ps1` reports every changed-file backup and repairs duplicate managed rules to one canonical block without removing unrelated content.
 - `PROJECT_CONTEXT.schema.json` and `PROJECT_CONTEXT.example.yaml` define repository-relative document routing, verification commands, Git policy, cautions, and exclusions.
 - Both skills prefer valid `PROJECT_CONTEXT.yaml` mappings, report invalid configuration, and retain automatic discovery when the file is absent.
 - Decision D-001 preserves the tagged Version 1 behavior and now governs the implemented Version 2 default: only a current explicit publish instruction permits Git publication.
+- Decision D-003 defines `Verified`, `Observed`, `Assumption`, `Not run`, and `Blocked`; historical checks remain observed evidence until rerun.
+- `test-regressions.ps1` validates, prepares, and checks isolated takeover fixtures for every directed pair among Codex, Claude Code, and Antigravity.
 
 ## Verification
 
@@ -44,21 +47,25 @@ Last updated: 2026-09-06
 - Four independent Phase 3 forward tests covered the non-publishing default, a successful explicit publish, a `publish_policy: never` blocker with an untouched `.env`, and a mandatory-verification failure without an override.
 - Direct Git assertions confirmed that default and blocked fixtures did not stage, commit, or move remote refs; the successful fixture committed exactly `docs/HANDOFF.md`, `docs/STATUS.md`, and `src/result.txt` and synchronized `main` with its upstream.
 - Phase 3 global synchronization created timestamped backups for each changed wrap-up skill and metadata file at `20260906-110734`; final live verification reported 21 passes with no warnings or failures.
+- Phase 4's untouched baseline was rejected before forward testing, proving that the post-run checker does not accept fixture setup as a pass.
+- Six fresh-agent Phase 4 forward tests passed all Codex, Claude Code, and Antigravity source-to-receiver directions. Every receiver changed exactly the existing status, spec, and handoff files, ran the documented local check, created no replacement, and performed no Git publication.
+- The final regression runner reported 6 passes and no failures; a separate smoke run prepared six clean one-commit repositories from the shared templates.
+- An isolated Phase 4 installation passed all 22 verifier checks. Global synchronization backed up all changed skill and metadata files at `20260906-125758` before updating the six installations.
 - Re-run validation and cross-installation hash checks after every skill change.
 
 ## Latest closeout
 
 - Date: 2026-09-06
-- Milestone: Phase 3 Git publishing safety model
-- Changed the source version to `2.0.0-dev`; the completed but unreleased Phase 1 and Phase 2 changes remain included in this line.
-- Made plain `wrap-up` non-publishing, added explicit `wrap-up publish`, and retained `ncp` as a compatibility alias.
-- Added branch, upstream, remote, scope, staged-diff, sensitive-material, and mandatory-verification gates; broad staging, force-push, reset, discard, and ambiguous publication are forbidden.
-- Updated OpenAI UI metadata and extended `verify.ps1` to validate it.
-- Four clean-context forward tests passed, and all global copies are synchronized with matching hashes.
+- `Observed`: the Phase 4 milestone adds the five-label evidence contract, Decision D-003, six directed fixture manifests, shared raw artifacts, and the `Validate`/`Prepare`/`Check` regression runner in `2.0.0-dev`.
+- `Verified`: the Skill Creator validator accepted both skills during the publication closeout.
+- `Verified`: six fresh receiving agents completed every directed platform pair; the deterministic post-run check initially rejected a missing `Blocked` label and then reported 6 passes with no failures after correction.
+- `Verified`: PowerShell AST checks passed for all four scripts, `test-regressions.ps1 -Mode Validate` passed, `verify.ps1` reported 22 passes with no warnings or failures, and `git diff --check` passed.
+- `Observed`: both updated skills are synchronized to Codex, Claude Code, and Antigravity; the installer created timestamped backups before replacement.
+- `Not run`: Phase 5 macOS/Linux distribution tests and the `v2.0.0` release/tag workflow are outside this Phase 4 publication scope.
+- `Blocked`: none for publishing the completed Phase 4 source changes.
 
 ## Remaining work
 
-- Phase 4: add evidence labels and complete cross-platform regression fixtures.
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Close out and release `v2.0.0` only after the remaining Version 2 validation work passes.
+- Run a release-readiness closeout and release `v2.0.0` only with explicit authorization.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.

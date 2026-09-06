@@ -28,6 +28,20 @@ All configured paths are relative to the repository root. A valid file guides ro
 
 `git.publish_policy` supports `skill-default`, `explicit`, and `never`. Current user instructions still take precedence, and neither skill switches branches merely to match the configured default.
 
+## Evidence contract
+
+Both skills qualify material project claims with five exact labels:
+
+- `Verified`: a check executed in the current session, with the command or check and result recorded;
+- `Observed`: current Git, configuration, source, or file state inspected directly;
+- `Assumption`: an inference that still needs a stated confirmation method;
+- `Not run`: an expected check that was skipped or unavailable, with the reason recorded;
+- `Blocked`: incomplete work or verification, with its blocker and recovery action.
+
+A previous session's passing result is historical `Observed` evidence until rerun. One narrow passing check never verifies a broader milestone, and unresolved contradictions remain visible as competing labeled claims.
+
+The regression matrix covers every directed takeover among Codex, Claude Code, and Antigravity. `test-regressions.ps1` validates the six fixture definitions, prepares isolated Git workspaces, and checks that receiving sessions update the existing status, spec, and handoff files without publishing or creating platform-specific replacements.
+
 ## Design contract
 
 Project documents belong to the project, not to the AI that created them. Every supported platform must discover and continue the existing source of truth even when another platform chose its filename or last updated it. The skills therefore search by document purpose and repository conventions rather than imposing separate ChatGPT, Claude, or Gemini documentation sets.
@@ -41,8 +55,10 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `agents/openai.yaml` inside each skill: optional Codex/ChatGPT UI metadata; other hosts can ignore it.
 - `global-rules/`: portable source copies of the global response-language rules for all three platforms.
 - `install.ps1`: idempotent Windows installer for all skills and global rules.
-- `verify.ps1`: installation, hash, managed-rule, frontmatter, trigger, and restart-guidance checks.
+- `verify.ps1`: installation, hash, managed-rule, frontmatter, metadata, evidence-contract, fixture-matrix, and restart-guidance checks.
 - `update.ps1`: guarded fast-forward update, backed-up installation, verification, and version-transition reporting.
+- `test-regressions.ps1`: validate, prepare, and check the six-direction cross-platform takeover matrix.
+- `tests/fixtures/takeover/`: shared raw fixture templates plus one manifest for each directed platform pair.
 - `PROJECT_CONTEXT.schema.json`: machine-readable Version 1 contract for optional project context.
 - `PROJECT_CONTEXT.example.yaml`: documented repository-root configuration example.
 - `VERSION`: current source version; release tags identify published baselines.

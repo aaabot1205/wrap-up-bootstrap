@@ -1,0 +1,11 @@
+{
+  "id": "claude-to-codex",
+  "source_platform": "Claude Code",
+  "receiver_platform": "Codex",
+  "instruction_file": "CLAUDE.md",
+  "documents": {
+    "status": "PROJECT_STATUS.md",
+    "spec": "SEARCH_SPEC.md",
+    "handoff": "TRANSFER.md"
+  }
+}

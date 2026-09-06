@@ -306,6 +306,71 @@ function Test-ProjectContextArtifacts {
     }
 }
 
+function Test-RegressionArtifacts {
+    $FailureCountBefore = $script:FailureCount
+    $EvidenceLabels = @('Verified', 'Observed', 'Assumption', 'Not run', 'Blocked')
+    foreach ($SkillName in @('wrap-up', 'bootstrap')) {
+        $SkillPath = Join-Path $ProjectRoot "$SkillName\SKILL.md"
+        if (-not (Test-Path -LiteralPath $SkillPath -PathType Leaf)) {
+            Add-Failure "Evidence contract cannot be checked because $SkillName is missing."
+            continue
+        }
+        $SkillText = Get-Content -Raw -Encoding UTF8 -LiteralPath $SkillPath
+        foreach ($EvidenceLabel in $EvidenceLabels) {
+            if ($SkillText.IndexOf("``$EvidenceLabel``", [System.StringComparison]::Ordinal) -lt 0) {
+                Add-Failure "$SkillName evidence contract is missing label '$EvidenceLabel'."
+            }
+        }
+    }
+
+    $RegressionScript = Join-Path $ProjectRoot 'test-regressions.ps1'
+    if (-not (Test-Path -LiteralPath $RegressionScript -PathType Leaf)) {
+        Add-Failure "Regression runner is missing: $RegressionScript"
+    }
+
+    $FixtureRoot = Join-Path $ProjectRoot 'tests\fixtures\takeover'
+    $ExpectedFixtures = [ordered]@{
+        'codex-to-claude' = @('Codex', 'Claude Code')
+        'codex-to-antigravity' = @('Codex', 'Antigravity')
+        'claude-to-codex' = @('Claude Code', 'Codex')
+        'claude-to-antigravity' = @('Claude Code', 'Antigravity')
+        'antigravity-to-codex' = @('Antigravity', 'Codex')
+        'antigravity-to-claude' = @('Antigravity', 'Claude Code')
+    }
+    if (-not (Test-Path -LiteralPath $FixtureRoot -PathType Container)) {
+        Add-Failure "Takeover fixture root is missing: $FixtureRoot"
+    } else {
+        $ActualFixtures = @(Get-ChildItem -LiteralPath $FixtureRoot -Directory | Where-Object { $_.Name -cne 'template' } | ForEach-Object { $_.Name } | Sort-Object)
+        $ExpectedFixtureNames = @($ExpectedFixtures.Keys | Sort-Object)
+        $FixtureDelta = @(Compare-Object $ExpectedFixtureNames $ActualFixtures)
+        if ($FixtureDelta.Count -gt 0) {
+            Add-Failure 'Takeover fixture matrix does not contain exactly the six directed platform pairs.'
+        }
+        foreach ($FixtureName in $ExpectedFixtures.Keys) {
+            $ManifestPath = Join-Path $FixtureRoot "$FixtureName\fixture.json"
+            if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) {
+                Add-Failure "Takeover fixture manifest is missing: $ManifestPath"
+                continue
+            }
+            try {
+                $Manifest = Get-Content -Raw -Encoding UTF8 -LiteralPath $ManifestPath | ConvertFrom-Json
+                $ExpectedPair = $ExpectedFixtures[$FixtureName]
+                if ($Manifest.id -cne $FixtureName -or
+                    $Manifest.source_platform -cne $ExpectedPair[0] -or
+                    $Manifest.receiver_platform -cne $ExpectedPair[1]) {
+                    Add-Failure "Takeover fixture manifest is inconsistent: $ManifestPath"
+                }
+            } catch {
+                Add-Failure "Takeover fixture manifest is invalid JSON: $ManifestPath"
+            }
+        }
+    }
+
+    if ($script:FailureCount -eq $FailureCountBefore) {
+        Add-Pass 'Evidence labels and all six directed takeover fixture manifests are present.'
+    }
+}
+
 Write-Output "Verifying wrap-up-bootstrap in $ProjectRoot"
 Write-Output "User root: $ResolvedUserRoot"
 
@@ -326,6 +391,7 @@ Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 
 Test-OpenAiMetadata -SkillName 'wrap-up' -MetadataPath (Join-Path $ProjectRoot 'wrap-up\agents\openai.yaml')
 Test-OpenAiMetadata -SkillName 'bootstrap' -MetadataPath (Join-Path $ProjectRoot 'bootstrap\agents\openai.yaml')
 Test-ProjectContextArtifacts
+Test-RegressionArtifacts
 
 $Platforms = @(
     [pscustomobject]@{

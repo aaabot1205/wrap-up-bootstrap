@@ -1,0 +1,11 @@
+{
+  "id": "antigravity-to-codex",
+  "source_platform": "Antigravity",
+  "receiver_platform": "Codex",
+  "instruction_file": "GEMINI.md",
+  "documents": {
+    "status": "MILESTONE.md",
+    "spec": "REQUIREMENTS.md",
+    "handoff": "CONTEXT.md"
+  }
+}

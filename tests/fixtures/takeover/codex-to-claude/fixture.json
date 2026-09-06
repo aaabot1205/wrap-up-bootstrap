@@ -1,0 +1,11 @@
+{
+  "id": "codex-to-claude",
+  "source_platform": "Codex",
+  "receiver_platform": "Claude Code",
+  "instruction_file": "AGENTS.md",
+  "documents": {
+    "status": "STATUS.md",
+    "spec": "SEARCH_SPEC.md",
+    "handoff": "HANDOFF.md"
+  }
+}

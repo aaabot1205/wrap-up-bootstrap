@@ -155,6 +155,8 @@ Phase 0 decision D-001 accepted the following contract for `v2.0.0`. Phase 3 imp
 
 ## Phase 4: Evidence quality and cross-platform regression tests
 
+Status: Complete and verified in the `2.0.0-dev` working version on 2026-09-06.
+
 ### Goal
 
 Prevent multiple AI platforms from consistently propagating the same incorrect project claim.
@@ -175,6 +177,14 @@ Prevent multiple AI platforms from consistently propagating the same incorrect p
 - Unexecuted checks are never reported as passed.
 - Contradictory documents are reconciled when evidence is sufficient and called out when it is not.
 - All takeover fixtures pass after behavioral changes.
+
+### Outcome
+
+- Both skills use the exact `Verified`, `Observed`, `Assumption`, `Not run`, and `Blocked` labels for material claims and prevent historical passes or narrow checks from being promoted beyond their evidence.
+- Decision D-003 records the evidence semantics and requires unresolved contradictions to remain visible when current evidence cannot resolve them.
+- `test-regressions.ps1` validates the canonical matrix, prepares fresh one-commit Git workspaces, and checks evidence, reconciliation, document reuse, and non-publishing behavior.
+- Shared raw templates plus six manifests cover every directed takeover among Codex, Claude Code, and Antigravity without duplicating fixture content.
+- Six fresh-agent forward tests passed. Each receiver updated exactly the existing status, spec, and handoff documents, executed the local check, created no replacement files, and left Git unstaged and uncommitted.
 
 ## Phase 5: Cross-operating-system distribution
 
@@ -198,11 +208,10 @@ Support repeatable installation beyond the current Windows environment.
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
-2. Keep the completed Phase 1, Phase 2, and Phase 3 work together in the `2.0.0-dev` line.
-3. Add Phase 4 evidence labels and full cross-platform regression coverage.
-4. Exercise the Version 2 contract on real projects and resolve any release blockers.
-5. Release `v2.0.0` only after final closeout; start Phase 5 when macOS or Linux use becomes concrete.
+2. Keep the completed Phase 1 through Phase 4 work together in the `2.0.0-dev` line.
+3. Exercise the Version 2 contract on real projects and resolve any release blockers.
+4. Release `v2.0.0` only after final closeout; start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Implement Phase 4 evidence labels and the complete cross-platform takeover regression matrix, then close out the combined Version 2 work for a future `v2.0.0` release.
+Run a Version 2 release-readiness closeout, decide whether any Phase 5 cross-operating-system work is required before release, and publish `v2.0.0` only with explicit authorization.

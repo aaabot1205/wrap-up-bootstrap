@@ -72,6 +72,18 @@ Do not repeat documentation claims as facts without checking them against live r
 
 Treat planned behavior as planned, not implemented. Identify stale or contradictory documentation explicitly. Make a reasonable evidence-based interpretation when safe; ask only when the ambiguity would materially change the requested work.
 
+### Qualify evidence
+
+Use these exact labels for material claims in the bootstrap brief and preserve them when reading or continuing durable records:
+
+- `Verified`: supported by a check executed during the current bootstrap. Name the command or check and its result.
+- `Observed`: read directly from current Git state, configuration, source, or another inspected artifact.
+- `Assumption`: inferred and still unverified; state how to test it.
+- `Not run`: an expected check was not executed; name it and explain why.
+- `Blocked`: work or verification is incomplete; state the blocker and recovery action.
+
+Treat a previous session's `Verified` item as an `Observed` historical result until it is rerun. Never upgrade a plan, inherited claim, or configuration declaration to `Verified`. Apply each label only to the scope its evidence supports. If evidence cannot resolve a contradiction, report the competing labeled claims instead of selecting one silently.
+
 ## 6. Produce the bootstrap brief
 
 Before starting any follow-on task, give a concise brief containing:
@@ -84,6 +96,7 @@ Before starting any follow-on task, give a concise brief containing:
 - important decisions, architecture, commands, and acceptance criteria;
 - blockers, risks, unknowns, and documentation conflicts;
 - `PROJECT_CONTEXT.yaml` status, active Git policy, and any configured verification commands or exclusions;
+- evidence-qualified material claims using the exact labels above, including expected checks that were not run or are blocked;
 - the exact recommended next action.
 
 Use file references and evidence where helpful. Keep the brief dense enough to act on but short enough to preserve context for the work.

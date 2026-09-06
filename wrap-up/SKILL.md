@@ -37,6 +37,18 @@ State the selected mode briefly, then continue without asking for confirmation u
 3. Separate current-phase changes from unrelated pre-existing work. Preserve unrelated changes and never include them in a commit. If ownership cannot be established, leave the ambiguous files untouched and call them out.
 4. Use observable repository state, configuration, tests, and diffs as evidence. Never mark work complete or claim verification without support.
 
+### Qualify evidence
+
+Use these exact labels for material claims in durable status, handoff, acceptance, and closeout records, and in the completion response. Fit them into the project's existing structure instead of rewriting every sentence mechanically.
+
+- `Verified`: supported by a check executed during the current closeout. Name the command or check and its result.
+- `Observed`: read directly from current Git state, configuration, source, or another inspected artifact, but not proven by an executed check.
+- `Assumption`: inferred and still unverified. State what would confirm or reject it.
+- `Not run`: an expected check was not executed. Name the check and why it was skipped or unavailable.
+- `Blocked`: work or verification is incomplete. State the blocker and the concrete recovery action.
+
+Never turn a plan, user claim, or earlier document into `Verified` evidence. Treat a prior session's recorded pass as an `Observed` historical result unless the current closeout reruns it. Label only the scope a check actually proves; do not use one passing check to verify a broader milestone. When evidence is insufficient to reconcile a contradiction, retain the competing claims with their labels instead of choosing silently.
+
 ## 2. Load optional project context
 
 Check for a root-level `PROJECT_CONTEXT.yaml` before broader document discovery.
@@ -107,5 +119,6 @@ Return a compact closeout containing:
 - verification commands and results;
 - commit identifier and push destination, or `not performed (default)`, `not performed (ncp)`, or the exact policy/blocker;
 - active `PROJECT_CONTEXT.yaml` publishing policy and any configuration issues;
+- an evidence summary using the exact labels above, including every expected check that was not run or remained blocked;
 - remaining unrelated or unresolved changes;
 - the first action the next session should take.

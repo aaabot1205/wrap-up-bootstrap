@@ -1,0 +1,4 @@
+{
+  "mode": "durable-v3",
+  "timeout_seconds": 20
+}

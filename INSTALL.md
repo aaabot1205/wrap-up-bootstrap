@@ -41,7 +41,7 @@ Run:
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching response-language managed block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session.
+The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the evidence-label contract, all six takeover manifests, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching response-language managed block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session.
 
 Use `-UserRoot <path>` with `install.ps1`, `verify.ps1`, or `update.ps1` to operate on an isolated profile during testing.
 
@@ -60,6 +60,28 @@ The updater requires:
 - no local commits ahead of or diverged from that upstream.
 
 It fetches the configured upstream, fast-forwards without merging, runs the installer, runs the verifier, and reports the old and new `VERSION`. Before replacing a different existing global file, the installer creates and reports a side-by-side `*.backup-<timestamp>` copy. If any safety check or verification fails, the updater exits nonzero and identifies the blocker; it never switches branches, resets work, force-pushes, or publishes local commits.
+
+## Cross-platform regression matrix
+
+Validate the canonical six-direction fixture matrix:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-regressions.ps1 -Mode Validate
+```
+
+For a behavioral forward test, choose a new, absent temporary directory and prepare six isolated Git workspaces:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-regressions.ps1 -Mode Prepare -WorkspaceRoot C:\path\to\new-fixture-root
+```
+
+Invoke plain `wrap-up` from the named receiving platform in every printed workspace. Then check that all receivers ran verification, used the five evidence labels, reconciled the intentional contradictions, changed exactly the existing status/spec/handoff files, created no replacements, and performed no Git publication:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-regressions.ps1 -Mode Check -WorkspaceRoot C:\path\to\new-fixture-root
+```
+
+`Prepare` refuses to overwrite an existing directory. Retain failed workspaces for diagnosis; remove only the exact temporary fixture root after review.
 
 ## Optional project context contract
 

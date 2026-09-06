@@ -55,3 +55,28 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 - Projects can identify their source-of-truth documents without introducing platform-specific handoffs.
 - Existing projects require no migration.
 - Skills must never allow exclusions to hide applicable instructions, Git safety metadata, or explicitly configured documents.
+
+## D-003: Evidence labels and directed takeover regression matrix
+
+- Status: Accepted
+- Date: 2026-09-06
+- Implemented in source: `2.0.0-dev`
+
+### Decision
+
+- Use five exact evidence labels in material bootstrap briefs and closeout records:
+  - `Verified`: supported by a check executed in the current session;
+  - `Observed`: directly inspected current state;
+  - `Assumption`: an inference with a stated confirmation method;
+  - `Not run`: an expected check not executed, with the reason;
+  - `Blocked`: incomplete work or verification, with the blocker and recovery action.
+- Treat a previous session's recorded pass as historical `Observed` evidence until rerun. Never let a narrow check verify claims outside its actual scope.
+- Preserve unresolved contradictions as competing labeled claims when current evidence cannot resolve them.
+- Maintain one isolated fixture for every directed receiver pair among Codex, Claude Code, and Antigravity: six directions in total.
+- Require receivers to update the existing status, spec, and handoff files in place, run the documented local check, avoid replacement documents, and leave Git unpublished under plain `wrap-up`.
+
+### Consequences
+
+- Handoffs expose verification gaps instead of allowing repeated AI sessions to amplify an unsupported claim.
+- `test-regressions.ps1` provides deterministic fixture validation, isolated workspace preparation, and post-run checks; fresh receiving agents still perform the behavioral portion.
+- Any evidence or cross-platform continuity behavior change must pass all six directions before release.

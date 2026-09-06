@@ -1,4 +1,4 @@
 interface:
   display_name: "Bootstrap"
-  short_description: "Load project context and identify the next action"
-  default_prompt: "Use $bootstrap to understand this project and prepare to continue the work."
+  short_description: "Load evidence-qualified project context"
+  default_prompt: "Use $bootstrap to reconstruct evidence-qualified project context and identify the next action."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Wrap Up"
-  short_description: "Reconcile docs; publish only when explicit"
-  default_prompt: "Use $wrap-up to close and verify the current phase without publishing; add publish only when Git publication is intended."
+  short_description: "Reconcile evidence; publish only when explicit"
+  default_prompt: "Use $wrap-up to close the current phase with evidence-qualified records and no publishing unless publish is added."
