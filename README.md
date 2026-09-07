@@ -7,7 +7,7 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current development version: `2.1.0-dev`. Latest release: `2.0.0` (`v2.0.0`). The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`); the completed Phase 1 through Phase 4 work is included in Version 2.
+Current release: `2.1.0` (`v2.1.0`). Previous release: `2.0.0` (`v2.0.0`). The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`); the completed Phase 1 through Phase 4 work is included in Version 2.
 
 ## Version 2 command contract
 
@@ -107,7 +107,7 @@ The updater fetches the configured upstream, permits only a fast-forward, refuse
 
 目前實作已可正常使用。其餘可靠性、安全性、專案脈絡與作業系統支援改善，均整理於 `IMPLEMENTATION_PLAN.md`，可在不影響現有穩定基準的前提下逐步完成。
 
-目前開發版本：`2.1.0-dev`。最新 release：`2.0.0`（`v2.0.0`）。可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）；Phase 1 至 Phase 4 的完整成果已包含在 Version 2 中。
+目前 release：`2.1.0`（`v2.1.0`）。前一個 release：`2.0.0`（`v2.0.0`）。可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）；Phase 1 至 Phase 4 的完整成果已包含在 Version 2 中。
 
 ## Version 2 指令契約
 

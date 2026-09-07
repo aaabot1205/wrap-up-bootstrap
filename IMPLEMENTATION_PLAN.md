@@ -188,7 +188,7 @@ Prevent multiple AI platforms from consistently propagating the same incorrect p
 
 ## Version 2.1: Bilingual GitHub README global preference
 
-Status: Complete and verified in the `2.1.0-dev` development line; scoped development-line publication was authorized on 2026-09-07, while the final `2.1.0` release remains separate work.
+Status: Complete, verified, and released in `2.1.0` on 2026-09-07.
 
 ### Goal
 
@@ -216,10 +216,11 @@ Extend the portable global preferences beyond response language so GitHub reposi
 - `verify.ps1` validates the required canonical preference content before checking each installed managed block.
 - An isolated upstream/client fixture passed the `2.0.0` to `2.1.0-dev` fast-forward, unrelated-content preservation, backup, verifier, and second-run idempotency checks.
 - An Antigravity IDE 1.107.0 session passed an isolated behavior observation by producing a complete English-first, Traditional-Chinese-second README from an English-only prompt. The user deferred the unauthenticated Claude Code observation as low priority.
+- A new Codex task in an isolated worktree received an English-only README improvement request with no bilingual instruction and updated only `README.md`, adding a complete English section followed by its complete Traditional Chinese counterpart with aligned commands and technical identifiers.
 
 ## Phase 5: Cross-operating-system distribution
 
-Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.0.0` release.
+Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.1.0` release.
 
 ### Goal
 
@@ -242,9 +243,9 @@ Support repeatable installation beyond the current Windows environment.
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
 2. Preserve annotated tag `v2.0.0` as the Version 2 release point containing the completed Phase 1 through Phase 4 work.
-3. Publish the verified `2.1.0-dev` development line under explicit authorization, observe it in normal use, and create the final `2.1.0` version and tag only with separate explicit release authorization.
+3. Preserve annotated tag `v2.1.0` as the bilingual GitHub README global-preference release point and observe it in normal use.
 4. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Observe the published `2.1.0-dev` development line in normal use. Keep the Claude Code behavior observation deferred unless its priority changes, and run the isolated Codex observation only if it becomes part of the release gate. Create the final `2.1.0` version and annotated tag only with separate explicit authorization. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Observe the `v2.1.0` release in normal use. Keep the Claude Code behavior observation deferred unless its priority changes. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

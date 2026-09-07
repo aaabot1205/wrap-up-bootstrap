@@ -6,8 +6,8 @@ Last updated: 2026-09-07
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.0.0` is the current release, identified by annotated tag `v2.0.0`; the intermediate `v1.1.0` release was not created.
-- Version `2.1.0-dev` is the current development line. It adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
+- Version `2.1.0` is the current release, identified by annotated tag `v2.1.0`; `v2.0.0` remains the previous release, and the intermediate `v1.1.0` release was not created.
+- Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
 - Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
 - Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
@@ -59,21 +59,18 @@ Last updated: 2026-09-07
 ## Latest closeout
 
 - Date: 2026-09-07
-- `Observed`: the user explicitly authorized `wrap-up publish` for the completed `2.1.0-dev` global-preference increment and deferred the Claude Code behavior observation as low priority. This authorization covers a scoped commit and push of the development line, not a `v2.1.0` release tag.
-- `Observed`: after `git fetch origin`, local `main` and `origin/main` both remained at `fd5a927` with ahead/behind `0/0`; no files were staged or untracked, and no merge or rebase was active before publication.
-- `Verified`: `VERSION` is `2.1.0-dev`, and live `verify.ps1` reported 23 passes with no warnings or failures. The installed Codex, Claude Code, and Antigravity skill entries and managed global-preference blocks match the canonical source.
-- `Verified`: the Skill Creator validator accepted both skills; all four PowerShell scripts passed AST parsing; `PROJECT_CONTEXT.example.yaml` passed Draft 2020-12 schema validation; `test-regressions.ps1 -Mode Validate` accepted all six directed fixtures; and `git diff --check` passed.
-- `Verified`: a fresh isolated user root completed two `install.ps1` runs without any second-run file, hash, or timestamp change, then passed all 23 isolated verifier checks. The temporary root was removed afterward.
-- `Verified`: an Antigravity IDE 1.107.0 agent session created the primary `README.md` in an otherwise empty isolated Git repository from an English prompt that did not request bilingual output. It produced a complete English version followed by a complete Traditional Chinese version, preserved commands and technical identifiers across both versions, created no other files, and made no commit.
-- `Observed`: the earlier isolated updater fixture remains historical evidence that a clean installed `2.0.0` checkout fast-forwarded to `2.1.0-dev`, preserved unrelated global instructions, created expected backups, passed verification, and remained idempotent on a second update.
-- `Not run`: the Claude Code 2.1.221 observation remains unauthenticated and was explicitly deferred by the user as low priority; it is not a development-line publication blocker.
-- `Not run`: the isolated Codex README behavior observation was not required for this development-line publication.
-- `Not run`: the six fresh-agent takeover workflows were not repeated because neither skill nor takeover behavior changed.
-- `Blocked`: none for the authorized `2.1.0-dev` scoped commit and push. A final `2.1.0` version change and release tag remain separate work requiring explicit release authorization.
+- `Observed`: after the requested Codex smoke test passed, the user explicitly authorized `wrap-up publish 2.1.0 release`. The authorized release scope is `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, and `IMPLEMENTATION_PLAN.md`, followed by an annotated `v2.1.0` tag and pushes to `origin`.
+- `Observed`: after `git fetch origin`, local `main` and `origin/main` both remained at `34b9c5a` with a clean worktree; no merge or rebase was active, and `v2.1.0` did not yet exist before release preparation.
+- `Verified`: a new Codex task in an isolated Codex worktree received an English-only request to materially improve the primary README without any bilingual instruction. It modified only `README.md`, added a complete English section followed by a complete Traditional Chinese counterpart, kept commands and technical identifiers aligned, passed `git diff --check -- README.md`, and made no commit, tag, or push.
+- `Verified`: the isolated worktree verifier's 15 global-install mismatches were byte-level checkout line-ending differences, not damaged global rules. Representative canonical skill, metadata, and global-rule files had no difference under `git diff --no-index --ignore-space-at-eol`; the smoke task's Git scope contained only `README.md`, and the canonical live verifier passed all 23 checks with no warnings or failures.
+- `Verified`: `VERSION` is `2.1.0`; the Skill Creator validator accepted both skills; all four PowerShell scripts passed AST parsing; `PROJECT_CONTEXT.example.yaml` passed Draft 2020-12 schema validation; `test-regressions.ps1 -Mode Validate` accepted all six directed fixtures; the README structural parity check passed; and `git diff --check` passed.
+- `Verified`: a fresh isolated user root completed two `install.ps1` runs without any second-run file, hash, or timestamp change, then passed all 23 isolated verifier checks. The one-time script and temporary root were removed afterward.
+- `Observed`: the earlier isolated updater fixture remains historical evidence because updater behavior did not change for this release-only version and documentation update.
+- `Not run`: the Claude Code 2.1.221 behavior observation remains explicitly deferred as low priority; the six fresh-agent takeover workflows were not repeated because no skill, evidence, or takeover behavior changed.
+- `Blocked`: none for the explicitly authorized `2.1.0` release commit, annotated tag, and pushes.
 
 ## Remaining work
 
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Observe the published `2.1.0-dev` development line in normal use. Antigravity IDE has passed the isolated behavior check; Claude Code is explicitly deferred as low priority, and the isolated Codex behavior check remains optional unless promoted into the release gate.
-- Create the final `2.1.0` version change and annotated tag only with separate explicit release authorization.
+- Observe the `v2.1.0` release in normal use. Antigravity IDE and Codex have passed isolated behavior checks; Claude Code remains explicitly deferred as low priority.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.

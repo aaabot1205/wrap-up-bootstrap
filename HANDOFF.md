@@ -8,7 +8,7 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 The implementation is ready for normal use on the current Windows machine. The remaining work is incremental hardening rather than a blocker to using `wrap-up` and `bootstrap` now.
 
-Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.0.0`, identified by annotated tag `v2.0.0`, is the current release. Version `2.1.0-dev` is the active development line and adds a portable preference requiring complete English and Traditional Chinese versions in a GitHub repository's primary `README.md`. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
+Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.1.0`, identified by annotated tag `v2.1.0`, is the current release; `v2.0.0` remains the previous release. Version `2.1.0` adds a portable preference requiring complete English and Traditional Chinese versions in a GitHub repository's primary `README.md`. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
 Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
@@ -75,6 +75,18 @@ Version 2.1 development-line publication closeout on 2026-09-07:
 - `Not run`: the Claude Code observation was explicitly deferred as low priority; the isolated Codex behavior observation was not required for this development-line publication; and the six takeover workflows were not repeated because neither skill nor takeover behavior changed.
 - `Blocked`: none for the authorized `2.1.0-dev` commit and push. The final `2.1.0` version change and annotated tag remain separate work requiring explicit release authorization.
 
+Version 2.1 release publication on 2026-09-07:
+
+- `Observed`: after the requested Codex smoke test passed, the user explicitly authorized `wrap-up publish 2.1.0 release`. The release candidate contains only `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, and `IMPLEMENTATION_PLAN.md`; the authorized destination is `main` and annotated tag `v2.1.0` on `origin`.
+- `Observed`: after `git fetch origin`, local `main` and `origin/main` both remained at `34b9c5a` with a clean worktree; no merge or rebase was active, and `v2.1.0` did not yet exist before release preparation.
+- `Verified`: a new Codex task in an isolated Codex worktree received an English-only README improvement request without any bilingual instruction. It modified only `README.md`, added a complete English section followed by a complete Traditional Chinese counterpart, kept commands and technical identifiers aligned, passed its README diff check, and made no commit, tag, or push.
+- `Verified`: the isolated worktree verifier's 15 global-install mismatches came from byte-level checkout line-ending differences rather than damaged global rules. Representative canonical skill, metadata, and global-rule files had no difference when end-of-line whitespace was ignored; the smoke task changed only `README.md`, and the canonical live verifier passed all 23 checks.
+- `Verified`: `VERSION` is `2.1.0`; both Skill Creator validations, the four-script PowerShell AST check, Draft 2020-12 project-context schema validation, six-fixture definition validation, README structural parity check, live 23-check verifier, and `git diff --check` passed.
+- `Verified`: a fresh isolated user root completed two installations without any second-run file, hash, or timestamp change, then passed all 23 isolated verifier checks. Its one-time script and temporary root were removed afterward.
+- `Observed`: the earlier passing updater fixture remains historical evidence because no updater behavior changed in this release-only version and documentation update.
+- `Not run`: the Claude Code behavior observation remains explicitly deferred as low priority; the six fresh-agent takeover workflows were not repeated because no skill, evidence, or takeover behavior changed.
+- `Blocked`: none for the explicitly authorized release commit, annotated tag, and pushes.
+
 The skills explicitly require every agent to continue existing project documents regardless of which AI created them. They forbid platform-specific duplicate status/spec/handoff sets and distinguish shared project facts from host-specific behavioral instructions.
 
 Isolated reciprocal tests verified both directions: `wrap-up ncp` continued ChatGPT/Codex-authored documents while reading Claude guidance, and Codex `bootstrap` continued Claude-authored status and spec files without editing them.
@@ -109,4 +121,4 @@ Installed global copies:
 
 ## Next action
 
-Observe the published `2.1.0-dev` development line in normal use. Leave the Claude Code behavior observation deferred unless its priority changes, and run the isolated Codex observation only if it becomes part of the release gate. Create the final `2.1.0` version and annotated tag only with separate explicit release authorization; start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Observe the `v2.1.0` release in normal use. Leave the Claude Code behavior observation deferred unless its priority changes, and start Phase 5 only when macOS or Linux distribution has a concrete user need.
