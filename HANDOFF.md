@@ -6,9 +6,9 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
-The released `2.1.0` baseline remains the current versioned release. The validated post-2.1 Plan Fidelity source is now globally installed for Codex, Claude Code, and Antigravity, and the user authorized a scoped `wrap-up publish`; no version bump or tag was requested.
+Version `2.2.0`, identified by annotated tag `v2.2.0`, is the current release. It contains the globally installed Plan Fidelity feature; `v2.1.0` remains the previous bilingual-global-preference release.
 
-Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.1.0`, identified by annotated tag `v2.1.0`, is the current release; `v2.0.0` remains the previous release. Version `2.1.0` adds a portable preference requiring complete English and Traditional Chinese versions in a GitHub repository's primary `README.md`. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
+Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.2.0` is the current release, `v2.1.0` remains the bilingual-global-preference release, and `v2.0.0` remains the initial Version 2 release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
 Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
@@ -20,7 +20,7 @@ Four independent Phase 3 forward tests covered the non-publishing default, succe
 
 Phase 4 is released in `2.0.0`. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
 
-The post-2.1 canonical source adds Decision D-004 and an independent `plan` flag. `wrap-up plan` remains non-publishing and copies only the latest explicitly user-confirmed exact plan body into the configured or existing canonical plan; `wrap-up plan publish` composes that behavior with the existing explicit publish authorization. Unconfirmed proposals and unavailable exact text produce `Blocked` without modifying the plan body. Progress, verification evidence, and status remain outside the confirmed body. Bootstrap now retains formal plan identifiers and wording in current/next reporting.
+Version 2.2 adds Decision D-004 and an independent `plan` flag. `wrap-up plan` remains non-publishing and copies only the latest explicitly user-confirmed exact plan body into the configured or existing canonical plan; `wrap-up plan publish` composes that behavior with the existing explicit publish authorization. Unconfirmed proposals and unavailable exact text produce `Blocked` without modifying the plan body. Progress, verification evidence, and status remain outside the confirmed body. Bootstrap now retains formal plan identifiers and wording in current/next reporting.
 
 `test-plan-fidelity.ps1` provides a generic six-direction matrix with three confirmed-source and three unconfirmed-only cases. It derives expected content from fixture sources, compares the bounded plan body character-for-character, rejects draft sentinels, checks evidence separation and existing-document reuse, and enforces non-publishing Git state. `verify.ps1 -CanonicalOnly` validates source contracts and both fixture matrices without requiring or modifying global installations.
 
@@ -107,8 +107,16 @@ Plan Fidelity canonical closeout on 2026-09-08:
 - `Verified`: an additional read-only fresh bootstrap observation retained the exact `Post-2.1: Plan Fidelity mode` and `Phase 5: Cross-operating-system distribution` identifiers and wording, detected a stale next-action sentence, and made no file change; the stale sentence was then reconciled in the canonical plan.
 - `Verified`: `install.ps1` created timestamped `20260908-124457` backups for changed installed files and synchronized both skills across all three platforms. Live `verify.ps1` reported 23 passes with no warnings or failures, and all six installed `SKILL.md` SHA256 hashes match canonical sources.
 - `Not run`: new host-native Claude Code and Antigravity sessions were not started after installation; the six portable source-to-receiver fixture directions remain the behavioral evidence.
-- `Observed`: the authorized Git scope contains the 29 current Plan Fidelity source, fixture, verifier, instruction, and documentation paths. The destination is the existing `main` upstream on `origin`; a version bump and tag are outside this request.
+- `Observed`: the 29-file Plan Fidelity implementation was published to `origin/main` as `7a36d71`. The user then explicitly authorized the `2.2.0` release increment, annotated `v2.2.0` tag, and pushes to the existing `main` upstream on `origin`.
 - `Blocked`: none for the authorized commit and push.
+
+Version 2.2 release publication on 2026-09-08:
+
+- `Observed`: after refreshing `origin` and its tags, local and remote-tracking `main` were synchronized at `7a36d71`, the worktree was clean, and no local `v2.2.0` tag existed before release preparation.
+- `Observed`: the authorized release candidate contains exactly `VERSION`, `README.md`, `DECISIONS.md`, `STATUS.md`, `HANDOFF.md`, and `IMPLEMENTATION_PLAN.md`; the destinations are `origin/main` and annotated tag `v2.2.0` on `origin`.
+- `Verified`: `VERSION` is `2.2.0`; both Skill Creator validators, five-script PowerShell AST parsing, live 23-check verification, takeover and Plan Fidelity definition validation, the six-direction Plan Fidelity result checker, installed-skill hash comparison, README bilingual release parity, and `git diff --check` passed.
+- `Not run`: fresh host-native behavior sessions were not repeated because this release-only increment does not change the globally installed skill content published in `7a36d71`.
+- `Blocked`: none for the authorized release commit, annotated tag, and pushes.
 
 `IMPLEMENTATION_PLAN.md` records the Phase 0 through Phase 5 roadmap. Phases 0 through 4 are complete in their recorded source lines; Phase 5 covers eventual macOS/Linux distribution. `DECISIONS.md` is the durable source for publishing, project-context, and evidence-quality decisions.
 
@@ -137,4 +145,4 @@ Installed global copies:
 
 ## Next action
 
-After the authorized scoped publication, observe Plan Fidelity in new normal-use sessions. Treat any future version bump or tag as a separate release decision.
+Observe the `v2.2.0` Plan Fidelity release in new normal-use sessions. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

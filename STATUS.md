@@ -6,8 +6,9 @@ Last updated: 2026-09-08
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.1.0` is the current release, identified by annotated tag `v2.1.0`; `v2.0.0` remains the previous release, and the intermediate `v1.1.0` release was not created.
+- Version `2.2.0` is the current release, identified by annotated tag `v2.2.0`; `v2.1.0` is the previous release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
+- Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
 - Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
 - Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
@@ -15,7 +16,7 @@ Last updated: 2026-09-08
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation and verification without publishing. `wrap-up publish` enables the safeguarded scoped commit-and-push workflow, and `ncp` remains a non-publishing compatibility alias.
-- The canonical source now implements unreleased Plan Fidelity: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
+- Plan Fidelity is released in `2.2.0`: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
 - Global copies are installed for Codex, Claude Code, and Antigravity.
@@ -74,9 +75,8 @@ Last updated: 2026-09-08
 
 ## Remaining work
 
-- Review the unreleased Plan Fidelity diff. Global installation, commit, tag, and push require separate explicit approval.
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Observe the `v2.1.0` release in normal use. Antigravity IDE and Codex have passed isolated behavior checks; Claude Code remains explicitly deferred as low priority.
+- Observe the `v2.2.0` Plan Fidelity release in normal use. The six-direction isolated behavior matrix passed; a new host-native Claude Code or Antigravity observation remains optional.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
 
 ## Plan Fidelity development closeout
@@ -91,5 +91,14 @@ Last updated: 2026-09-08
 - `Verified`: `install.ps1` globally installed the canonical skills for Codex, Claude Code, and Antigravity after creating `20260908-124457` backups of every changed installed skill or metadata file.
 - `Verified`: live `verify.ps1` reported 23 passes, no warnings, and no failures; separate SHA256 comparison confirmed all six installed `SKILL.md` files match their canonical sources.
 - `Not run`: new host-native Claude Code and Antigravity sessions were not started after installation; the portable six-direction fixture behavior remains the current forward-test evidence.
-- `Observed`: the authorized publication scope is the 29 Plan Fidelity implementation, fixture, verifier, instruction, and documentation files in the current worktree. No version bump or tag was requested.
+- `Observed`: the 29-file Plan Fidelity implementation was published to `origin/main` as commit `7a36d71`; the user then explicitly authorized `wrap-up publish 2.2.0 release` for the version and release-document increment plus annotated tag `v2.2.0`.
 - `Blocked`: none for the authorized scoped commit and push to `main`/`origin`.
+
+## Version 2.2 release closeout
+
+- Date: 2026-09-08
+- `Observed`: after `git fetch origin --tags`, local `main` and `origin/main` both remained at `7a36d71` with ahead/behind `0/0`, the worktree was clean, and `v2.2.0` did not exist before release preparation.
+- `Observed`: the explicitly authorized release scope is `VERSION`, `README.md`, `DECISIONS.md`, `STATUS.md`, `HANDOFF.md`, and `IMPLEMENTATION_PLAN.md`, followed by pushes of `main` and annotated tag `v2.2.0` to `origin`.
+- `Verified`: `VERSION` is `2.2.0`; both Skill Creator validations passed; all five PowerShell scripts passed AST parsing; live `verify.ps1` reported 23 passes with no warnings or failures; both regression definitions and the six-direction Plan Fidelity result check passed; installed skill hashes match canonical sources; README bilingual release parity and `git diff --check` passed.
+- `Not run`: new host-native behavior sessions were not repeated because the release increment changes only version and release documentation after the already verified and installed `7a36d71` implementation.
+- `Blocked`: none for the authorized `2.2.0` release commit, annotated tag, and pushes.

@@ -85,7 +85,7 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 
 - Status: Accepted
 - Date: 2026-09-08
-- Released in: Unreleased
+- Released in: `2.2.0` on 2026-09-08
 
 ### Decision
 

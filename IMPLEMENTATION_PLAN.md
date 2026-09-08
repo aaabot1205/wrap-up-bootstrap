@@ -220,7 +220,7 @@ Extend the portable global preferences beyond response language so GitHub reposi
 
 ## Phase 5: Cross-operating-system distribution
 
-Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.1.0` release.
+Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.2.0` release.
 
 ### Goal
 
@@ -239,9 +239,9 @@ Support repeatable installation beyond the current Windows environment.
 - Reinstallation does not duplicate managed rules or remove unrelated configuration.
 - A documented Git tag can be used to roll back.
 
-## Post-2.1: Plan Fidelity mode
+## Version 2.2: Plan Fidelity mode
 
-Status: Implemented, validated, and globally installed on 2026-09-08; scoped Git publication authorized, with no version bump or tag requested.
+Status: Complete, verified, globally installed, and released in `2.2.0` on 2026-09-08.
 
 ### Goal
 
@@ -267,16 +267,16 @@ Allow an explicitly requested closeout to preserve a user-confirmed plan exactly
 - `wrap-up/SKILL.md`, `bootstrap/SKILL.md`, OpenAI metadata, documentation, verifier coverage, and the Plan Fidelity regression system implement the accepted D-004 contract.
 - `test-plan-fidelity.ps1` derives expected text from fixture sources and checks exact plan-body equality, draft rejection, separate evidence records, existing-document reuse, and non-publishing Git state.
 - All six fresh-agent receiver-contract fixtures passed: three confirmed-source cases matched character-for-character, and three unconfirmed-only cases preserved the baseline body and recorded blockers.
-- Global installation passed live verification. The user authorized the scoped commit and push; version bump and tag remain separate, unrequested release work.
+- Global installation passed live verification. Commit `7a36d71` published the implementation, and the `2.2.0` release records the feature with annotated tag `v2.2.0`.
 
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
 2. Preserve annotated tag `v2.0.0` as the Version 2 release point containing the completed Phase 1 through Phase 4 work.
 3. Preserve annotated tag `v2.1.0` as the bilingual GitHub README global-preference release point and observe it in normal use.
-4. Review and release the post-2.1 Plan Fidelity change after its canonical and cross-platform checks pass.
+4. Preserve annotated tag `v2.2.0` as the Plan Fidelity release point after its canonical and cross-platform checks passed.
 5. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Observe the installed Plan Fidelity behavior after the authorized scoped publication. Treat a version bump or tag as a separate release decision, and start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Observe the `v2.2.0` Plan Fidelity release in normal use, and start Phase 5 only when macOS or Linux distribution has a concrete user need.
