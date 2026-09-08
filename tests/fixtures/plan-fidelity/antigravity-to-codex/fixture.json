@@ -1,0 +1,8 @@
+{
+  "id": "antigravity-to-codex",
+  "source_platform": "Antigravity",
+  "receiver_platform": "Codex",
+  "scenario": "unconfirmed-only",
+  "instruction_file": "GEMINI.md",
+  "documents": { "status": "MILESTONE.md", "handoff": "CONTEXT.md", "plan": "planning/ROADMAP.md" }
+}

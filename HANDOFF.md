@@ -6,7 +6,7 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
-The implementation is ready for normal use on the current Windows machine. The remaining work is incremental hardening rather than a blocker to using `wrap-up` and `bootstrap` now.
+The released `2.1.0` baseline remains the current versioned release. The validated post-2.1 Plan Fidelity source is now globally installed for Codex, Claude Code, and Antigravity, and the user authorized a scoped `wrap-up publish`; no version bump or tag was requested.
 
 Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.1.0`, identified by annotated tag `v2.1.0`, is the current release; `v2.0.0` remains the previous release. Version `2.1.0` adds a portable preference requiring complete English and Traditional Chinese versions in a GitHub repository's primary `README.md`. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
@@ -19,6 +19,10 @@ Phase 3 is released in `2.0.0`. Publishing now requires inspection of repository
 Four independent Phase 3 forward tests covered the non-publishing default, successful explicit publication, `publish_policy: never` with an untouched `.env`, and a mandatory verification failure without override. Direct Git checks confirmed unchanged refs and empty staging for every non-publishing or blocked case. The successful case committed exactly its two closeout documents plus the completed result and synchronized the local and remote `main` refs.
 
 Phase 4 is released in `2.0.0`. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
+
+The post-2.1 canonical source adds Decision D-004 and an independent `plan` flag. `wrap-up plan` remains non-publishing and copies only the latest explicitly user-confirmed exact plan body into the configured or existing canonical plan; `wrap-up plan publish` composes that behavior with the existing explicit publish authorization. Unconfirmed proposals and unavailable exact text produce `Blocked` without modifying the plan body. Progress, verification evidence, and status remain outside the confirmed body. Bootstrap now retains formal plan identifiers and wording in current/next reporting.
+
+`test-plan-fidelity.ps1` provides a generic six-direction matrix with three confirmed-source and three unconfirmed-only cases. It derives expected content from fixture sources, compares the bounded plan body character-for-character, rejects draft sentinels, checks evidence separation and existing-document reuse, and enforces non-publishing Git state. `verify.ps1 -CanonicalOnly` validates source contracts and both fixture matrices without requiring or modifying global installations.
 
 `test-regressions.ps1` maintains the complete six-direction takeover matrix through shared raw templates and per-direction manifests. Its three modes validate definitions, prepare isolated one-commit repositories, and assert post-run evidence labels, stale-claim reconciliation, exact reuse of the existing status/spec/handoff files, verification execution, and non-publishing Git state.
 
@@ -95,6 +99,17 @@ The canonical directory is a Git repository on `main`. Its `origin` is the priva
 
 The repository also contains portable global preference rules for response language and bilingual GitHub READMEs, plus idempotent Windows install, verify, and update scripts. A new machine can clone the private repository and run the installer and verifier to configure Codex, Claude Code, and Antigravity together. Isolated local-remote fixtures confirmed two-run installation and update idempotency, fast-forward version reporting, changed-file backups, preservation of unrelated rules and skills, managed-block replacement, corruption detection and repair, and refusal of dirty or unpublished ahead state.
 
+Plan Fidelity canonical closeout on 2026-09-08:
+
+- `Observed`: development began from clean `main` at `c1d1a1d` (`v2.1.0`). The user reviewed the canonical-only result and then explicitly authorized global installation plus `wrap-up publish`.
+- `Verified`: both Skill Creator validations passed using an already cached PyYAML runtime; all five PowerShell scripts passed AST parsing; `verify.ps1 -CanonicalOnly` reported 8 passes with no warnings or failures; both regression validators passed.
+- `Verified`: six fresh-agent receiver-contract fixture runs passed the aggregate Plan Fidelity checker. Three confirmed-source bodies matched character-for-character, three unconfirmed-only bodies remained unchanged with recorded blockers, every draft sentinel was rejected, every local fixture verifier ran, and no fixture staged or committed work.
+- `Verified`: an additional read-only fresh bootstrap observation retained the exact `Post-2.1: Plan Fidelity mode` and `Phase 5: Cross-operating-system distribution` identifiers and wording, detected a stale next-action sentence, and made no file change; the stale sentence was then reconciled in the canonical plan.
+- `Verified`: `install.ps1` created timestamped `20260908-124457` backups for changed installed files and synchronized both skills across all three platforms. Live `verify.ps1` reported 23 passes with no warnings or failures, and all six installed `SKILL.md` SHA256 hashes match canonical sources.
+- `Not run`: new host-native Claude Code and Antigravity sessions were not started after installation; the six portable source-to-receiver fixture directions remain the behavioral evidence.
+- `Observed`: the authorized Git scope contains the 29 current Plan Fidelity source, fixture, verifier, instruction, and documentation paths. The destination is the existing `main` upstream on `origin`; a version bump and tag are outside this request.
+- `Blocked`: none for the authorized commit and push.
+
 `IMPLEMENTATION_PLAN.md` records the Phase 0 through Phase 5 roadmap. Phases 0 through 4 are complete in their recorded source lines; Phase 5 covers eventual macOS/Linux distribution. `DECISIONS.md` is the durable source for publishing, project-context, and evidence-quality decisions.
 
 ## Canonical working copy
@@ -118,7 +133,8 @@ Installed global copies:
 7. Run the installer twice against an isolated test user root after changing installation logic; verify no duplicated managed blocks and no second-run changes.
 8. Run the updater against an isolated upstream and confirm fast-forward-only behavior, backup reporting, version transition, and dirty/ahead refusal after changing update logic.
 9. Run `test-regressions.ps1 -Mode Validate` after skill or fixture changes. For continuity or evidence changes, prepare fresh workspaces, forward-test all six receiving directions, and require `-Mode Check` to pass.
+10. Run `test-plan-fidelity.ps1 -Mode Validate` after Plan Fidelity changes; prepare and forward-test all six directions before requiring `-Mode Check` to pass.
 
 ## Next action
 
-Observe the `v2.1.0` release in normal use. Leave the Claude Code behavior observation deferred unless its priority changes, and start Phase 5 only when macOS or Linux distribution has a concrete user need.
+After the authorized scoped publication, observe Plan Fidelity in new normal-use sessions. Treat any future version bump or tag as a separate release decision.

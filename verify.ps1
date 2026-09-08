@@ -1,23 +1,26 @@
 [CmdletBinding()]
 param(
-    [string]$UserRoot
+    [string]$UserRoot,
+    [switch]$CanonicalOnly
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-if ([string]::IsNullOrWhiteSpace($UserRoot)) {
-    $UserRoot = [Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile)
-}
-if ([string]::IsNullOrWhiteSpace($UserRoot)) {
-    $UserRoot = [Environment]::GetEnvironmentVariable('USERPROFILE')
-}
-if ([string]::IsNullOrWhiteSpace($UserRoot)) {
-    throw 'Unable to determine the user profile directory. Pass -UserRoot explicitly.'
-}
-
 $ProjectRoot = [System.IO.Path]::GetFullPath((Split-Path -Parent $MyInvocation.MyCommand.Path))
-$ResolvedUserRoot = [System.IO.Path]::GetFullPath($UserRoot)
+$ResolvedUserRoot = $null
+if (-not $CanonicalOnly) {
+    if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+        $UserRoot = [Environment]::GetFolderPath([Environment+SpecialFolder]::UserProfile)
+    }
+    if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+        $UserRoot = [Environment]::GetEnvironmentVariable('USERPROFILE')
+    }
+    if ([string]::IsNullOrWhiteSpace($UserRoot)) {
+        throw 'Unable to determine the user profile directory. Pass -UserRoot explicitly.'
+    }
+    $ResolvedUserRoot = [System.IO.Path]::GetFullPath($UserRoot)
+}
 $script:PassCount = 0
 $script:FailureCount = 0
 $script:WarningCount = 0
@@ -364,9 +367,39 @@ function Test-RegressionArtifacts {
         }
     }
 
+    $WrapUpText = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md')
+    foreach ($RequiredPattern in @(
+        '(?i)standalone, case-insensitive `plan` token',
+        '(?i)Plan Fidelity and publishing as independent flags',
+        '(?i)exact text the user explicitly confirmed',
+        '(?i)Do not summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement',
+        '(?i)progress, verification evidence, status changes, and commentary outside that body',
+        '(?i)exact confirmed source.*`Blocked`'
+    )) {
+        if ($WrapUpText -notmatch $RequiredPattern) {
+            Add-Failure "wrap-up Plan Fidelity contract is missing pattern '$RequiredPattern'."
+        }
+    }
+
+    $BootstrapText = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md')
+    foreach ($RequiredPattern in @(
+        '(?i)Preserve the existing source-of-truth hierarchy',
+        '(?i)preserve.*identifiers.*wording',
+        '(?i)current.*next.*exact'
+    )) {
+        if ($BootstrapText -notmatch $RequiredPattern) {
+            Add-Failure "bootstrap plan-preservation contract is missing pattern '$RequiredPattern'."
+        }
+    }
+
     $RegressionScript = Join-Path $ProjectRoot 'test-regressions.ps1'
     if (-not (Test-Path -LiteralPath $RegressionScript -PathType Leaf)) {
         Add-Failure "Regression runner is missing: $RegressionScript"
+    }
+
+    $PlanRegressionScript = Join-Path $ProjectRoot 'test-plan-fidelity.ps1'
+    if (-not (Test-Path -LiteralPath $PlanRegressionScript -PathType Leaf)) {
+        Add-Failure "Plan Fidelity regression runner is missing: $PlanRegressionScript"
     }
 
     $FixtureRoot = Join-Path $ProjectRoot 'tests\fixtures\takeover'
@@ -407,13 +440,49 @@ function Test-RegressionArtifacts {
         }
     }
 
+    $PlanFixtureRoot = Join-Path $ProjectRoot 'tests\fixtures\plan-fidelity'
+    if (-not (Test-Path -LiteralPath $PlanFixtureRoot -PathType Container)) {
+        Add-Failure "Plan Fidelity fixture root is missing: $PlanFixtureRoot"
+    } else {
+        $ActualPlanFixtures = @(Get-ChildItem -LiteralPath $PlanFixtureRoot -Directory | Where-Object { $_.Name -cne 'template' } | ForEach-Object { $_.Name } | Sort-Object)
+        $ExpectedFixtureNames = @($ExpectedFixtures.Keys | Sort-Object)
+        if ((@(Compare-Object $ExpectedFixtureNames $ActualPlanFixtures)).Count -gt 0) {
+            Add-Failure 'Plan Fidelity fixture matrix does not contain exactly the six directed platform pairs.'
+        }
+        $ExpectedScenarios = @('confirmed', 'unconfirmed-only')
+        foreach ($FixtureName in $ExpectedFixtures.Keys) {
+            $ManifestPath = Join-Path $PlanFixtureRoot "$FixtureName\fixture.json"
+            if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) {
+                Add-Failure "Plan Fidelity fixture manifest is missing: $ManifestPath"
+                continue
+            }
+            try {
+                $Manifest = Get-Content -Raw -Encoding UTF8 -LiteralPath $ManifestPath | ConvertFrom-Json
+                $ExpectedPair = $ExpectedFixtures[$FixtureName]
+                if ($Manifest.id -cne $FixtureName -or
+                    $Manifest.source_platform -cne $ExpectedPair[0] -or
+                    $Manifest.receiver_platform -cne $ExpectedPair[1] -or
+                    $Manifest.scenario -notin $ExpectedScenarios -or
+                    [string]::IsNullOrWhiteSpace([string]$Manifest.documents.plan)) {
+                    Add-Failure "Plan Fidelity fixture manifest is inconsistent: $ManifestPath"
+                }
+            } catch {
+                Add-Failure "Plan Fidelity fixture manifest is invalid JSON: $ManifestPath"
+            }
+        }
+    }
+
     if ($script:FailureCount -eq $FailureCountBefore) {
-        Add-Pass 'Evidence labels and all six directed takeover fixture manifests are present.'
+        Add-Pass 'Evidence, Plan Fidelity contracts, and both six-direction fixture matrices are present.'
     }
 }
 
 Write-Output "Verifying wrap-up-bootstrap in $ProjectRoot"
-Write-Output "User root: $ResolvedUserRoot"
+if ($CanonicalOnly) {
+    Write-Output 'User root: not inspected (-CanonicalOnly)'
+} else {
+    Write-Output "User root: $ResolvedUserRoot"
+}
 
 $VersionPath = Join-Path $ProjectRoot 'VERSION'
 if (-not (Test-Path -LiteralPath $VersionPath -PathType Leaf)) {
@@ -427,7 +496,7 @@ if (-not (Test-Path -LiteralPath $VersionPath -PathType Leaf)) {
     }
 }
 
-Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('wrap-up', 'commit', 'push', 'publish', 'ncp')
+Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('wrap-up', 'plan', 'commit', 'push', 'publish', 'ncp')
 Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('bootstrap', 'initialize', 'resume', 'take over')
 Test-OpenAiMetadata -SkillName 'wrap-up' -MetadataPath (Join-Path $ProjectRoot 'wrap-up\agents\openai.yaml')
 Test-OpenAiMetadata -SkillName 'bootstrap' -MetadataPath (Join-Path $ProjectRoot 'bootstrap\agents\openai.yaml')
@@ -435,35 +504,37 @@ Test-CanonicalGlobalRules
 Test-ProjectContextArtifacts
 Test-RegressionArtifacts
 
-$Platforms = @(
-    [pscustomobject]@{
-        Name = 'Codex'
-        SkillRoot = Join-Path $ResolvedUserRoot '.agents\skills'
-        RuleSource = Join-Path $ProjectRoot 'global-rules\AGENTS.md'
-        RuleDestination = Join-Path $ResolvedUserRoot '.codex\AGENTS.md'
-    },
-    [pscustomobject]@{
-        Name = 'Claude Code'
-        SkillRoot = Join-Path $ResolvedUserRoot '.claude\skills'
-        RuleSource = Join-Path $ProjectRoot 'global-rules\CLAUDE.md'
-        RuleDestination = Join-Path $ResolvedUserRoot '.claude\CLAUDE.md'
-    },
-    [pscustomobject]@{
-        Name = 'Antigravity'
-        SkillRoot = Join-Path $ResolvedUserRoot '.gemini\antigravity\skills'
-        RuleSource = Join-Path $ProjectRoot 'global-rules\GEMINI.md'
-        RuleDestination = Join-Path $ResolvedUserRoot '.gemini\GEMINI.md'
+if ($CanonicalOnly) {
+    Write-Output '[INFO] Global installation and managed-rule checks skipped by -CanonicalOnly.'
+} else {
+    $Platforms = @(
+        [pscustomobject]@{
+            Name = 'Codex'
+            SkillRoot = Join-Path $ResolvedUserRoot '.agents\skills'
+            RuleSource = Join-Path $ProjectRoot 'global-rules\AGENTS.md'
+            RuleDestination = Join-Path $ResolvedUserRoot '.codex\AGENTS.md'
+        },
+        [pscustomobject]@{
+            Name = 'Claude Code'
+            SkillRoot = Join-Path $ResolvedUserRoot '.claude\skills'
+            RuleSource = Join-Path $ProjectRoot 'global-rules\CLAUDE.md'
+            RuleDestination = Join-Path $ResolvedUserRoot '.claude\CLAUDE.md'
+        },
+        [pscustomobject]@{
+            Name = 'Antigravity'
+            SkillRoot = Join-Path $ResolvedUserRoot '.gemini\antigravity\skills'
+            RuleSource = Join-Path $ProjectRoot 'global-rules\GEMINI.md'
+            RuleDestination = Join-Path $ResolvedUserRoot '.gemini\GEMINI.md'
+        }
+    )
+    foreach ($Platform in $Platforms) {
+        foreach ($SkillName in @('wrap-up', 'bootstrap')) {
+            Test-SkillInstallation -PlatformName $Platform.Name -SkillRoot $Platform.SkillRoot -SkillName $SkillName
+        }
+        Test-ManagedRule -PlatformName $Platform.Name -SourcePath $Platform.RuleSource -DestinationPath $Platform.RuleDestination
     }
-)
-
-foreach ($Platform in $Platforms) {
-    foreach ($SkillName in @('wrap-up', 'bootstrap')) {
-        Test-SkillInstallation -PlatformName $Platform.Name -SkillRoot $Platform.SkillRoot -SkillName $SkillName
-    }
-    Test-ManagedRule -PlatformName $Platform.Name -SourcePath $Platform.RuleSource -DestinationPath $Platform.RuleDestination
+    Write-Output '[INFO] Codex, Claude Code, and Antigravity may require a restart or new session after skill installation or updates.'
 }
-
-Write-Output '[INFO] Codex, Claude Code, and Antigravity may require a restart or new session after skill installation or updates.'
 Write-Output "Verification summary: $($script:PassCount) passed, $($script:WarningCount) warning(s), $($script:FailureCount) failed."
 
 if ($script:FailureCount -gt 0) {

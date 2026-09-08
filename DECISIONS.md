@@ -80,3 +80,25 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 - Handoffs expose verification gaps instead of allowing repeated AI sessions to amplify an unsupported claim.
 - `test-regressions.ps1` provides deterministic fixture validation, isolated workspace preparation, and post-run checks; fresh receiving agents still perform the behavioral portion.
 - Any evidence or cross-platform continuity behavior change must pass all six directions before release.
+
+## D-004: Plan Fidelity is independent from publishing
+
+- Status: Accepted
+- Date: 2026-09-08
+- Released in: Unreleased
+
+### Decision
+
+- Treat a standalone, case-insensitive `plan` token as Plan Fidelity and remove it from additional user instructions.
+- Keep Plan Fidelity independent from publishing: `wrap-up plan` is non-publishing, while `wrap-up plan publish` composes verbatim plan preservation with the existing safeguarded publish workflow.
+- In Plan Fidelity, use the configured plan path when valid, otherwise update the existing canonical plan document in place, falling back to root-level `IMPLEMENTATION_PLAN.md` only when no convention exists.
+- Copy only the latest plan whose exact text the user explicitly confirmed. Preserve its complete body character-for-character and never summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement it.
+- Keep progress, verification evidence, and status outside the confirmed-plan body. Treat unconfirmed AI drafts as ineligible sources.
+- When exact confirmed text or canonical ownership cannot be established, report `Blocked` and leave the plan body unchanged rather than reconstructing it.
+- Bootstrap must retain formal plan identifiers and wording, and must use those identifiers when reporting current and next items.
+
+### Consequences
+
+- Existing `wrap-up`, `wrap-up publish`, and `wrap-up ncp` behavior remains unchanged.
+- Plan Fidelity fixtures derive expected content from generic source artifacts instead of embedding a real plan in the checker.
+- Canonical-only development can run `verify.ps1 -CanonicalOnly`; installed copies remain intentionally stale until a separately authorized installation.

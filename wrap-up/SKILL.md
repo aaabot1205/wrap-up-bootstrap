@@ -1,6 +1,6 @@
 ---
 name: wrap-up
-description: Close the current project phase and leave a reliable cross-session, cross-platform handoff. Use whenever the user says or types `wrap-up`, asks to wrap up, close out, finish a milestone, prepare a handoff, synchronize project documentation, or explicitly publish completed work, including when ChatGPT/Codex, Claude, Gemini, or Antigravity created the existing files. By default it reconciles and verifies without Git publishing; a trailing `publish` enables a safeguarded scoped commit and push, while `ncp` remains a non-publishing compatibility alias.
+description: Close the current project phase and leave a reliable cross-session, cross-platform handoff. Use whenever the user says or types `wrap-up`, asks to wrap up, close out, finish a milestone, prepare a handoff, preserve a confirmed plan verbatim, synchronize project documentation, or explicitly publish completed work, including when ChatGPT/Codex, Claude, Gemini, or Antigravity created the existing files. By default it reconciles and verifies without Git publishing; `plan` enables Plan Fidelity, `publish` enables a safeguarded scoped commit and push, and `ncp` remains a non-publishing compatibility alias.
 ---
 
 # Wrap Up
@@ -23,8 +23,10 @@ Treat every durable project document as project-owned, never AI-platform-owned. 
 ## Choose the mode
 
 - Default: reconcile project documentation and verify the completed work without staging, committing, or pushing.
+- `plan`: a standalone, case-insensitive `plan` token enables Plan Fidelity. Exclude the token from the user's additional instructions. It does not authorize publishing.
 - `publish`: a standalone, case-insensitive `publish` token explicitly requests the safeguarded scoped commit-and-push workflow. Exclude the token from the user's additional instructions.
 - `ncp`: retain as a case-insensitive compatibility alias for the non-publishing default. If `publish` and `ncp` conflict, remain non-publishing and report the conflict unless the user resolves it explicitly.
+- Treat Plan Fidelity and publishing as independent flags. `plan publish` enables both; `plan` alone and `plan ncp` remain non-publishing. Do not change the established behavior of invocations without `plan`.
 - Treat a direct current instruction to commit and push as publish authorization, and a direct instruction not to publish as non-publishing. Treat all other trailing text as additional priorities or constraints.
 - After locating the repository, apply a valid root `PROJECT_CONTEXT.yaml` Git policy: `skill-default` uses the Version 2 non-publishing default; `explicit` still requires current publish authorization; `never` blocks publishing even when `publish` is present unless the user explicitly says to override that policy. Never silently broaden publishing authority.
 
@@ -72,31 +74,43 @@ Use valid `PROJECT_CONTEXT.yaml` document mappings first when present. Do not as
 
 Follow links between documents and search for references to changed features, old statuses, superseded decisions, commands, paths, or names. Prefer updating the existing source of truth. If no durable current-state or handoff artifact exists and repository conventions do not specify another location, create a concise root-level `HANDOFF.md`.
 
-## 4. Reconcile facts across documents
+## 4. Preserve the confirmed plan in Plan Fidelity mode
+
+Apply this section only when the `plan` flag is active.
+
+1. Select the canonical plan document. Use the valid `PROJECT_CONTEXT.yaml` plan path when configured. Otherwise update the repository's existing canonical plan document in place; if no convention or plan document exists, use root-level `IMPLEMENTATION_PLAN.md`. If multiple candidates remain authoritative and the repository does not resolve them, report `Blocked` instead of choosing silently.
+2. Locate the latest plan whose exact text the user explicitly confirmed in the current conversation or in durable project records. A durable record qualifies only when it clearly records both the user's confirmation and the exact confirmed plan text. Exclude AI-authored drafts or proposals that the user has not explicitly confirmed.
+3. Copy the confirmed plan text verbatim into the canonical plan document. Preserve every character of the plan body, including wording, identifiers, numbering, hierarchy, order, owners, dependencies, acceptance criteria, whitespace, and formatting. Do not summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement it.
+4. When updating an existing document, replace only its clearly bounded confirmed-plan body. Preserve surrounding document structure and keep progress, verification evidence, status changes, and commentary outside that body. Never edit the confirmed-plan body to reflect execution progress.
+5. Compare the written plan body directly with the exact confirmed source before continuing. If the exact source text, confirmation state, destination, or replacement boundary cannot be established, make no plan edit and report `Blocked` with the missing evidence and recovery action. Never reconstruct plan text from memory, a summary, or inference.
+
+## 5. Reconcile facts across documents
 
 Create a compact internal fact set covering: goal, completed work, current behavior, decisions, verification, remaining work, blockers, risks, and next action. Then update all documents whose claims are affected.
 
 - Distinguish implemented, verified, in progress, planned, blocked, and deferred work explicitly.
 - Update checklists, milestone state, acceptance results, commands, links, file paths, interfaces, and architecture descriptions that changed.
 - Preserve useful history and project-specific structure. Do not replace detailed specs with summaries or perform broad cosmetic rewrites.
+- In Plan Fidelity mode, treat the confirmed-plan body as immutable. Record progress, verification evidence, and status changes in separate sections or documents.
 - Record unresolved issues honestly, with enough context for the next session to act.
 - Remove or qualify stale claims. Do not invent decisions, dates, owners, test results, or completion percentages.
 - Keep the handoff concise and actionable: current state, what changed, verification, decisions, remaining tasks in priority order, blockers/risks, and the exact next recommended action.
 
 After editing, search the relevant documentation set again for contradictions and stale terminology. Resolve inconsistencies instead of merely listing them when the evidence is sufficient.
 
-## 5. Verify the closeout
+## 6. Verify the closeout
 
 1. Review the documentation diff for factual accuracy, broken internal links, malformed Markdown, accidental scope expansion, and consistency with the code/configuration diff.
-2. Run the best available non-destructive checks relevant to the completed work, favoring commands documented by the repository. Use a focused subset when the full suite is unavailable or disproportionately expensive.
-3. Run whitespace/diff checks supported by the repository, including `git diff --check` in Git projects.
-4. Recheck concise status. Ensure no generated secrets, credentials, local-only files, or unrelated changes are about to be committed.
+2. In Plan Fidelity mode, compare the canonical confirmed-plan body character-for-character with its confirmed source and confirm that no unconfirmed draft content entered it.
+3. Run the best available non-destructive checks relevant to the completed work, favoring commands documented by the repository. Use a focused subset when the full suite is unavailable or disproportionately expensive.
+4. Run whitespace/diff checks supported by the repository, including `git diff --check` in Git projects.
+5. Recheck concise status. Ensure no generated secrets, credentials, local-only files, or unrelated changes are about to be committed.
 
 Fix in-scope failures when feasible. Otherwise record the exact command, outcome, and reason it remains unresolved.
 
-## 6. Publish only with explicit authorization
+## 7. Publish only with explicit authorization
 
-Skip this entire section in the default and `ncp` modes.
+Skip this entire section whenever publishing is not active, including default, `ncp`, and `plan`-only invocations.
 
 1. Reinspect the repository, named branch, configured upstream, exact remote URL, concise status, unstaged diff, staged names, and staged diff. Do not guess or change the destination. Treat detached HEAD, branch-policy mismatch, ambiguous remote, or unresolved merge state as blockers.
 2. Build an explicit candidate path list containing only completed current-phase work and its documentation. Positively establish ownership of every candidate and every pre-existing staged path. Leave unrelated work untouched; block publishing if staged or candidate ownership is ambiguous.
@@ -110,14 +124,14 @@ Skip this entire section in the default and `ncp` modes.
 
 If commit or push is impossible because of permissions, hooks, authentication, detached HEAD, missing remote, or ambiguous files, complete every safe prior step and report the exact blocker and recovery command. Do not falsely report success.
 
-## 7. Report completion
+## 8. Report completion
 
 Return a compact closeout containing:
 
-- selected mode;
+- selected Plan Fidelity and publishing modes;
 - documents updated or created and the consistency issues resolved;
 - verification commands and results;
-- commit identifier and push destination, or `not performed (default)`, `not performed (ncp)`, or the exact policy/blocker;
+- commit identifier and push destination, or `not performed (default)`, `not performed (ncp)`, `not performed (plan)`, or the exact policy/blocker;
 - active `PROJECT_CONTEXT.yaml` publishing policy and any configuration issues;
 - an evidence summary using the exact labels above, including every expected check that was not run or remained blocked;
 - remaining unrelated or unresolved changes;

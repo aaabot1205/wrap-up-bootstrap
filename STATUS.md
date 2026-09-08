@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 2026-09-07
+Last updated: 2026-09-08
 
 ## Current state
 
@@ -15,13 +15,15 @@ Last updated: 2026-09-07
 - `wrap-up` and `bootstrap` are implemented as portable directory-based `SKILL.md` skills.
 - Both skills explicitly preserve cross-platform continuity among ChatGPT/Codex, Claude, Gemini, Antigravity, humans, and other tools.
 - `wrap-up` defaults to documentation reconciliation and verification without publishing. `wrap-up publish` enables the safeguarded scoped commit-and-push workflow, and `ncp` remains a non-publishing compatibility alias.
+- The canonical source now implements unreleased Plan Fidelity: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
+- `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
 - Global copies are installed for Codex, Claude Code, and Antigravity.
 - The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all three global installations.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
 - `install.ps1` installs or updates all six global skill copies and all three global rule files on Windows while preserving unrelated content.
-- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, canonical global-preference content, the evidence contract, all six takeover manifests, all global entry files and hashes, managed rules, and restart guidance.
+- `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, canonical global-preference content, evidence and Plan Fidelity contracts, both six-direction fixture matrices, all global entry files and hashes, managed rules, and restart guidance. `-CanonicalOnly` supports source validation without inspecting installed copies.
 - `update.ps1` allows only clean, upstream-backed, non-ahead fast-forward updates before backed-up installation and verification.
 - `install.ps1` reports every changed-file backup and repairs duplicate managed rules to one canonical block without removing unrelated content.
 - `PROJECT_CONTEXT.schema.json` and `PROJECT_CONTEXT.example.yaml` define repository-relative document routing, verification commands, Git policy, cautions, and exclusions.
@@ -29,6 +31,7 @@ Last updated: 2026-09-07
 - Decision D-001 preserves the tagged Version 1 behavior and now governs the implemented Version 2 default: only a current explicit publish instruction permits Git publication.
 - Decision D-003 defines `Verified`, `Observed`, `Assumption`, `Not run`, and `Blocked`; historical checks remain observed evidence until rerun.
 - `test-regressions.ps1` validates, prepares, and checks isolated takeover fixtures for every directed pair among Codex, Claude Code, and Antigravity.
+- `test-plan-fidelity.ps1` validates, prepares, and checks generic confirmed-source and unconfirmed-only fixtures for the same six directed pairs using source-derived character-for-character comparisons.
 
 ## Verification
 
@@ -71,6 +74,22 @@ Last updated: 2026-09-07
 
 ## Remaining work
 
+- Review the unreleased Plan Fidelity diff. Global installation, commit, tag, and push require separate explicit approval.
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
 - Observe the `v2.1.0` release in normal use. Antigravity IDE and Codex have passed isolated behavior checks; Claude Code remains explicitly deferred as low priority.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
+
+## Plan Fidelity development closeout
+
+- Date: 2026-09-08
+- `Observed`: the canonical repository started clean at `c1d1a1d` (`v2.1.0`) on `main`; the user subsequently authorized global installation and `wrap-up publish` for this change.
+- `Verified`: both canonical skills passed Skill Creator `quick_validate.py` using the already cached PyYAML runtime; all five PowerShell scripts passed AST parsing.
+- `Verified`: `verify.ps1 -CanonicalOnly` reported 8 passes, no warnings, and no failures; `test-regressions.ps1 -Mode Validate` retained all six takeover fixtures; `test-plan-fidelity.ps1 -Mode Validate` accepted all six Plan Fidelity fixtures.
+- `Verified`: six fresh-agent receiver-contract workflows passed `test-plan-fidelity.ps1 -Mode Check`: all three confirmed-source cases matched their source body character-for-character, all three unconfirmed-only cases left the plan body unchanged and recorded `Blocked`, no case copied the draft sentinel, and every case remained unstaged and uncommitted.
+- `Verified`: each fixture's documented `verify.ps1` ran successfully; the aggregate checker reported 6 passes and 0 failures.
+- `Verified`: a separate read-only fresh bootstrap observation reported the formal `Post-2.1: Plan Fidelity mode` and `Phase 5: Cross-operating-system distribution` headings and their exact plan wording instead of substituting summaries; it also detected a stale next-action sentence, which was corrected in place without changing either plan item.
+- `Verified`: `install.ps1` globally installed the canonical skills for Codex, Claude Code, and Antigravity after creating `20260908-124457` backups of every changed installed skill or metadata file.
+- `Verified`: live `verify.ps1` reported 23 passes, no warnings, and no failures; separate SHA256 comparison confirmed all six installed `SKILL.md` files match their canonical sources.
+- `Not run`: new host-native Claude Code and Antigravity sessions were not started after installation; the portable six-direction fixture behavior remains the current forward-test evidence.
+- `Observed`: the authorized publication scope is the 29 Plan Fidelity implementation, fixture, verifier, instruction, and documentation files in the current worktree. No version bump or tag was requested.
+- `Blocked`: none for the authorized scoped commit and push to `main`/`origin`.

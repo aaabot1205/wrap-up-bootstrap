@@ -239,13 +239,44 @@ Support repeatable installation beyond the current Windows environment.
 - Reinstallation does not duplicate managed rules or remove unrelated configuration.
 - A documented Git tag can be used to roll back.
 
+## Post-2.1: Plan Fidelity mode
+
+Status: Implemented, validated, and globally installed on 2026-09-08; scoped Git publication authorized, with no version bump or tag requested.
+
+### Goal
+
+Allow an explicitly requested closeout to preserve a user-confirmed plan exactly without coupling that behavior to Git publishing.
+
+### Deliverables
+
+- Add standalone, case-insensitive `plan` parsing while preserving the existing default, `publish`, and `ncp` contracts.
+- Select the configured or existing canonical plan document and preserve the latest explicitly user-confirmed exact plan body verbatim.
+- Keep progress, verification evidence, and status changes outside the confirmed-plan body; block when exact source text is unavailable or only an unconfirmed proposal exists.
+- Make bootstrap retain formal plan identifiers and wording when it reports current and next items.
+- Add generic confirmed-source and unconfirmed-only regression fixtures for all six directed platform pairs.
+
+### Acceptance criteria
+
+- `wrap-up plan` is non-publishing, and `wrap-up plan publish` composes independent Plan Fidelity and publish flags.
+- The canonical plan body matches the confirmed source character-for-character across arbitrary wording, language, numbering, hierarchy, owners, dependencies, and acceptance criteria.
+- Unconfirmed AI draft content is never copied, and unavailable exact source text produces a recorded `Blocked` result without modifying the plan body.
+- Canonical validation, existing takeover regression validation, all six Plan Fidelity forward tests, the canonical verifier, and `git diff --check` pass before installation or release.
+
+### Outcome
+
+- `wrap-up/SKILL.md`, `bootstrap/SKILL.md`, OpenAI metadata, documentation, verifier coverage, and the Plan Fidelity regression system implement the accepted D-004 contract.
+- `test-plan-fidelity.ps1` derives expected text from fixture sources and checks exact plan-body equality, draft rejection, separate evidence records, existing-document reuse, and non-publishing Git state.
+- All six fresh-agent receiver-contract fixtures passed: three confirmed-source cases matched character-for-character, and three unconfirmed-only cases preserved the baseline body and recorded blockers.
+- Global installation passed live verification. The user authorized the scoped commit and push; version bump and tag remain separate, unrequested release work.
+
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
 2. Preserve annotated tag `v2.0.0` as the Version 2 release point containing the completed Phase 1 through Phase 4 work.
 3. Preserve annotated tag `v2.1.0` as the bilingual GitHub README global-preference release point and observe it in normal use.
-4. Start Phase 5 when macOS or Linux use becomes concrete.
+4. Review and release the post-2.1 Plan Fidelity change after its canonical and cross-platform checks pass.
+5. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Observe the `v2.1.0` release in normal use. Keep the Claude Code behavior observation deferred unless its priority changes. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Observe the installed Plan Fidelity behavior after the authorized scoped publication. Treat a version bump or tag as a separate release decision, and start Phase 5 only when macOS or Linux distribution has a concrete user need.

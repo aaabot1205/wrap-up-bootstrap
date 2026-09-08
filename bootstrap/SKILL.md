@@ -59,6 +59,8 @@ Use valid `PROJECT_CONTEXT.yaml` document mappings first when present. Otherwise
 
 Follow document links when they are relevant. Do not load every document indiscriminately. Search for the active feature, milestone, pending checklist items, blockers, and terminology in the handoff.
 
+When loading the canonical plan, preserve its existing item identifiers and wording. Do not paraphrase, renumber, or invent a formal plan item. When identifying the current item or next item, quote its formal identifier and wording exactly; if either cannot be established, report the ambiguity instead of substituting a vague summary.
+
 ## 5. Reconcile conflicts
 
 Do not repeat documentation claims as facts without checking them against live repository evidence. Use this default priority when sources conflict:

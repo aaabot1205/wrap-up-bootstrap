@@ -1,0 +1,27 @@
+schema_version: 1
+project_name: plan-fidelity-fixture
+
+documents:
+  status:
+    - {{STATUS_FILE}}
+  handoff:
+    - {{HANDOFF_FILE}}
+  plans:
+    - {{PLAN_FILE}}
+  specs: []
+  decisions: []
+
+verification:
+  commands:
+    - powershell -NoProfile -ExecutionPolicy Bypass -File .\verify.ps1
+
+git:
+  default_branch: main
+  publish_policy: never
+
+cautions:
+  - Preserve the confirmed plan body verbatim.
+
+exclusions:
+  - .git/
+  - .test-artifacts/

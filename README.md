@@ -13,12 +13,16 @@ Current release: `2.1.0` (`v2.1.0`). Previous release: `2.0.0` (`v2.0.0`). The r
 
 - `bootstrap` gathers project context without editing during the bootstrap phase and may then begin a supplied follow-on task.
 - `wrap-up` reconciles documentation and verifies the completed phase without staging, committing, or pushing.
+- `wrap-up plan` additionally preserves the latest explicitly user-confirmed plan verbatim in the canonical plan document and remains non-publishing.
 - `wrap-up publish` adds a safeguarded, scoped commit and push after successful required verification.
+- `wrap-up plan publish` combines Plan Fidelity with the independently authorized publish workflow.
 - `wrap-up ncp` remains a compatibility alias for the non-publishing default.
 
 Published `v1.x` users retain the older default-publishing contract. When migrating to Version 2, add `publish` to automation or prompts that are intended to commit and push. A plain `wrap-up` now stops after documentation reconciliation and verification.
 
 Before publishing, the skill inspects the branch, upstream, remote, unstaged and staged diffs; establishes an explicit phase-owned path list; and blocks ambiguous, unrelated, or likely sensitive files. Failed mandatory checks block publication unless the user sees the failure and explicitly overrides it. The workflow never force-pushes, resets, discards work, or uses broad staging shortcuts.
+
+`plan` is a standalone, case-insensitive functional flag, not publishing authorization. Plan Fidelity uses the configured `PROJECT_CONTEXT.yaml` plan path when available, otherwise updates the existing canonical plan in place or falls back to root-level `IMPLEMENTATION_PLAN.md`. It copies only an explicitly user-confirmed exact source, preserves wording and structure character-for-character, keeps progress and evidence outside the confirmed-plan body, and reports `Blocked` instead of reconstructing unavailable text or accepting an unconfirmed AI proposal.
 
 ## Optional project context
 
@@ -42,6 +46,8 @@ A previous session's passing result is historical `Observed` evidence until reru
 
 The regression matrix covers every directed takeover among Codex, Claude Code, and Antigravity. `test-regressions.ps1` validates the six fixture definitions, prepares isolated Git workspaces, and checks that receiving sessions update the existing status, spec, and handoff files without publishing or creating platform-specific replacements.
 
+The Plan Fidelity matrix separately covers the same six directions. `test-plan-fidelity.ps1` validates and prepares both confirmed-source and unconfirmed-only cases, then compares the bounded canonical plan body directly with fixture source text, rejects draft sentinels, checks separate evidence records, and confirms that `wrap-up plan` did not publish.
+
 ## Design contract
 
 Project documents belong to the project, not to the AI that created them. Every supported platform must discover and continue the existing source of truth even when another platform chose its filename or last updated it. The skills therefore search by document purpose and repository conventions rather than imposing separate ChatGPT, Claude, or Gemini documentation sets.
@@ -55,10 +61,12 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `agents/openai.yaml` inside each skill: optional Codex/ChatGPT UI metadata; other hosts can ignore it.
 - `global-rules/`: portable source copies of the response-language and bilingual GitHub README preferences for all three platforms.
 - `install.ps1`: idempotent Windows installer for all skills and global rules.
-- `verify.ps1`: installation, hash, managed-rule, frontmatter, metadata, evidence-contract, fixture-matrix, and restart-guidance checks.
+- `verify.ps1`: canonical-contract plus optional installation, hash, managed-rule, frontmatter, metadata, evidence-contract, fixture-matrix, and restart-guidance checks; `-CanonicalOnly` skips installed-copy checks.
 - `update.ps1`: guarded fast-forward update, backed-up installation, verification, and version-transition reporting.
 - `test-regressions.ps1`: validate, prepare, and check the six-direction cross-platform takeover matrix.
 - `tests/fixtures/takeover/`: shared raw fixture templates plus one manifest for each directed platform pair.
+- `test-plan-fidelity.ps1`: validate, prepare, and check the six-direction Plan Fidelity matrix.
+- `tests/fixtures/plan-fidelity/`: generic verbatim-preservation and unconfirmed-draft fixtures.
 - `PROJECT_CONTEXT.schema.json`: machine-readable Version 1 contract for optional project context.
 - `PROJECT_CONTEXT.example.yaml`: documented repository-root configuration example.
 - `VERSION`: current source version; release tags identify published baselines.
@@ -113,12 +121,16 @@ The updater fetches the configured upstream, permits only a fast-forward, refuse
 
 - `bootstrap` 會在 bootstrap 階段以唯讀方式蒐集專案脈絡，之後可開始使用者指定的後續工作。
 - `wrap-up` 會同步專案文件並驗證已完成的階段，但不會 stage、commit 或 push。
+- `wrap-up plan` 會額外把最後一份經使用者明確確認的計畫逐字保存到 canonical plan document，且仍維持非發布。
 - `wrap-up publish` 會在必要驗證成功後，執行具安全防護且範圍明確的 commit 與 push。
+- `wrap-up plan publish` 會同時啟用 Plan Fidelity 與獨立授權的 publish workflow。
 - `wrap-up ncp` 保留為非發布預設模式的相容別名。
 
 已發布的 `v1.x` 使用者仍適用舊版的預設發布契約。遷移至 Version 2 時，原本預期 commit 與 push 的自動化或 prompt 必須加入 `publish`。未加參數的 `wrap-up` 現在會在文件同步與驗證完成後停止。
 
 發布前，skill 會檢查 branch、upstream、remote、unstaged 與 staged diffs，建立明確的本階段檔案清單，並阻擋範圍不明、無關或疑似包含敏感資料的檔案。必要驗證失敗時，除非使用者已看到失敗內容並明確允許 override，否則不得發布。此流程絕不 force-push、reset、捨棄工作或使用廣泛 staging shortcut。
+
+`plan` 是 standalone、case-insensitive 的功能旗標，不代表 publishing authorization。Plan Fidelity 會優先使用 `PROJECT_CONTEXT.yaml` 設定的 plan path，否則原地更新既有 canonical plan，沒有既有慣例時才回退至根目錄 `IMPLEMENTATION_PLAN.md`。它只會複製已有精確原文且經使用者明確確認的計畫，逐字保留措辭與結構，把 progress 與 evidence 留在 confirmed-plan body 外；若精確原文不可得或只有未確認的 AI proposal，則回報 `Blocked`，不自行重建或採用草案。
 
 ## 選用的專案脈絡設定
 
@@ -142,6 +154,8 @@ Repository 可以將 `PROJECT_CONTEXT.example.yaml` 複製為根目錄下的 `PR
 
 Regression matrix 涵蓋 Codex、Claude Code 與 Antigravity 之間每一個有方向性的 takeover 組合。`test-regressions.ps1` 會驗證六份 fixture 定義、建立隔離的 Git workspaces，並檢查接手的 session 是否沿用既有 status、spec 與 handoff 文件，同時不發布或建立平台專屬的替代文件。
 
+Plan Fidelity matrix 另行涵蓋相同六個方向。`test-plan-fidelity.ps1` 會驗證並建立 confirmed-source 與 unconfirmed-only cases，之後直接比對 bounded canonical plan body 與 fixture source text、拒絕 draft sentinel、檢查分離的 evidence records，並確認 `wrap-up plan` 沒有發布。
+
 ## 設計契約
 
 專案文件屬於專案，而非建立文件的 AI。即使既有 source of truth 是由另一個平台命名或最後更新，每個受支援平台都必須找到並延續它。因此，skills 會依文件用途與 repository conventions 搜尋，而不會強制建立彼此獨立的 ChatGPT、Claude 或 Gemini 文件組。
@@ -155,10 +169,12 @@ Regression matrix 涵蓋 Codex、Claude Code 與 Antigravity 之間每一個有�
 - 每個 skill 中的 `agents/openai.yaml`：選用的 Codex/ChatGPT UI metadata；其他 hosts 可忽略。
 - `global-rules/`：三個平台之回應語言與 GitHub README 中英雙版本偏好的可攜式 source copies。
 - `install.ps1`：安裝所有 skills 與 global rules 的 idempotent Windows installer。
-- `verify.ps1`：檢查安裝、hash、managed rules、frontmatter、metadata、evidence contract、fixture matrix 與 restart guidance。
+- `verify.ps1`：檢查 canonical contract，以及可選的安裝、hash、managed rules、frontmatter、metadata、evidence contract、fixture matrix 與 restart guidance；`-CanonicalOnly` 會略過 installed-copy checks。
 - `update.ps1`：具防護的 fast-forward update、備份安裝、驗證與版本轉換報告。
 - `test-regressions.ps1`：驗證、準備及檢查六方向 cross-platform takeover matrix。
 - `tests/fixtures/takeover/`：共用原始 fixture templates，以及每個平台方向的一份 manifest。
+- `test-plan-fidelity.ps1`：驗證、準備及檢查六方向 Plan Fidelity matrix。
+- `tests/fixtures/plan-fidelity/`：通用的逐字保存與 unconfirmed-draft fixtures。
 - `PROJECT_CONTEXT.schema.json`：選用 project context Version 1 契約的 machine-readable schema。
 - `PROJECT_CONTEXT.example.yaml`：附有說明的 repository-root 設定範例。
 - `VERSION`：目前 source version；release tags 用來標示已發布的 baselines。

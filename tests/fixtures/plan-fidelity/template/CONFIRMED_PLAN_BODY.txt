@@ -1,0 +1,13 @@
+I. Interface invariant — 保留原始文字
+   Owner: role-alpha
+   Dependencies: [dep::north, 階段-β]
+   Acceptance criteria:
+     a) Keep token `K-07.iii` unchanged.
+     b) Preserve this indentation and order.
+
+階段-β / 第二項
+  owner = role-bravo
+  depends_on = I
+  acceptance:
+    - 任意語言與標點「原樣保留」。
+    - Final identifier: Ω::004-b

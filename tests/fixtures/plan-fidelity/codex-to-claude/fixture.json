@@ -1,0 +1,8 @@
+{
+  "id": "codex-to-claude",
+  "source_platform": "Codex",
+  "receiver_platform": "Claude Code",
+  "scenario": "confirmed",
+  "instruction_file": "AGENTS.md",
+  "documents": { "status": "STATUS.md", "handoff": "HANDOFF.md", "plan": "IMPLEMENTATION_PLAN.md" }
+}

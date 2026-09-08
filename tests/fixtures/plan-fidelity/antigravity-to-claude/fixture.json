@@ -1,0 +1,8 @@
+{
+  "id": "antigravity-to-claude",
+  "source_platform": "Antigravity",
+  "receiver_platform": "Claude Code",
+  "scenario": "unconfirmed-only",
+  "instruction_file": "GEMINI.md",
+  "documents": { "status": "MILESTONE.md", "handoff": "CONTEXT.md", "plan": "planning/ROADMAP.md" }
+}

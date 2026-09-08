@@ -1,0 +1,8 @@
+{
+  "id": "claude-to-antigravity",
+  "source_platform": "Claude Code",
+  "receiver_platform": "Antigravity",
+  "scenario": "unconfirmed-only",
+  "instruction_file": "CLAUDE.md",
+  "documents": { "status": "PROJECT_STATUS.md", "handoff": "TRANSFER.md", "plan": "docs/EXECUTION_PLAN.md" }
+}

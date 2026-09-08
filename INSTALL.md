@@ -41,7 +41,7 @@ Run:
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the canonical global-preference content, the evidence-label contract, all six takeover manifests, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching managed global-preferences block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session.
+The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the canonical global-preference content, the evidence and Plan Fidelity contracts, both six-direction fixture matrices, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching managed global-preferences block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session. During canonical-only development, add `-CanonicalOnly` to skip global installation and managed-rule checks without modifying installed copies.
 
 Use `-UserRoot <path>` with `install.ps1`, `verify.ps1`, or `update.ps1` to operate on an isolated profile during testing.
 
@@ -83,6 +83,23 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\tes
 
 `Prepare` refuses to overwrite an existing directory. Retain failed workspaces for diagnosis; remove only the exact temporary fixture root after review.
 
+## Plan Fidelity regression matrix
+
+Validate the generic six-direction `wrap-up plan` fixtures:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-plan-fidelity.ps1 -Mode Validate
+```
+
+Prepare a new isolated workspace root, invoke `wrap-up plan` from each named receiver, and then check the results:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-plan-fidelity.ps1 -Mode Prepare -WorkspaceRoot C:\path\to\new-plan-fixture-root
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-plan-fidelity.ps1 -Mode Check -WorkspaceRoot C:\path\to\new-plan-fixture-root
+```
+
+Three directions provide an exact, explicitly confirmed plan source; three provide only an unconfirmed AI draft. The checker derives expected plan text from each fixture's source file, compares it character-for-character with the bounded canonical plan body, rejects draft content, requires separate evidence records, and confirms that plan mode did not stage, commit, or create replacement files.
+
 ## Optional project context contract
 
 Projects may add a root-level `PROJECT_CONTEXT.yaml`; it is never required. Start from `PROJECT_CONTEXT.example.yaml` and validate the allowed shape against `PROJECT_CONTEXT.schema.json`.
@@ -108,12 +125,14 @@ Document paths must remain inside the repository. Exclusions guide broad discove
 | Action | Codex | Claude Code | Antigravity |
 | --- | --- | --- | --- |
 | Close and verify, no publish | `$wrap-up` | `/wrap-up` | `/wrap-up` |
+| Preserve confirmed plan verbatim, no publish | `$wrap-up plan` | `/wrap-up plan` | `/wrap-up plan` |
 | Close, verify, commit, and push | `$wrap-up publish` | `/wrap-up publish` | `/wrap-up publish` |
+| Preserve confirmed plan, then publish | `$wrap-up plan publish` | `/wrap-up plan publish` | `/wrap-up plan publish` |
 | Compatibility no-publish alias | `$wrap-up ncp` | `/wrap-up ncp` | `/wrap-up ncp` |
 | Load project context | `$bootstrap` | `/bootstrap` | `/bootstrap` |
 | Load context and start a task | `$bootstrap <task>` | `/bootstrap <task>` | `/bootstrap <task>` |
 
-Plain `wrap-up`, `wrap-up publish`, `wrap-up ncp`, and `bootstrap` prompts are also described as implicit triggers. Explicit `$` or `/` invocation is the deterministic option.
+Plain `wrap-up`, `wrap-up plan`, `wrap-up publish`, `wrap-up plan publish`, `wrap-up ncp`, and `bootstrap` prompts are also described as implicit triggers. Explicit `$` or `/` invocation is the deterministic option. `plan` and `publish` are independent standalone, case-insensitive flags; recognized flag tokens are removed before remaining text is treated as additional instructions.
 
 Version 2 migration: Version 1 made plain `wrap-up` publish by default. Add the standalone `publish` argument to any existing prompt or automation that must still commit and push. Publication is blocked for detached HEAD, unresolved merges, branch-policy or destination ambiguity, uncertain file ownership, likely secrets, or failed mandatory checks. Resolve the reported blocker and invoke `wrap-up publish` again; never work around it with broad staging, force-push, reset, or discarded work.
 
