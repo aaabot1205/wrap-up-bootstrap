@@ -8,7 +8,9 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 Version `2.3.0`, identified by annotated tag `v2.3.0`, is the current release. It adds Decision D-006 (a Plan Fidelity provenance preface convention, a closeout-pruning allowance, and an environment-specific-literal conflict subtype in `bootstrap`) and corrects this file's own "Installed global copies" wording, which had hardcoded a literal username instead of resolving to the current machine. `v2.2.1` remains the release that corrected Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
 
-Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.2.1` is the current release, `v2.2.0` remains the Plan Fidelity release, `v2.1.0` remains the bilingual-global-preference release, and `v2.0.0` remains the initial Version 2 release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
+Since that release, Decision D-007 added `test-update.ps1`: an isolated dry-run regression for `update.ps1` (bare-repo origin, client, and user root, all disposable). It is a canonical-repo improvement, not a release -- `VERSION` was not bumped, because `install.ps1` never installs test scripts anywhere.
+
+Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
 Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
@@ -155,7 +157,7 @@ Installed global copies (paths are relative to the current user's home directory
 5. Compare hashes for each installed `SKILL.md` against the canonical copy.
 6. Run isolated forward tests after behavioral changes.
 7. Run the installer twice against an isolated test user root after changing installation logic; verify no duplicated managed blocks and no second-run changes.
-8. Run the updater against an isolated upstream and confirm fast-forward-only behavior, backup reporting, version transition, and dirty/ahead refusal after changing update logic.
+8. Run `test-update.ps1` after changing `update.ps1` or `install.ps1` logic, and before claiming any release's upgrade path is verified; it is self-contained (isolated bare-repo origin, client, and user root) and no longer needs a live `update.ps1` run against a real global installation.
 9. Run `test-regressions.ps1 -Mode Validate` after skill or fixture changes. For continuity or evidence changes, prepare fresh workspaces, forward-test all six receiving directions, and require `-Mode Check` to pass.
 10. Run `test-plan-fidelity.ps1 -Mode Validate` after Plan Fidelity changes; prepare and forward-test all six directions before requiring `-Mode Check` to pass.
 11. Run `test-installation.ps1` after changing installation paths or behavior.
@@ -171,6 +173,8 @@ Version 2.3.0 handoff hygiene closeout on 2026-09-09:
 - `Not run`: `install.ps1` was deliberately withheld before this closeout so this machine's `v2.2.1` global installation stays intact for a genuine `update.ps1` upgrade test after the release is pushed.
 - `Blocked`: none for the scoped release commit, annotated tag, and pushes once explicitly authorized.
 
+Version 2.3.0's upgrade path was then verified live on this machine: `update.ps1` genuinely upgraded the installed `v2.2.1` copies (8 backup files created, confirmed to hold the pre-2.3.0 content; all 8 installed `SKILL.md` files SHA256-match canonical). That live run directly exposed Decision D-007: `update.ps1` only runs once a release is already pushed, so verifying it could only ever happen after the fact, with nowhere durable to record the result without creating another stale "Next action" -- the same pattern as the Antigravity-restart item this project already had to resolve once. `test-update.ps1` now automates that same dry-run against an isolated bare-repo origin, client, and user root seeded from the most recent prior release tag, so this verification is a normal pre-push check from now on; a live `update.ps1` run against a real global installation is no longer required to support an upgrade-path claim.
+
 ## Next action
 
-Push the authorized `2.3.0` release, then run `update.ps1` on this machine (`C:\dev\wrap-up-bootstrap`) to prove the upgrade path from the currently installed `v2.2.1`. Record the version transition, backup, and verifier results as follow-up evidence. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+None outstanding from this session. Start Phase 5 only when macOS or Linux distribution has a concrete user need; run `test-update.ps1` (and, for continuity/evidence changes, the two six-direction fixture matrices) before the next release that touches `install.ps1`, `update.ps1`, or either skill.

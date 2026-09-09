@@ -143,3 +143,24 @@ Both gaps were found through direct dogfooding rather than speculation: this rep
 - Existing Plan Fidelity, publishing, and evidence-labeling behavior is unchanged; this only adds a preface convention and a narrow pruning allowance.
 - `HANDOFF.md`'s "Installed global copies" section is now machine-agnostic; no future installation needs to edit that wording.
 - Both skills' six-direction fixture matrices must still pass after this change, since it touches reconciliation and Plan Fidelity behavior in both skills.
+
+## D-007: Isolated `update.ps1` dry-run replaces the live post-release verification ritual
+
+- Status: Accepted
+- Date: 2026-09-09
+
+### Decision
+
+- Add `test-update.ps1` as a self-contained, isolated regression for `update.ps1`: it builds a bare-repo origin seeded at the most recent prior release tag, an isolated client clone, and an isolated user root pre-seeded with that old release, advances the bare origin to `HEAD`, then runs the client's own `update.ps1` and asserts version-transition reporting, backup creation, installed-file hashes against canonical, and refusal on both a dirty worktree and an ahead-of-upstream branch.
+- Treat a passing `test-update.ps1` run as sufficient evidence that a release's upgrade path works. A live `update.ps1` run against a real global installation is no longer required to support that claim, and must not be treated as an open item in `HANDOFF.md`'s "Next action" once the isolated regression has passed.
+- Do not bump `VERSION` for changes that add or modify test scripts alone: `install.ps1` never installs anything outside `wrap-up/` and `bootstrap/`, so a test-only change has no effect on what any global installation actually receives.
+
+### Rationale
+
+The `v2.3.0` release surfaced the problem directly: `update.ps1` refuses to run unless the local branch is synced with `origin`, so verifying the upgrade path could only happen after pushing a real release. Recording that live verification afterward in `HANDOFF.md` produced exactly the kind of stale, easy-to-forget "Next action" that Decision D-006 was partly written to stop recurring (the same pattern as the Antigravity-restart item this project already had to resolve once). `test-installation.ps1` isolates `install.ps1` but never exercises `update.ps1`'s own git-safety logic, so that logic had no automated coverage at all before this decision, despite `AGENTS.md` already describing the manual version of this exact check.
+
+### Consequences
+
+- Verifying an upgrade path becomes a normal pre-push check, like the other three `test-*.ps1` scripts, instead of a post-push manual ritual.
+- Future releases that do not touch `install.ps1`/`update.ps1` do not need to rerun `test-update.ps1`, matching the existing rule for `test-installation.ps1`.
+- `test-update.ps1` depends on the canonical repo already having at least one prior release tag reachable from `HEAD`; it has no effect on, and is not run by, `install.ps1` or `update.ps1` themselves.

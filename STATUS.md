@@ -81,7 +81,7 @@ Last updated: 2026-09-09
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
 - `Observed`: the user confirmed the post-2.2.1 Antigravity `~/.gemini/config/skills/` discovery check passed on a restarted session; no further action needed for that item.
-- Run `update.ps1` on this machine after the `2.3.0` push and record the result (version transition, backups, verifier pass count, installed-hash comparison) as follow-up evidence.
+- `Observed`: `update.ps1` was also run live on this machine right after the `2.3.0` push and genuinely upgraded the installed `v2.2.1` copies (8 backups created and confirmed to hold the pre-2.3.0 content; all 8 installed `SKILL.md` files SHA256-match canonical). Per D-007, this live run is historical evidence only and is not required again for future releases now that `test-update.ps1` covers it automatically.
 
 ## Version 2.3.0 handoff hygiene closeout
 
@@ -94,6 +94,16 @@ Last updated: 2026-09-09
 - `Verified`: `git diff --check` passed on the full canonical diff.
 - `Not run`: `install.ps1` was deliberately not run before this closeout, preserving this machine's `v2.2.1` global installation so `update.ps1` can be forward-tested as a genuine upgrade after release.
 - `Blocked`: none for the scoped release commit, annotated tag, and pushes once explicitly authorized.
+
+## test-update.ps1 regression closeout (Decision D-007)
+
+- Date: 2026-09-09
+- `Observed`: this work was prompted directly by the `v2.3.0` release above -- verifying its upgrade path required a live `update.ps1` run on this machine because `update.ps1` refuses to run unless the local branch is synced with `origin`, and recording that afterward in `HANDOFF.md` would have left another stale "Next action" for a future bootstrap to trip over.
+- `Verified`: `test-installation.ps1` was read directly and confirmed to isolate only `install.ps1` (twice, for idempotency) and `verify.ps1`; it never invokes `update.ps1`, so `update.ps1`'s own fetch/ahead/behind/dirty/fast-forward logic had no automated coverage before this change.
+- `Verified`: the new `test-update.ps1` passed AST parsing and two consecutive full runs against this canonical repository. Each run dynamically selected `v2.2.1` as the prior release tag, built an isolated bare-repo origin and client, seeded an isolated user root with the old release, fast-forwarded to `HEAD`, and confirmed: the reported version transition (`2.2.1 -> 2.3.0`), exactly one backup created per changed skill file per installed root, every installed file SHA256-matching canonical, and correct non-zero-exit refusal for both a dirty worktree and a branch ahead of its upstream.
+- `Observed`: both runs cleaned up their temporary workspace; no leftover `wrap-up-bootstrap-update-*` directories remained under the system temp directory afterward.
+- `Not run`: the Skill Creator validator was not rerun for this change, since no `SKILL.md` was touched.
+- `Blocked`: none.
 
 ## Plan Fidelity development closeout
 
