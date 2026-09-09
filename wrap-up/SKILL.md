@@ -82,7 +82,8 @@ Apply this section only when the `plan` flag is active.
 2. Locate the latest plan whose exact text the user explicitly confirmed in the current conversation or in durable project records. A durable record qualifies only when it clearly records both the user's confirmation and the exact confirmed plan text. Exclude AI-authored drafts or proposals that the user has not explicitly confirmed.
 3. Copy the confirmed plan text verbatim into the canonical plan document. Preserve every character of the plan body, including wording, identifiers, numbering, hierarchy, order, owners, dependencies, acceptance criteria, whitespace, and formatting. Do not summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement it.
 4. When updating an existing document, replace only its clearly bounded confirmed-plan body. Preserve surrounding document structure and keep progress, verification evidence, status changes, and commentary outside that body. Never edit the confirmed-plan body to reflect execution progress.
-5. Compare the written plan body directly with the exact confirmed source before continuing. If the exact source text, confirmation state, destination, or replacement boundary cannot be established, make no plan edit and report `Blocked` with the missing evidence and recovery action. Never reconstruct plan text from memory, a summary, or inference.
+5. When the canonical plan document is new or does not yet record where its confirmed body came from, add a short provenance preface immediately before the body: the confirmation source (conversation or durable record), the confirmation date, and the executing session's platform or model if known. Separate the preface from the body with a clear boundary, such as a horizontal rule. Never let the preface's wording extend into or replace any part of the body, and never edit an existing preface to narrate progress; progress stays outside both the preface and the body.
+6. Compare the written plan body directly with the exact confirmed source before continuing. If the exact source text, confirmation state, destination, or replacement boundary cannot be established, make no plan edit and report `Blocked` with the missing evidence and recovery action. Never reconstruct plan text from memory, a summary, or inference.
 
 ## 5. Reconcile facts across documents
 
@@ -95,6 +96,7 @@ Create a compact internal fact set covering: goal, completed work, current behav
 - Record unresolved issues honestly, with enough context for the next session to act.
 - Remove or qualify stale claims. Do not invent decisions, dates, owners, test results, or completion percentages.
 - Keep the handoff concise and actionable: current state, what changed, verification, decisions, remaining tasks in priority order, blockers/risks, and the exact next recommended action.
+- When a historical closeout entry no longer informs an open decision, blocker, or the next action, condense it to one dated summary line instead of preserving its full original text. Keep verbatim detail only for entries a current decision or acceptance record still depends on; this narrows, and does not conflict with, the earlier rule against replacing detailed specs with summaries.
 
 After editing, search the relevant documentation set again for contradictions and stale terminology. Resolve inconsistencies instead of merely listing them when the evidence is sufficient.
 

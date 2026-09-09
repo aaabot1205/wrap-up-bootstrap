@@ -74,6 +74,8 @@ Do not repeat documentation claims as facts without checking them against live r
 
 Treat planned behavior as planned, not implemented. Identify stale or contradictory documentation explicitly. Make a reasonable evidence-based interpretation when safe; ask only when the ambiguity would materially change the requested work.
 
+Treat a hardcoded environment-specific literal in a document (a file path, username, hostname, or similar value) as a distinct conflict subtype from a document-versus-document contradiction. When it does not match the currently observed environment, prefer the observed state and identify the literal for correction or generalization at the next `wrap-up` instead of repeating it as current fact.
+
 ### Qualify evidence
 
 Use these exact labels for material claims in the bootstrap brief and preserve them when reading or continuing durable records:

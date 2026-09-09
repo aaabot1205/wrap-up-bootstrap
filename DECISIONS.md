@@ -121,3 +121,25 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 - Current Antigravity sessions can discover `wrap-up` and `bootstrap` from the documented global customization root after restart or a new session.
 - Older Antigravity builds retain their installed compatibility copies.
 - The Windows installer now maintains eight skill copies across three platforms and two Antigravity discovery generations.
+
+## D-006: Handoff hygiene and reconciliation clarifications
+
+- Status: Accepted
+- Date: 2026-09-09
+- Released in: `2.3.0` on 2026-09-09
+
+### Decision
+
+- Plan Fidelity requires a short provenance preface before a confirmed-plan body whenever the canonical plan document is new or does not yet record its source: confirmation source, confirmation date, and the executing session's platform or model if known, separated from the body by a clear boundary. The preface is never part of the immutable body and is never edited to narrate progress.
+- `wrap-up` may condense a historical closeout entry to one dated summary line once it no longer informs an open decision, blocker, or the next action. Verbatim detail is kept only for entries a current decision or acceptance record still depends on; this does not authorize summarizing specs or performing broad cosmetic rewrites.
+- `bootstrap` treats a hardcoded environment-specific literal (a file path, username, hostname, or similar) that no longer matches the observed environment as its own conflict subtype, distinct from a document-versus-document contradiction, resolved the same way (observed state wins) and flagged for correction at the next `wrap-up`.
+
+### Rationale
+
+Both gaps were found through direct dogfooding rather than speculation: this repository's own `HANDOFF.md` had accumulated unpruned historical closeouts, and its "Installed global copies" section hardcoded a literal username that did not match the machine actually running the installed skills. Plan Fidelity's verbatim-body rule left no documented way to attach provenance without an agent inventing its own convention.
+
+### Consequences
+
+- Existing Plan Fidelity, publishing, and evidence-labeling behavior is unchanged; this only adds a preface convention and a narrow pruning allowance.
+- `HANDOFF.md`'s "Installed global copies" section is now machine-agnostic; no future installation needs to edit that wording.
+- Both skills' six-direction fixture matrices must still pass after this change, since it touches reconciliation and Plan Fidelity behavior in both skills.

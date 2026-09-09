@@ -6,7 +6,7 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
-Version `2.2.1`, identified by annotated tag `v2.2.1`, is the current release. It corrects Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
+Version `2.3.0`, identified by annotated tag `v2.3.0`, is the current release. It adds Decision D-006 (a Plan Fidelity provenance preface convention, a closeout-pruning allowance, and an environment-specific-literal conflict subtype in `bootstrap`) and corrects this file's own "Installed global copies" wording, which had hardcoded a literal username instead of resolving to the current machine. `v2.2.1` remains the release that corrected Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
 
 Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.2.1` is the current release, `v2.2.0` remains the Plan Fidelity release, `v2.1.0` remains the bilingual-global-preference release, and `v2.0.0` remains the initial Version 2 release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
@@ -23,6 +23,8 @@ Phase 4 is released in `2.0.0`. Both skills now qualify material claims as `Veri
 Version 2.2 adds Decision D-004 and an independent `plan` flag. `wrap-up plan` remains non-publishing and copies only the latest explicitly user-confirmed exact plan body into the configured or existing canonical plan; `wrap-up plan publish` composes that behavior with the existing explicit publish authorization. Unconfirmed proposals and unavailable exact text produce `Blocked` without modifying the plan body. Progress, verification evidence, and status remain outside the confirmed body. Bootstrap now retains formal plan identifiers and wording in current/next reporting.
 
 Version 2.2.1 adds Decision D-005. Antigravity skills now install to its current `~/.gemini/config/skills/` global discovery root and continue syncing the former `~/.gemini/antigravity/skills/` path for legacy builds. `test-installation.ps1` asserts these paths independently from the installer and checks preservation, backups, verification, hashes, and idempotency.
+
+Version 2.3.0 adds Decision D-006. `wrap-up` documents how to attach a short provenance preface (confirmation source, date, executing session) before a new or previously unattributed confirmed-plan body, clearly bounded outside the immutable body, and how to condense a historical closeout entry to one dated line once it no longer informs an open decision, blocker, or next action. `bootstrap` now treats a hardcoded environment-specific literal (path, username, hostname) that does not match the observed environment as its own conflict subtype, resolved the same way as any other contradiction (observed state wins) and flagged for correction at the next `wrap-up`. This release was found through direct dogfooding: this repository's own `HANDOFF.md` had unpruned historical closeouts and a stale hardcoded username in its "Installed global copies" section, both now fixed.
 
 `test-plan-fidelity.ps1` provides a generic six-direction matrix with three confirmed-source and three unconfirmed-only cases. It derives expected content from fixture sources, compares the bounded plan body character-for-character, rejects draft sentinels, checks evidence separation and existing-document reuse, and enforces non-publishing Git state. `verify.ps1 -CanonicalOnly` validates source contracts and both fixture matrices without requiring or modifying global installations.
 
@@ -137,12 +139,12 @@ Version 2.2.1 Antigravity discovery correction on 2026-09-09:
 
 `C:\dev\wrap-up-bootstrap`
 
-Installed global copies:
+Installed global copies (paths are relative to the current user's home directory: `%USERPROFILE%` on Windows, `$HOME` on macOS/Linux, exactly as `install.ps1` resolves `$UserRoot`; do not hardcode a literal username here):
 
-- Codex: `C:\Users\User\.agents\skills\{wrap-up,bootstrap}`
-- Claude Code: `C:\Users\User\.claude\skills\{wrap-up,bootstrap}`
-- Antigravity IDE current: `C:\Users\User\.gemini\config\skills\{wrap-up,bootstrap}`
-- Antigravity IDE legacy compatibility: `C:\Users\User\.gemini\antigravity\skills\{wrap-up,bootstrap}`
+- Codex: `<home>\.agents\skills\{wrap-up,bootstrap}`
+- Claude Code: `<home>\.claude\skills\{wrap-up,bootstrap}`
+- Antigravity IDE current: `<home>\.gemini\config\skills\{wrap-up,bootstrap}`
+- Antigravity IDE legacy compatibility: `<home>\.gemini\antigravity\skills\{wrap-up,bootstrap}`
 
 ## Maintenance procedure
 
@@ -158,6 +160,17 @@ Installed global copies:
 10. Run `test-plan-fidelity.ps1 -Mode Validate` after Plan Fidelity changes; prepare and forward-test all six directions before requiring `-Mode Check` to pass.
 11. Run `test-installation.ps1` after changing installation paths or behavior.
 
+Version 2.3.0 handoff hygiene closeout on 2026-09-09:
+
+- `Observed`: the user confirmed the post-2.2.1 Antigravity `~/.gemini/config/skills/` discovery check passed on a restarted session, closing that item from the prior "Next action."
+- `Verified`: the Skill Creator validator accepted both skills after removing two em-dash characters the new guidance had introduced (this machine's locale could not decode them; both skills are ASCII-only again, matching the rest of the canonical source).
+- `Verified`: all six PowerShell scripts passed AST parsing; `verify.ps1 -CanonicalOnly` reported 8 passes, no warnings, no failures.
+- `Verified`: a fresh six-direction takeover forward test (`test-regressions.ps1`: `Prepare` -> role-played all six directions -> `Check`) reported 6 passes, 0 failures.
+- `Verified`: a fresh six-direction Plan Fidelity forward test (`test-plan-fidelity.ps1`) reported 6 passes, 0 failures, including the new provenance preface applied in all three confirmed-source cases without affecting the character-for-character plan-body comparison.
+- `Verified`: `git diff --check` passed on the full canonical diff.
+- `Not run`: `install.ps1` was deliberately withheld before this closeout so this machine's `v2.2.1` global installation stays intact for a genuine `update.ps1` upgrade test after the release is pushed.
+- `Blocked`: none for the scoped release commit, annotated tag, and pushes once explicitly authorized.
+
 ## Next action
 
-Restart Antigravity or begin a new Antigravity session and confirm `/skills` discovers `wrap-up` and `bootstrap` from `~/.gemini/config/skills/`. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Push the authorized `2.3.0` release, then run `update.ps1` on this machine (`C:\dev\wrap-up-bootstrap`) to prove the upgrade path from the currently installed `v2.2.1`. Record the version transition, backup, and verifier results as follow-up evidence. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

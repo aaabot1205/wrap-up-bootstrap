@@ -10,6 +10,7 @@ Last updated: 2026-09-09
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.
+- Version `2.3.0` adds Decision D-006: a Plan Fidelity provenance preface convention in `wrap-up`, a closeout-pruning allowance in `wrap-up`, and an environment-specific-literal conflict subtype in `bootstrap`'s conflict reconciliation. It also corrects `HANDOFF.md`'s "Installed global copies" section to be machine-agnostic instead of hardcoding a literal username.
 - Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
 - Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
 - Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
@@ -78,8 +79,21 @@ Last updated: 2026-09-09
 ## Remaining work
 
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Observe `wrap-up` and `bootstrap` discovery from `~/.gemini/config/skills/` in a restarted Antigravity or a new Antigravity session.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
+- `Observed`: the user confirmed the post-2.2.1 Antigravity `~/.gemini/config/skills/` discovery check passed on a restarted session; no further action needed for that item.
+- Run `update.ps1` on this machine after the `2.3.0` push and record the result (version transition, backups, verifier pass count, installed-hash comparison) as follow-up evidence.
+
+## Version 2.3.0 handoff hygiene closeout
+
+- Date: 2026-09-09
+- `Observed`: development began from clean `main` at `0824b94` (`v2.2.1`), synchronized with `origin/main`.
+- `Verified`: the Skill Creator `quick_validate.py` accepted both skills after fixing two em-dash characters the additions had introduced; Python's default text encoding on this machine's locale could not read them, so both skills were rewritten to stay ASCII-only, matching the rest of the canonical source.
+- `Verified`: all six PowerShell scripts passed AST parsing; `verify.ps1 -CanonicalOnly` reported 8 passes, no warnings, no failures.
+- `Verified`: `test-regressions.ps1 -Mode Validate` passed; a fresh six-direction forward test (`Prepare` -> role-played all six source-to-receiver directions -> `Check`) reported 6 passes, 0 failures.
+- `Verified`: `test-plan-fidelity.ps1 -Mode Validate` passed; a fresh six-direction forward test (three confirmed-source, three unconfirmed-only) reported 6 passes, 0 failures, including the new provenance preface applied in all three confirmed cases and correctly excluded from the character-for-character plan-body comparison.
+- `Verified`: `git diff --check` passed on the full canonical diff.
+- `Not run`: `install.ps1` was deliberately not run before this closeout, preserving this machine's `v2.2.1` global installation so `update.ps1` can be forward-tested as a genuine upgrade after release.
+- `Blocked`: none for the scoped release commit, annotated tag, and pushes once explicitly authorized.
 
 ## Plan Fidelity development closeout
 
