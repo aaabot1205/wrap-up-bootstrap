@@ -6,9 +6,9 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
-Version `2.2.0`, identified by annotated tag `v2.2.0`, is the current release. It contains the globally installed Plan Fidelity feature; `v2.1.0` remains the previous bilingual-global-preference release.
+Version `2.2.1`, identified by annotated tag `v2.2.1`, is the current release. It corrects Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
 
-Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.2.0` is the current release, `v2.1.0` remains the bilingual-global-preference release, and `v2.0.0` remains the initial Version 2 release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
+Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Version `2.2.1` is the current release, `v2.2.0` remains the Plan Fidelity release, `v2.1.0` remains the bilingual-global-preference release, and `v2.0.0` remains the initial Version 2 release. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
 Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
@@ -21,6 +21,8 @@ Four independent Phase 3 forward tests covered the non-publishing default, succe
 Phase 4 is released in `2.0.0`. Both skills now qualify material claims as `Verified`, `Observed`, `Assumption`, `Not run`, or `Blocked`. Only checks executed in the current session are current `Verified` evidence; historical passes remain `Observed` until rerun, and unresolved contradictions stay visible instead of being silently selected.
 
 Version 2.2 adds Decision D-004 and an independent `plan` flag. `wrap-up plan` remains non-publishing and copies only the latest explicitly user-confirmed exact plan body into the configured or existing canonical plan; `wrap-up plan publish` composes that behavior with the existing explicit publish authorization. Unconfirmed proposals and unavailable exact text produce `Blocked` without modifying the plan body. Progress, verification evidence, and status remain outside the confirmed body. Bootstrap now retains formal plan identifiers and wording in current/next reporting.
+
+Version 2.2.1 adds Decision D-005. Antigravity skills now install to its current `~/.gemini/config/skills/` global discovery root and continue syncing the former `~/.gemini/antigravity/skills/` path for legacy builds. `test-installation.ps1` asserts these paths independently from the installer and checks preservation, backups, verification, hashes, and idempotency.
 
 `test-plan-fidelity.ps1` provides a generic six-direction matrix with three confirmed-source and three unconfirmed-only cases. It derives expected content from fixture sources, compares the bounded plan body character-for-character, rejects draft sentinels, checks evidence separation and existing-document reuse, and enforces non-publishing Git state. `verify.ps1 -CanonicalOnly` validates source contracts and both fixture matrices without requiring or modifying global installations.
 
@@ -118,6 +120,17 @@ Version 2.2 release publication on 2026-09-08:
 - `Not run`: fresh host-native behavior sessions were not repeated because this release-only increment does not change the globally installed skill content published in `7a36d71`.
 - `Blocked`: none for the authorized release commit, annotated tag, and pushes.
 
+Version 2.2.1 Antigravity discovery correction on 2026-09-09:
+
+- `Observed`: Antigravity's installed customization guide defines `~/.gemini/config/` as global discovery and `skills/<name>/SKILL.md` as the skill layout. The prior installer and verifier both used only the legacy `~/.gemini/antigravity/skills/` root, explaining why Antigravity reported no `wrap-up` skill despite a passing repository verifier.
+- `Verified`: the corrected verifier failed against the pre-install live state with six current-path missing-file results while accepting the legacy copies. The isolated installation regression then installed and verified both roots, preserved unrelated skills, created backups for stale managed files, and passed an unchanged second run.
+- `Verified`: an isolated clean `2.2.0` client fast-forwarded through `update.ps1` to the `2.2.1` candidate, reported the version transition, installed both current-path Antigravity skills, preserved an unrelated current-path skill, and passed verification.
+- `Verified`: both Skill Creator validations, six-script AST parsing, canonical verification, both six-direction regression definition validators, bilingual README parity, and `git diff --check` passed.
+- `Verified`: the authorized live installation populated the current Antigravity path. The live verifier reported 27 passes with no warnings or failures, all eight current and compatibility installed `SKILL.md` hashes match canonical sources, and a second live installation changed no managed file, hash, or timestamp.
+- `Not run`: a host-native Antigravity `/skills` observation awaits an IDE restart or new session so its skill inventory reloads.
+- `Observed`: the user explicitly authorized the scoped `2.2.1` release commit, annotated `v2.2.1` tag, and pushes to the existing `main` upstream on `origin`.
+- `Blocked`: none for release; the post-reload host observation remains the next runtime confirmation.
+
 `IMPLEMENTATION_PLAN.md` records the Phase 0 through Phase 5 roadmap. Phases 0 through 4 are complete in their recorded source lines; Phase 5 covers eventual macOS/Linux distribution. `DECISIONS.md` is the durable source for publishing, project-context, and evidence-quality decisions.
 
 ## Canonical working copy
@@ -128,21 +141,23 @@ Installed global copies:
 
 - Codex: `C:\Users\User\.agents\skills\{wrap-up,bootstrap}`
 - Claude Code: `C:\Users\User\.claude\skills\{wrap-up,bootstrap}`
-- Antigravity IDE: `C:\Users\User\.gemini\antigravity\skills\{wrap-up,bootstrap}`
+- Antigravity IDE current: `C:\Users\User\.gemini\config\skills\{wrap-up,bootstrap}`
+- Antigravity IDE legacy compatibility: `C:\Users\User\.gemini\antigravity\skills\{wrap-up,bootstrap}`
 
 ## Maintenance procedure
 
 1. Edit the canonical `wrap-up/` and `bootstrap/` folders.
 2. Update `STATUS.md` and this handoff when behavior, validation state, global paths, or outstanding work changes.
 3. Validate both skills with the Skill Creator validator.
-4. Copy both folders to all three global locations.
+4. Copy both folders to Codex, Claude Code, and both Antigravity global skill roots.
 5. Compare hashes for each installed `SKILL.md` against the canonical copy.
 6. Run isolated forward tests after behavioral changes.
 7. Run the installer twice against an isolated test user root after changing installation logic; verify no duplicated managed blocks and no second-run changes.
 8. Run the updater against an isolated upstream and confirm fast-forward-only behavior, backup reporting, version transition, and dirty/ahead refusal after changing update logic.
 9. Run `test-regressions.ps1 -Mode Validate` after skill or fixture changes. For continuity or evidence changes, prepare fresh workspaces, forward-test all six receiving directions, and require `-Mode Check` to pass.
 10. Run `test-plan-fidelity.ps1 -Mode Validate` after Plan Fidelity changes; prepare and forward-test all six directions before requiring `-Mode Check` to pass.
+11. Run `test-installation.ps1` after changing installation paths or behavior.
 
 ## Next action
 
-Observe the `v2.2.0` Plan Fidelity release in new normal-use sessions. Start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Restart Antigravity or begin a new Antigravity session and confirm `/skills` discovers `wrap-up` and `bootstrap` from `~/.gemini/config/skills/`. Start Phase 5 only when macOS or Linux distribution has a concrete user need.

@@ -102,3 +102,22 @@ Publishing is consequential and is safer when explicitly requested. Keeping the 
 - Existing `wrap-up`, `wrap-up publish`, and `wrap-up ncp` behavior remains unchanged.
 - Plan Fidelity fixtures derive expected content from generic source artifacts instead of embedding a real plan in the checker.
 - Canonical-only development can run `verify.ps1 -CanonicalOnly`; installed copies remain intentionally stale until a separately authorized installation.
+
+## D-005: Use Antigravity's current global discovery root with legacy compatibility
+
+- Status: Accepted
+- Date: 2026-09-09
+- Released in: `2.2.1` on 2026-09-09
+
+### Decision
+
+- Install Antigravity skills into the current global discovery root `~/.gemini/config/skills/`.
+- Continue synchronizing `~/.gemini/antigravity/skills/` as a legacy compatibility path without deleting existing files or unrelated skills.
+- Verify both Antigravity roots independently so a current installation cannot pass solely because installer and verifier agree on the legacy path.
+- Maintain an isolated installation regression that asserts the current path as an external contract, checks both roots and canonical hashes, preserves unrelated skills, exercises backups, and verifies second-run idempotency.
+
+### Consequences
+
+- Current Antigravity sessions can discover `wrap-up` and `bootstrap` from the documented global customization root after restart or a new session.
+- Older Antigravity builds retain their installed compatibility copies.
+- The Windows installer now maintains eight skill copies across three platforms and two Antigravity discovery generations.

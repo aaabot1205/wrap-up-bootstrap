@@ -122,6 +122,7 @@ function Install-ManagedRule {
 $SkillRoots = @(
     (Join-Path $UserRoot '.agents\skills'),
     (Join-Path $UserRoot '.claude\skills'),
+    (Join-Path $UserRoot '.gemini\config\skills'),
     (Join-Path $UserRoot '.gemini\antigravity\skills')
 )
 
@@ -134,5 +135,5 @@ Install-ManagedRule -SourcePath (Join-Path $ProjectRoot 'global-rules\AGENTS.md'
 Install-ManagedRule -SourcePath (Join-Path $ProjectRoot 'global-rules\CLAUDE.md') -DestinationPath (Join-Path $UserRoot '.claude\CLAUDE.md')
 Install-ManagedRule -SourcePath (Join-Path $ProjectRoot 'global-rules\GEMINI.md') -DestinationPath (Join-Path $UserRoot '.gemini\GEMINI.md')
 
-Write-Output 'Installed wrap-up, bootstrap, and global preference rules for Codex, Claude Code, and Antigravity.'
+Write-Output 'Installed wrap-up, bootstrap, and global preference rules for Codex, Claude Code, and Antigravity, including the Antigravity legacy skill path.'
 Write-Output 'Restart each platform or begin a new session to load the global instructions.'

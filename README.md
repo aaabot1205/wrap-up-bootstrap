@@ -7,7 +7,7 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current release: `2.2.0` (`v2.2.0`). Previous release: `2.1.0` (`v2.1.0`); `v2.0.0` remains the initial Version 2 release, and the recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`). Version 2.2 adds the independent Plan Fidelity mode described below.
+Current release: `2.2.1` (`v2.2.1`). Previous release: `2.2.0` (`v2.2.0`); `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`). Version 2.2 adds the independent Plan Fidelity mode described below, and Version 2.2.1 corrects Antigravity global skill discovery while retaining legacy-path compatibility.
 
 ## Version 2 command contract
 
@@ -67,6 +67,7 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `tests/fixtures/takeover/`: shared raw fixture templates plus one manifest for each directed platform pair.
 - `test-plan-fidelity.ps1`: validate, prepare, and check the six-direction Plan Fidelity matrix.
 - `tests/fixtures/plan-fidelity/`: generic verbatim-preservation and unconfirmed-draft fixtures.
+- `test-installation.ps1`: isolated Windows regression for installation paths, backups, unrelated-skill preservation, verification, and idempotency.
 - `PROJECT_CONTEXT.schema.json`: machine-readable Version 1 contract for optional project context.
 - `PROJECT_CONTEXT.example.yaml`: documented repository-root configuration example.
 - `VERSION`: current source version; release tags identify published baselines.
@@ -86,12 +87,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\ins
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The installer preserves unrelated global instructions, appends the marked global-preferences block when it is absent, replaces only that block when it already exists, removes duplicate managed blocks, and creates timestamped backups before changing an existing file. Start new sessions in all three platforms afterward.
+The installer preserves unrelated global instructions and skills, installs Antigravity skills into the current `~/.gemini/config/skills/` discovery root and the legacy `~/.gemini/antigravity/skills/` compatibility root, and creates timestamped backups before changing an existing file. Start new sessions in all three platforms afterward.
 
 Alternatively, open Codex on the new machine and paste this single request:
 
 ```text
-Authenticate GitHub as aaabot1205 if needed, clone the private repository aaabot1205/wrap-up-bootstrap to C:\dev\wrap-up-bootstrap, run its install.ps1, verify all six skill installations and three global preference rule files, then report any platform that needs a restart.
+Authenticate GitHub as aaabot1205 if needed, clone the private repository aaabot1205/wrap-up-bootstrap to C:\dev\wrap-up-bootstrap, run its install.ps1, verify all eight current and compatibility skill installations and three global preference rule files, then report any platform that needs a restart.
 ```
 
 ## Update an existing Windows installation
@@ -115,7 +116,7 @@ The updater fetches the configured upstream, permits only a fast-forward, refuse
 
 目前實作已可正常使用。其餘可靠性、安全性、專案脈絡與作業系統支援改善，均整理於 `IMPLEMENTATION_PLAN.md`，可在不影響現有穩定基準的前提下逐步完成。
 
-目前 release：`2.2.0`（`v2.2.0`）。前一個 release：`2.1.0`（`v2.1.0`）；`v2.0.0` 仍是第一個 Version 2 release，而可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。Version 2.2 新增下文說明的獨立 Plan Fidelity 模式。
+目前 release：`2.2.1`（`v2.2.1`）。前一個 release：`2.2.0`（`v2.2.0`）；`v2.1.0` 仍是雙語全域偏好 release，`v2.0.0` 仍是第一個 Version 2 release，而可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。Version 2.2 新增下文說明的獨立 Plan Fidelity 模式，Version 2.2.1 則修正 Antigravity 全域 skill discovery，並保留舊路徑相容性。
 
 ## Version 2 指令契約
 
@@ -175,6 +176,7 @@ Plan Fidelity matrix 另行涵蓋相同六個方向。`test-plan-fidelity.ps1` �
 - `tests/fixtures/takeover/`：共用原始 fixture templates，以及每個平台方向的一份 manifest。
 - `test-plan-fidelity.ps1`：驗證、準備及檢查六方向 Plan Fidelity matrix。
 - `tests/fixtures/plan-fidelity/`：通用的逐字保存與 unconfirmed-draft fixtures。
+- `test-installation.ps1`：隔離的 Windows installation regression，涵蓋安裝路徑、備份、無關 skill 保存、驗證與 idempotency。
 - `PROJECT_CONTEXT.schema.json`：選用 project context Version 1 契約的 machine-readable schema。
 - `PROJECT_CONTEXT.example.yaml`：附有說明的 repository-root 設定範例。
 - `VERSION`：目前 source version；release tags 用來標示已發布的 baselines。
@@ -194,12 +196,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\ins
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-Installer 會保留無關的全域 instructions；managed global-preferences block 不存在時會附加在檔案尾端，已存在時只替換該 block，並移除重複的 managed blocks。變更既有檔案前會先建立附 timestamp 的備份。完成後請在三個平台開始新 session 或重新啟動。
+Installer 會保留無關的全域 instructions 與 skills，將 Antigravity skills 安裝至現行 `~/.gemini/config/skills/` discovery root 及舊版 `~/.gemini/antigravity/skills/` 相容路徑，並在變更既有檔案前建立附 timestamp 的備份。完成後請在三個平台開始新 session 或重新啟動。
 
 也可以在新電腦開啟 Codex，貼上以下單一要求：
 
 ```text
-需要時先以 aaabot1205 驗證 GitHub，將 private repository aaabot1205/wrap-up-bootstrap clone 到 C:\dev\wrap-up-bootstrap，執行 install.ps1，驗證六個 skill installations 與三份 global preference rule files，最後報告哪些平台需要重新啟動。
+需要時先以 aaabot1205 驗證 GitHub，將 private repository aaabot1205/wrap-up-bootstrap clone 到 C:\dev\wrap-up-bootstrap，執行 install.ps1，驗證八個現行及相容 skill installations 與三份 global preference rule files，最後報告哪些平台需要重新啟動。
 ```
 
 ## 更新既有 Windows 安裝

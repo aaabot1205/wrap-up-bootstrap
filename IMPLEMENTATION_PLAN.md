@@ -220,7 +220,7 @@ Extend the portable global preferences beyond response language so GitHub reposi
 
 ## Phase 5: Cross-operating-system distribution
 
-Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.2.0` release.
+Status: Deferred until there is concrete macOS or Linux demand; not a blocker for the Windows-scoped `v2.2.1` release.
 
 ### Goal
 
@@ -269,14 +269,44 @@ Allow an explicitly requested closeout to preserve a user-confirmed plan exactly
 - All six fresh-agent receiver-contract fixtures passed: three confirmed-source cases matched character-for-character, and three unconfirmed-only cases preserved the baseline body and recorded blockers.
 - Global installation passed live verification. Commit `7a36d71` published the implementation, and the `2.2.0` release records the feature with annotated tag `v2.2.0`.
 
+## Version 2.2.1: Antigravity global discovery correction
+
+Status: Complete, verified, globally installed, and released in `2.2.1` on 2026-09-09.
+
+### Goal
+
+Install the skills where current Antigravity global discovery loads them while retaining compatibility with older Antigravity installations.
+
+### Deliverables
+
+- Install both skills into current `~/.gemini/config/skills/` and legacy `~/.gemini/antigravity/skills/` roots.
+- Verify both Antigravity roots independently and continue preserving unrelated global skills and rules.
+- Add an isolated installation regression whose expected Antigravity paths are independent of installer routing.
+- Update installation, disable, maintenance, status, handoff, and release documentation.
+
+### Acceptance criteria
+
+- A pre-install live verifier fails when only legacy Antigravity copies exist.
+- An isolated installation populates both roots, matches canonical hashes, preserves unrelated skills, backs up changed managed files, passes verification, and is unchanged on its second run.
+- Live global installation produces matching current and legacy copies and passes the complete verifier.
+- Both Skill Creator validations, PowerShell parsing, applicable regression validators, bilingual README parity, and `git diff --check` pass before release.
+
+### Outcome
+
+- The corrected verifier reproduced the original gap with six missing current-path files before installation, while the isolated installation regression passed the full new contract.
+- A clean isolated `2.2.0` client fast-forwarded through `update.ps1` to the `2.2.1` candidate, installed the current Antigravity copies without changing an unrelated skill, reported the version transition, and passed verification.
+- Global installation populated all eight current and compatibility skill copies. Live verification reported 27 passes with no warnings or failures, all eight `SKILL.md` hashes match canonical sources, and a second live installation changed no managed file, hash, or timestamp.
+- A restarted or new Antigravity session remains the first post-release runtime observation because already-running sessions cache their skill inventory.
+
 ## Recommended delivery order
 
 1. Preserve the completed `v1.0.0` Phase 0 baseline.
 2. Preserve annotated tag `v2.0.0` as the Version 2 release point containing the completed Phase 1 through Phase 4 work.
 3. Preserve annotated tag `v2.1.0` as the bilingual GitHub README global-preference release point and observe it in normal use.
 4. Preserve annotated tag `v2.2.0` as the Plan Fidelity release point after its canonical and cross-platform checks passed.
-5. Start Phase 5 when macOS or Linux use becomes concrete.
+5. Preserve annotated tag `v2.2.1` as the Antigravity global discovery correction after isolated and live installation checks passed.
+6. Start Phase 5 when macOS or Linux use becomes concrete.
 
 ## Next implementation action
 
-Observe the `v2.2.0` Plan Fidelity release in normal use, and start Phase 5 only when macOS or Linux distribution has a concrete user need.
+Confirm `wrap-up` and `bootstrap` in a restarted or new Antigravity session, and start Phase 5 only when macOS or Linux distribution has a concrete user need.

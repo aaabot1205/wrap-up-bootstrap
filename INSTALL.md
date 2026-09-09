@@ -11,7 +11,8 @@ This bundle contains two skills based on the open `SKILL.md` format:
 | --- | --- |
 | Codex | `~/.agents/skills/<skill-name>/` |
 | Claude Code | `~/.claude/skills/<skill-name>/` |
-| Google Antigravity IDE | `~/.gemini/antigravity/skills/<skill-name>/` |
+| Google Antigravity IDE | `~/.gemini/config/skills/<skill-name>/` |
+| Google Antigravity IDE legacy compatibility | `~/.gemini/antigravity/skills/<skill-name>/` |
 
 Copy both `wrap-up/` and `bootstrap/` folders into each platform directory. Keep each `SKILL.md` directly inside its named folder.
 
@@ -25,7 +26,7 @@ gh repo clone aaabot1205/wrap-up-bootstrap C:\dev\wrap-up-bootstrap
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\install.ps1
 ```
 
-`install.ps1` installs both skills and merges the managed global-preferences block into:
+`install.ps1` installs both skills into the current Antigravity discovery root and the legacy compatibility root, and merges the managed global-preferences block into:
 
 - Codex: `~/.codex/AGENTS.md`
 - Claude Code: `~/.claude/CLAUDE.md`
@@ -41,9 +42,17 @@ Run:
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\verify.ps1
 ```
 
-The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the canonical global-preference content, the evidence and Plan Fidelity contracts, both six-direction fixture matrices, all six installed skill entries, every canonical-to-installed file hash, and exactly one matching managed global-preferences block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session. During canonical-only development, add `-CanonicalOnly` to skip global installation and managed-rule checks without modifying installed copies.
+The verifier checks the current semantic version, both canonical skill frontmatter blocks and required trigger terms, OpenAI UI metadata, the canonical global-preference content, the evidence and Plan Fidelity contracts, both six-direction fixture matrices, all eight current and compatibility installed skill entries, every canonical-to-installed file hash, and exactly one matching managed global-preferences block per platform. It exits nonzero on failure and reports which platforms may need a restart or new session. During canonical-only development, add `-CanonicalOnly` to skip global installation and managed-rule checks without modifying installed copies.
 
 Use `-UserRoot <path>` with `install.ps1`, `verify.ps1`, or `update.ps1` to operate on an isolated profile during testing.
+
+After changing installation behavior, run the isolated installation regression:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-installation.ps1
+```
+
+It independently requires the current and legacy Antigravity paths, checks all installed hashes, preserves unrelated skills, exercises changed-file backups, runs the verifier, and rejects any second-run file or timestamp change.
 
 ## Safely update an existing checkout
 
@@ -169,4 +178,4 @@ Claude Code supports `skillOverrides`. Merge this key into `~/.claude/settings.j
 
 Set a value to `"on"` or remove it to re-enable that skill. The `/skills` menu can also change visibility interactively.
 
-Antigravity's public standalone-skill documentation does not currently define a persistent per-skill `enabled` field. Rename `SKILL.md` to `SKILL.md.disabled`, move the named skill folder outside `~/.gemini/antigravity/skills/`, or delete the installed copy. Keep this source bundle if you may want to restore it later.
+Antigravity's standalone-skill documentation does not currently define a persistent per-skill `enabled` field. Rename `SKILL.md` to `SKILL.md.disabled`, move the named skill folder outside both `~/.gemini/config/skills/` and `~/.gemini/antigravity/skills/`, or delete both installed copies. Keep this source bundle if you may want to restore it later.

@@ -402,6 +402,18 @@ function Test-RegressionArtifacts {
         Add-Failure "Plan Fidelity regression runner is missing: $PlanRegressionScript"
     }
 
+    $InstallationRegressionScript = Join-Path $ProjectRoot 'test-installation.ps1'
+    if (-not (Test-Path -LiteralPath $InstallationRegressionScript -PathType Leaf)) {
+        Add-Failure "Installation regression runner is missing: $InstallationRegressionScript"
+    } else {
+        $InstallationRegressionText = Get-Content -Raw -Encoding UTF8 -LiteralPath $InstallationRegressionScript
+        foreach ($RequiredPath in @('.gemini\config\skills', '.gemini\antigravity\skills')) {
+            if ($InstallationRegressionText.IndexOf($RequiredPath, [System.StringComparison]::Ordinal) -lt 0) {
+                Add-Failure "Installation regression does not independently assert Antigravity path '$RequiredPath'."
+            }
+        }
+    }
+
     $FixtureRoot = Join-Path $ProjectRoot 'tests\fixtures\takeover'
     $ExpectedFixtures = [ordered]@{
         'codex-to-claude' = @('Codex', 'Claude Code')
@@ -473,7 +485,7 @@ function Test-RegressionArtifacts {
     }
 
     if ($script:FailureCount -eq $FailureCountBefore) {
-        Add-Pass 'Evidence, Plan Fidelity contracts, and both six-direction fixture matrices are present.'
+        Add-Pass 'Evidence, Plan Fidelity, installation, and both six-direction fixture regression contracts are present.'
     }
 }
 
@@ -522,16 +534,24 @@ if ($CanonicalOnly) {
         },
         [pscustomobject]@{
             Name = 'Antigravity'
-            SkillRoot = Join-Path $ResolvedUserRoot '.gemini\antigravity\skills'
+            SkillRoot = Join-Path $ResolvedUserRoot '.gemini\config\skills'
             RuleSource = Join-Path $ProjectRoot 'global-rules\GEMINI.md'
             RuleDestination = Join-Path $ResolvedUserRoot '.gemini\GEMINI.md'
+        },
+        [pscustomobject]@{
+            Name = 'Antigravity legacy compatibility'
+            SkillRoot = Join-Path $ResolvedUserRoot '.gemini\antigravity\skills'
+            RuleSource = $null
+            RuleDestination = $null
         }
     )
     foreach ($Platform in $Platforms) {
         foreach ($SkillName in @('wrap-up', 'bootstrap')) {
             Test-SkillInstallation -PlatformName $Platform.Name -SkillRoot $Platform.SkillRoot -SkillName $SkillName
         }
-        Test-ManagedRule -PlatformName $Platform.Name -SourcePath $Platform.RuleSource -DestinationPath $Platform.RuleDestination
+        if ($null -ne $Platform.RuleSource) {
+            Test-ManagedRule -PlatformName $Platform.Name -SourcePath $Platform.RuleSource -DestinationPath $Platform.RuleDestination
+        }
     }
     Write-Output '[INFO] Codex, Claude Code, and Antigravity may require a restart or new session after skill installation or updates.'
 }

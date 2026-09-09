@@ -1,14 +1,15 @@
 # Status
 
-Last updated: 2026-09-08
+Last updated: 2026-09-09
 
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.2.0` is the current release, identified by annotated tag `v2.2.0`; `v2.1.0` is the previous release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
+- Version `2.2.1` is the current release, identified by annotated tag `v2.2.1`; `v2.2.0` is the previous release, `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
+- Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.
 - Phase 1 and Phase 2 are implemented and verified in `2.0.0`, providing automated verification, guarded updates, and the optional project-context contract.
 - Phase 3 is implemented and verified in `2.0.0`, activating the accepted explicit-publishing contract.
 - Phase 4 is implemented and verified in `2.0.0`, adding evidence-qualified records and the complete six-direction takeover regression matrix.
@@ -19,11 +20,11 @@ Last updated: 2026-09-08
 - Plan Fidelity is released in `2.2.0`: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
-- Global copies are installed for Codex, Claude Code, and Antigravity.
-- The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all three global installations.
+- Global copies are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
+- The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all eight global skill copies.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
-- `install.ps1` installs or updates all six global skill copies and all three global rule files on Windows while preserving unrelated content.
+- `install.ps1` installs or updates all eight current and compatibility global skill copies and all three global rule files on Windows while preserving unrelated content.
 - `verify.ps1` checks version syntax, skill frontmatter and trigger descriptions, OpenAI UI metadata, canonical global-preference content, evidence and Plan Fidelity contracts, both six-direction fixture matrices, all global entry files and hashes, managed rules, and restart guidance. `-CanonicalOnly` supports source validation without inspecting installed copies.
 - `update.ps1` allows only clean, upstream-backed, non-ahead fast-forward updates before backed-up installation and verification.
 - `install.ps1` reports every changed-file backup and repairs duplicate managed rules to one canonical block without removing unrelated content.
@@ -33,6 +34,7 @@ Last updated: 2026-09-08
 - Decision D-003 defines `Verified`, `Observed`, `Assumption`, `Not run`, and `Blocked`; historical checks remain observed evidence until rerun.
 - `test-regressions.ps1` validates, prepares, and checks isolated takeover fixtures for every directed pair among Codex, Claude Code, and Antigravity.
 - `test-plan-fidelity.ps1` validates, prepares, and checks generic confirmed-source and unconfirmed-only fixtures for the same six directed pairs using source-derived character-for-character comparisons.
+- `test-installation.ps1` independently asserts both Antigravity discovery generations in an isolated user root and checks canonical hashes, unrelated-skill preservation, backups, verifier success, and second-run idempotency.
 
 ## Verification
 
@@ -76,7 +78,7 @@ Last updated: 2026-09-08
 ## Remaining work
 
 - Phase 5: add macOS/Linux distribution when there is a concrete need.
-- Observe the `v2.2.0` Plan Fidelity release in normal use. The six-direction isolated behavior matrix passed; a new host-native Claude Code or Antigravity observation remains optional.
+- Observe `wrap-up` and `bootstrap` discovery from `~/.gemini/config/skills/` in a restarted Antigravity or a new Antigravity session.
 - Recheck official platform discovery and disable locations when any host changes its skill specification.
 
 ## Plan Fidelity development closeout
@@ -102,3 +104,16 @@ Last updated: 2026-09-08
 - `Verified`: `VERSION` is `2.2.0`; both Skill Creator validations passed; all five PowerShell scripts passed AST parsing; live `verify.ps1` reported 23 passes with no warnings or failures; both regression definitions and the six-direction Plan Fidelity result check passed; installed skill hashes match canonical sources; README bilingual release parity and `git diff --check` passed.
 - `Not run`: new host-native behavior sessions were not repeated because the release increment changes only version and release documentation after the already verified and installed `7a36d71` implementation.
 - `Blocked`: none for the authorized `2.2.0` release commit, annotated tag, and pushes.
+
+## Version 2.2.1 Antigravity discovery closeout
+
+- Date: 2026-09-09
+- `Observed`: the installed Antigravity customization guide identifies `~/.gemini/config/` as the global customization root and `skills/<name>/SKILL.md` as the skill layout. The `2.2.0` installer and verifier instead agreed on the legacy `~/.gemini/antigravity/skills/` path, which allowed verification to pass while current Antigravity discovery failed.
+- `Verified`: before global installation, the corrected live verifier reported six missing-file failures only for `~/.gemini/config/skills/{wrap-up,bootstrap}` while accepting the legacy copies. This reproduces the discovery gap and proves the new verifier no longer substitutes the legacy root for the current one.
+- `Verified`: `test-installation.ps1` populated the current and legacy Antigravity roots in an isolated user profile, matched all canonical files, preserved unrelated skills, backed up stale managed files, passed the verifier, and made no file, hash, or timestamp change on its second installation.
+- `Verified`: an isolated clean `2.2.0` client used the unchanged guarded `update.ps1` workflow to fast-forward to the `2.2.1` candidate, reported the exact version transition, installed both current-path Antigravity skills, preserved an unrelated current-path skill, and passed the updated verifier.
+- `Verified`: both Skill Creator validations passed; all six PowerShell scripts parsed successfully; `verify.ps1 -CanonicalOnly`, both six-direction regression definition validators, README bilingual parity, and `git diff --check` passed.
+- `Verified`: authorized global installation populated `C:\Users\User\.gemini\config\skills\{wrap-up,bootstrap}` while retaining the legacy copies. Live `verify.ps1` reported 27 passes with no warnings or failures, all eight installed `SKILL.md` hashes match canonical sources, and a second live installation changed no managed file, hash, or timestamp.
+- `Not run`: host-native Antigravity discovery after reload was not executed because the already-running IDE must be restarted or begin a new session to refresh its skill inventory.
+- `Observed`: the user explicitly authorized the `2.2.1` implementation, tests, global installation, scoped release commit, annotated `v2.2.1` tag, and pushes to `main` on `origin`.
+- `Blocked`: none for the authorized release. The remaining runtime confirmation is an observation step after Antigravity reload, not a release blocker because the current installed path is directly asserted by Antigravity's bundled customization contract and the isolated/live installation checks.
