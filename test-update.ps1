@@ -20,8 +20,14 @@ function Assert-Condition {
 function Invoke-Git {
     param([string]$Repository, [string[]]$Arguments)
 
-    $Output = @(& git -C $Repository @Arguments 2>&1)
-    $ExitCode = $LASTEXITCODE
+    $PreviousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $Output = @(& git -C $Repository @Arguments 2>&1)
+        $ExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $PreviousErrorActionPreference
+    }
     if ($ExitCode -ne 0) {
         $Detail = ($Output | ForEach-Object { $_.ToString() }) -join [Environment]::NewLine
         throw "git $($Arguments -join ' ') failed with exit code ${ExitCode}: $Detail"
@@ -47,9 +53,9 @@ function Invoke-ClientScript {
 }
 
 function Assert-SkillTreeMatches {
-    param([string]$SkillName, [string]$DestinationRoot)
+    param([string]$SkillName, [string]$SourceRoot, [string]$DestinationRoot)
 
-    $SourceDirectory = Join-Path $ProjectRoot $SkillName
+    $SourceDirectory = Join-Path $SourceRoot $SkillName
     $DestinationDirectory = Join-Path $DestinationRoot $SkillName
     foreach ($SourceFile in Get-ChildItem -LiteralPath $SourceDirectory -Recurse -File) {
         $RelativePath = $SourceFile.FullName.Substring($SourceDirectory.Length).TrimStart('\')
@@ -68,8 +74,9 @@ try {
     $IsolatedUserRoot = Join-Path $TestRoot 'userroot'
 
     $HeadCommit = (Invoke-Git -Repository $ProjectRoot -Arguments @('rev-parse', 'HEAD') | Select-Object -First 1).ToString().Trim()
+    $NewVersion = ((Invoke-Git -Repository $ProjectRoot -Arguments @('show', 'HEAD:VERSION')) -join "`n").Trim()
 
-    Write-Output 'Selecting the most recent prior release tag as the old state to upgrade from...'
+    Write-Output 'Selecting the most recent prior release tag with a different version as the old state to upgrade from...'
     $TagLines = @(Invoke-Git -Repository $ProjectRoot -Arguments @('for-each-ref', '--sort=-creatordate', '--format=%(refname:short) %(objectname) %(*objectname)', 'refs/tags'))
     $OldRef = $null
     foreach ($Line in $TagLines) {
@@ -84,12 +91,13 @@ try {
         } catch {
             $IsAncestor = $false
         }
-        if ($IsAncestor) {
-            $OldRef = $TagName
-            break
-        }
+        if (-not $IsAncestor) { continue }
+        $CandidateVersion = ((Invoke-Git -Repository $ProjectRoot -Arguments @('show', "${TagName}:VERSION")) -join "`n").Trim()
+        if ($CandidateVersion -ceq $NewVersion) { continue }
+        $OldRef = $TagName
+        break
     }
-    Assert-Condition (-not [string]::IsNullOrWhiteSpace($OldRef)) 'No prior tag was found to use as the old release state.'
+    Assert-Condition (-not [string]::IsNullOrWhiteSpace($OldRef)) 'No prior tag with a different version was found to use as the old release state.'
     Write-Output "Using '$OldRef' as the prior release state."
 
     Write-Output 'Creating an isolated bare origin seeded at the old release...'
@@ -108,7 +116,6 @@ try {
     Assert-Condition ($SeedResult.ExitCode -eq 0) "Seeding the isolated root with the old release failed: $($SeedResult.Output -join [Environment]::NewLine)"
 
     $OldVersion = ((Invoke-Git -Repository $ProjectRoot -Arguments @('show', "${OldRef}:VERSION")) -join "`n").Trim()
-    $NewVersion = ((Invoke-Git -Repository $ProjectRoot -Arguments @('show', 'HEAD:VERSION')) -join "`n").Trim()
     Assert-Condition ($OldVersion -cne $NewVersion) "Chosen old ref '$OldRef' has the same VERSION as HEAD ($NewVersion); cannot exercise a real version transition."
 
     $SkillRoots = @(
@@ -141,7 +148,7 @@ try {
             }
         }
         foreach ($Root in $SkillRoots) {
-            Assert-SkillTreeMatches -SkillName $SkillName -DestinationRoot $Root
+            Assert-SkillTreeMatches -SkillName $SkillName -SourceRoot $ClientPath -DestinationRoot $Root
         }
     }
 

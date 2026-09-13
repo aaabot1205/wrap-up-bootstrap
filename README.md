@@ -66,6 +66,8 @@ See `INSTALL.md` for installation, invocation, disabling, and re-enabling instru
 - `test-regressions.ps1`: validate, prepare, and check the six-direction cross-platform takeover matrix.
 - `tests/fixtures/takeover/`: shared raw fixture templates plus one manifest for each directed platform pair.
 - `test-plan-fidelity.ps1`: validate, prepare, and check the six-direction Plan Fidelity matrix.
+- `test-skill-packaging.ps1`: copy each skill independently, resolve its linked references, and reject a missing required reference.
+- `wrap-up/references/`: conditionally loaded project-context, Plan Fidelity, and publishing contracts packaged with `wrap-up`.
 - `tests/fixtures/plan-fidelity/`: generic verbatim-preservation and unconfirmed-draft fixtures.
 - `test-installation.ps1`: isolated Windows regression for installation paths, backups, unrelated-skill preservation, verification, and idempotency.
 - `PROJECT_CONTEXT.schema.json`: machine-readable Version 1 contract for optional project context.
@@ -175,6 +177,8 @@ Plan Fidelity matrix 另行涵蓋相同六個方向。`test-plan-fidelity.ps1` �
 - `test-regressions.ps1`：驗證、準備及檢查六方向 cross-platform takeover matrix。
 - `tests/fixtures/takeover/`：共用原始 fixture templates，以及每個平台方向的一份 manifest。
 - `test-plan-fidelity.ps1`：驗證、準備及檢查六方向 Plan Fidelity matrix。
+- `test-skill-packaging.ps1`：獨立複製每個 skill、解析其 references，並拒絕缺少必要 reference 的 package。
+- `wrap-up/references/`：隨 `wrap-up` 封裝並按條件載入的 project-context、Plan Fidelity 與 publishing contracts。
 - `tests/fixtures/plan-fidelity/`：通用的逐字保存與 unconfirmed-draft fixtures。
 - `test-installation.ps1`：隔離的 Windows installation regression，涵蓋安裝路徑、備份、無關 skill 保存、驗證與 idempotency。
 - `PROJECT_CONTEXT.schema.json`：選用 project context Version 1 契約的 machine-readable schema。

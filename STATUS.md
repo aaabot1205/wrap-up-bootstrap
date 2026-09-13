@@ -1,12 +1,21 @@
 # Status
 
-Last updated: 2026-09-09
+Last updated: 2026-09-13
+
+## Active implementation: skill continuity (2026-09-13)
+
+- `Observed`: [SKILL_CONTINUITY_PROPOSAL.md](SKILL_CONTINUITY_PROPOSAL.md) is the approved IP-01 through IP-06 architecture record; tickets are saved under `.scratch/skill-continuity/issues/` and the earlier architecture-only boundary remains historical.
+- `Verified`: takeover and Plan Fidelity matrices each passed all six directions; six fresh bootstrap receivers preserved complete snapshots; explicit publish advanced only an isolated local bare remote with the authorized three-file commit.
+- `Verified`: Skill Creator, canonical verification, packaging, isolated installation, AST, and diff checks pass. The updater same-version failure was reproduced and its regression now selects the latest reachable different-version tag.
+- `Not run`: global-copy synchronization, host-native discovery refresh, version release, tag, and push remain deferred.
+- `Blocked`: none. The reviewed local implementation commit is complete.
+- Next action: await later authorization for global installation, version release, tag, or push. Historical entries below remain historical unless rerun.
 
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.2.1` is the current release, identified by annotated tag `v2.2.1`; `v2.2.0` is the previous release, `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
+- Version `2.3.0` is the current release, identified by annotated tag `v2.3.0`; `v2.2.1` is the previous release, `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.
@@ -21,8 +30,8 @@ Last updated: 2026-09-09
 - Plan Fidelity is released in `2.2.0`: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
-- Global copies are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
-- The canonical working copy is `C:\dev\wrap-up-bootstrap`; its skill files are synchronized with all eight global skill copies.
+- Released `2.3.0` copies are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
+- The canonical working copy is `C:\dev\wrap-up-bootstrap`; this unreleased continuity candidate is not yet synchronized to the eight global skill copies.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
 - `install.ps1` installs or updates all eight current and compatibility global skill copies and all three global rule files on Windows while preserving unrelated content.
@@ -128,6 +137,17 @@ Last updated: 2026-09-09
 - `Verified`: `VERSION` is `2.2.0`; both Skill Creator validations passed; all five PowerShell scripts passed AST parsing; live `verify.ps1` reported 23 passes with no warnings or failures; both regression definitions and the six-direction Plan Fidelity result check passed; installed skill hashes match canonical sources; README bilingual release parity and `git diff --check` passed.
 - `Not run`: new host-native behavior sessions were not repeated because the release increment changes only version and release documentation after the already verified and installed `7a36d71` implementation.
 - `Blocked`: none for the authorized `2.2.0` release commit, annotated tag, and pushes.
+
+## Skill continuity candidate
+
+- Date: 2026-09-13
+- `Observed`: implementation began from `main` at fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a`; approved IP-01 through IP-06 tickets are stored under `.scratch/skill-continuity/issues/`.
+- `Verified`: default wrap-up and fresh bootstrap completed all six directed takeover fixtures; the checker reported 6 passes and every receiver preserved the complete files and Git snapshot.
+- `Verified`: Plan Fidelity completed all six directed fixtures; confirmed bodies matched source by ordinal equality, unconfirmed bodies stayed unchanged, and a fresh replay preserved one provenance preface and the plan hash.
+- `Verified`: explicit publish created one scoped commit and advanced a local bare `origin/main`; default and plan fixtures did not publish.
+- `Observed`: progressive disclosure reduced the default wrap-up entry from 17,251 to 6,046 characters; full-package size is 10,347 characters. Runtime token accounting was unavailable, so no token claim is made.
+- `Not run`: real global installation, installed-copy hash synchronization, host-native discovery refresh, version release, tag, and push are deferred.
+- `Blocked`: none. Repository implementation and its local commit are complete.
 
 ## Version 2.2.1 Antigravity discovery closeout
 

@@ -6,6 +6,10 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
+Current implementation phase (2026-09-13): [SKILL_CONTINUITY_PROPOSAL.md](SKILL_CONTINUITY_PROPOSAL.md) is the approved architecture record for IP-01 through IP-06. Tickets are complete under `.scratch/skill-continuity/issues/`, the candidate passed full-scope Standards and Spec review, and [SKILL_CONTINUITY_EVIDENCE.md](SKILL_CONTINUITY_EVIDENCE.md) records the isolated results. The original `IMPLEMENTATION_PLAN.md` body remains preserved with an appended current-work record.
+
+`Verified`: from fixed point `a902c18`, both six-direction behavior matrices, six receiver snapshots, Skill Creator, canonical verification, isolated packaging/installation, and the corrected updater regression passed. `Not run`: live global synchronization and hashes, host-native three-product runs, version bump, tag, and push. Earlier release entries below remain historical `Observed` evidence.
+
 Version `2.3.0`, identified by annotated tag `v2.3.0`, is the current release. It adds Decision D-006 (a Plan Fidelity provenance preface convention, a closeout-pruning allowance, and an environment-specific-literal conflict subtype in `bootstrap`) and corrects this file's own "Installed global copies" wording, which had hardcoded a literal username instead of resolving to the current machine. `v2.2.1` remains the release that corrected Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
 
 Since that release, Decision D-007 added `test-update.ps1`: an isolated dry-run regression for `update.ps1` (bare-repo origin, client, and user root, all disposable). It is a canonical-repo improvement, not a release -- `VERSION` was not bumped, because `install.ps1` never installs test scripts anywhere.
@@ -177,4 +181,16 @@ Version 2.3.0's upgrade path was then verified live on this machine: `update.ps1
 
 ## Next action
 
-None outstanding from this session. Start Phase 5 only when macOS or Linux distribution has a concrete user need; run `test-update.ps1` (and, for continuity/evidence changes, the two six-direction fixture matrices) before the next release that touches `install.ps1`, `update.ps1`, or either skill.
+The reviewed 35-file local implementation commit is complete and was not pushed. Standards and Spec reviews from fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a` report no remaining P0-P3 findings. Approved tickets are stored in `.scratch/skill-continuity/issues/`; detailed results are in `SKILL_CONTINUITY_EVIDENCE.md`. Await later authorization for global installation, version release, tag, or push.
+
+## Skill continuity implementation handoff
+
+- Date: 2026-09-13
+- `Work`: IP-01 through IP-06 implement the approved continuity proposal while preserving the existing plan body and all six platform directions.
+- `Verified`: takeover producers passed 6/6; six fresh bootstrap receivers recovered the same unfinished acceptance and external next action while preserving complete snapshots.
+- `Verified`: Plan Fidelity passed 6/6 and replay was byte-stable with one provenance preface. Explicit publish committed and pushed exactly three authorized paths to a local bare remote.
+- `Verified`: conditional references are independently packageable and missing-reference rejection is tested; updater regression selects the latest reachable prior tag with a different `VERSION`.
+- `Observed`: candidate behavior exists only in the canonical repository. Installed global copies remain at the released version.
+- `Not run`: global synchronization, live installed-copy verification, host-native three-product runs, version bump, tag, remote push, and release.
+- `Review`: Standards and Spec reviews covered all 35 staged files from fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a`; no P0-P3 finding remains.
+- `Next action`: await later authorization for global installation, version release, tag, or push.

@@ -109,6 +109,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\tes
 
 Three directions provide an exact, explicitly confirmed plan source; three provide only an unconfirmed AI draft. The checker derives expected plan text from each fixture's source file, compares it character-for-character with the bounded canonical plan body, rejects draft content, requires separate evidence records, and confirms that plan mode did not stage, commit, or create replacement files.
 
+Validate that each directory-based skill remains independently installable and that every Markdown reference stays inside its package:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\test-skill-packaging.ps1
+```
+
+If this reports a missing reference, restore the named file under the same skill directory before installation. A repository-root shared file cannot satisfy an independently copied skill package.
+
 ## Optional project context contract
 
 Projects may add a root-level `PROJECT_CONTEXT.yaml`; it is never required. Start from `PROJECT_CONTEXT.example.yaml` and validate the allowed shape against `PROJECT_CONTEXT.schema.json`.

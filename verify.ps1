@@ -367,17 +367,38 @@ function Test-RegressionArtifacts {
         }
     }
 
-    $WrapUpText = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md')
-    foreach ($RequiredPattern in @(
-        '(?i)standalone, case-insensitive `plan` token',
-        '(?i)Plan Fidelity and publishing as independent flags',
-        '(?i)exact text the user explicitly confirmed',
-        '(?i)Do not summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement',
-        '(?i)progress, verification evidence, status changes, and commentary outside that body',
-        '(?i)exact confirmed source.*`Blocked`'
-    )) {
-        if ($WrapUpText -notmatch $RequiredPattern) {
-            Add-Failure "wrap-up Plan Fidelity contract is missing pattern '$RequiredPattern'."
+    $WrapUpRoot = Join-Path $ProjectRoot 'wrap-up'
+    $WrapUpText = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $WrapUpRoot 'SKILL.md')
+    foreach ($ModeContract in @(
+        'Parse `plan`, `publish`, and `ncp` only as standalone, case-insensitive tokens.',
+        'Remove recognized mode tokens before treating remaining text as additional instructions.',
+        '`plan publish` combines the two independent branches.',
+        '`publish` plus `ncp` stays non-publishing until the user resolves the conflict.')) {
+        if (-not $WrapUpText.Contains($ModeContract)) {
+            Add-Failure "wrap-up entry is missing mode contract: $ModeContract"
+        }
+    }
+    $RequiredReferences = [ordered]@{
+        'references/project-context.md' = @('schema_version: 1', 'skill-default', 'explicit', 'never')
+        'references/plan-fidelity.md' = @('case-insensitive `plan`', 'exact text the user explicitly confirmed', 'ordinal character equality', '`Blocked`')
+        'references/publishing.md' = @('explicit path', 'mandatory', 'Never force-push', 'remote')
+    }
+    foreach ($Reference in $RequiredReferences.GetEnumerator()) {
+        $ReferencePath = Join-Path $WrapUpRoot $Reference.Key
+        $EscapedLink = [regex]::Escape("($($Reference.Key.Replace('\', '/')))" )
+        if ($WrapUpText -notmatch $EscapedLink) {
+            Add-Failure "wrap-up does not link required reference '$($Reference.Key)'."
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $ReferencePath -PathType Leaf)) {
+            Add-Failure "wrap-up required reference is missing: $ReferencePath"
+            continue
+        }
+        $ReferenceText = Get-Content -Raw -Encoding UTF8 -LiteralPath $ReferencePath
+        foreach ($RequiredFragment in $Reference.Value) {
+            if ($ReferenceText.IndexOf($RequiredFragment, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
+                Add-Failure "wrap-up reference '$($Reference.Key)' is missing required contract '$RequiredFragment'."
+            }
         }
     }
 
@@ -508,8 +529,8 @@ if (-not (Test-Path -LiteralPath $VersionPath -PathType Leaf)) {
     }
 }
 
-Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('wrap-up', 'plan', 'commit', 'push', 'publish', 'ncp')
-Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('bootstrap', 'initialize', 'resume', 'take over')
+Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('closing', 'handoff', 'plan', 'publishing')
+Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('starting', 'resuming', 'taking over', 'recovering context')
 Test-OpenAiMetadata -SkillName 'wrap-up' -MetadataPath (Join-Path $ProjectRoot 'wrap-up\agents\openai.yaml')
 Test-OpenAiMetadata -SkillName 'bootstrap' -MetadataPath (Join-Path $ProjectRoot 'bootstrap\agents\openai.yaml')
 Test-CanonicalGlobalRules

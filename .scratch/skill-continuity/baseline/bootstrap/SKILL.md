@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Use when starting or resuming a coding session, taking over existing project work, or recovering context before the next task.
+description: Bootstrap a new AI coding session by loading the current project's instructions, plans, status, specs, handoff, Git state, architecture, verification commands, risks, and next task across AI platforms. Use whenever the user says or types `bootstrap`, asks to initialize or resume project context, continue from a previous ChatGPT/Codex, Claude, Gemini, or Antigravity session, understand a repository before working, or take over the next task.
 ---
 
 # Bootstrap

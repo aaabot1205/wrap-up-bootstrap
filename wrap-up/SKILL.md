@@ -1,140 +1,79 @@
 ---
 name: wrap-up
-description: Close the current project phase and leave a reliable cross-session, cross-platform handoff. Use whenever the user says or types `wrap-up`, asks to wrap up, close out, finish a milestone, prepare a handoff, preserve a confirmed plan verbatim, synchronize project documentation, or explicitly publish completed work, including when ChatGPT/Codex, Claude, Gemini, or Antigravity created the existing files. By default it reconciles and verifies without Git publishing; `plan` enables Plan Fidelity, `publish` enables a safeguarded scoped commit and push, and `ncp` remains a non-publishing compatibility alias.
+description: Use when closing a project phase, preparing a cross-session handoff, preserving an explicitly confirmed plan, or publishing completed work.
 ---
 
 # Wrap Up
 
-Close the active phase completely and leave the repository safe for a new AI session.
-
-The user's current instructions take precedence over this workflow. Treat text after the skill name as invocation arguments. On hosts that expand it, the raw arguments are: `$ARGUMENTS`.
-
-## Preserve cross-platform continuity
-
-Treat every durable project document as project-owned, never AI-platform-owned. The current agent must continue from relevant files created or last updated by ChatGPT/Codex, Claude, Gemini, Antigravity, a human, or any other tool.
-
-- Discover documents by purpose, links, content, and repository conventions rather than by the current platform's preferred filename.
-- Update the existing source of truth in place, preserving its useful structure, terminology, decision history, and level of detail.
-- Do not ignore a file because another platform usually creates it. For example, Claude must continue an existing `AGENTS.md`, `STATUS.md`, spec, or handoff when it contains relevant project state; Codex and Antigravity must likewise continue relevant `CLAUDE.md` or `GEMINI.md` material.
-- Separate shared project facts from platform-specific behavioral instructions. Carry shared facts forward; apply platform-specific instructions only when they are applicable to the current host and scope.
-- Do not create a second platform-native status, spec, plan, or handoff merely because the current agent would normally use a different name.
-- When duplicate or conflicting documents already exist, determine the authoritative one from repository guidance, links, recency, accepted decisions, and live evidence. Reconcile all affected documents or record the unresolved ownership conflict explicitly.
+Close the active phase with durable, evidence-qualified project state. The user's current instructions take precedence. Treat text after the skill name as invocation arguments.
 
 ## Choose the mode
 
-- Default: reconcile project documentation and verify the completed work without staging, committing, or pushing.
-- `plan`: a standalone, case-insensitive `plan` token enables Plan Fidelity. Exclude the token from the user's additional instructions. It does not authorize publishing.
-- `publish`: a standalone, case-insensitive `publish` token explicitly requests the safeguarded scoped commit-and-push workflow. Exclude the token from the user's additional instructions.
-- `ncp`: retain as a case-insensitive compatibility alias for the non-publishing default. If `publish` and `ncp` conflict, remain non-publishing and report the conflict unless the user resolves it explicitly.
-- Treat Plan Fidelity and publishing as independent flags. `plan publish` enables both; `plan` alone and `plan ncp` remain non-publishing. Do not change the established behavior of invocations without `plan`.
-- Treat a direct current instruction to commit and push as publish authorization, and a direct instruction not to publish as non-publishing. Treat all other trailing text as additional priorities or constraints.
-- After locating the repository, apply a valid root `PROJECT_CONTEXT.yaml` Git policy: `skill-default` uses the Version 2 non-publishing default; `explicit` still requires current publish authorization; `never` blocks publishing even when `publish` is present unless the user explicitly says to override that policy. Never silently broaden publishing authority.
+Parse `plan`, `publish`, and `ncp` only as standalone, case-insensitive tokens. Remove recognized mode tokens before treating remaining text as additional instructions.
 
-State the selected mode briefly, then continue without asking for confirmation unless a genuinely consequential choice cannot be inferred safely.
+- Default and `ncp`: reconcile and verify without staging, committing, or pushing.
+- `plan`: preserve an explicitly confirmed plan. It does not authorize publishing. Read [Plan Fidelity](references/plan-fidelity.md) before editing a plan.
+- `publish`: use the safeguarded Git workflow. Read [Publishing](references/publishing.md) before any staging, commit, or push.
+- `plan publish` combines the two independent branches. `publish` plus `ncp` stays non-publishing until the user resolves the conflict.
+- A direct current instruction to commit and push activates publishing. Other text supplies priorities or constraints.
 
-## 1. Establish scope and evidence
+State the active modes, then continue. Preserve the established behavior of invocations without `plan`.
 
-1. Locate the project or repository root. Read applicable agent instruction files before editing, including `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and instruction files referenced by them.
-2. Inspect the current branch, upstream, concise status, relevant diffs, and recent commits. Do not fetch, switch branches, stash, reset, discard, or overwrite work merely to make the tree clean.
-3. Separate current-phase changes from unrelated pre-existing work. Preserve unrelated changes and never include them in a commit. If ownership cannot be established, leave the ambiguous files untouched and call them out.
-4. Use observable repository state, configuration, tests, and diffs as evidence. Never mark work complete or claim verification without support.
+## 1. Establish scope
 
-### Qualify evidence
+1. Locate the repository root and read applicable `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and referenced instructions.
+2. Inspect branch, upstream, concise status, relevant diffs, staged paths, and recent commits. Preserve unrelated work.
+3. If root `PROJECT_CONTEXT.yaml` exists, read [Project context](references/project-context.md) and apply it. When absent, use automatic discovery.
+4. First read the current status and handoff, then the plan item, spec task, or tracker ticket they identify. Preserve its formal ID, title, source link, acceptance criteria, and blocking edges. When no formal work unit exists, use the user's instruction and source location without inventing an ID.
+5. Write an internal gap list containing only unresolved acceptance, blockers, relevant changes, authority, and next action. Before opening another document body, name the gap it can resolve and read the smallest linked source that owns that fact. Recompute the gap list after each read. Stop opening bodies when the list is empty; a file inventory is enough for unrelated documents.
 
-Use these exact labels for material claims in durable status, handoff, acceptance, and closeout records, and in the completion response. Fit them into the project's existing structure instead of rewriting every sentence mechanically.
+Scope is complete when every in-scope change has an owner, every applicable acceptance result has evidence status, blockers are known, and one executable next action can be named.
 
-- `Verified`: supported by a check executed during the current closeout. Name the command or check and its result.
-- `Observed`: read directly from current Git state, configuration, source, or another inspected artifact, but not proven by an executed check.
-- `Assumption`: inferred and still unverified. State what would confirm or reject it.
-- `Not run`: an expected check was not executed. Name the check and why it was skipped or unavailable.
-- `Blocked`: work or verification is incomplete. State the blocker and the concrete recovery action.
+## 2. Build the handoff record
 
-Never turn a plan, user claim, or earlier document into `Verified` evidence. Treat a prior session's recorded pass as an `Observed` historical result unless the current closeout reruns it. Label only the scope a check actually proves; do not use one passing check to verify a broader milestone. When evidence is insufficient to reconcile a contradiction, retain the competing claims with their labels instead of choosing silently.
+Continue the project's existing status, handoff, plan, spec, decision, and tracker files regardless of which AI or human created them. Use configured mappings first. Create `HANDOFF.md` only when no durable handoff convention exists.
 
-## 2. Load optional project context
+Record these fields in the project's existing structure:
 
-Check for a root-level `PROJECT_CONTEXT.yaml` before broader document discovery.
+| Field | Required content |
+|---|---|
+| Work | Current work unit, source, formal ID/title when present, acceptance state |
+| Environment | Repository location, branch/revision, relevant dirty/staged scope |
+| Evidence | Implemented, remaining, current checks, historical results, assumptions |
+| Decisions | Accepted intent, new constraints, unresolved questions, durable references |
+| Dependencies | Blockers and their observed state; frontier work whose blockers are complete |
+| Review | Fixed point and exact changed scope; say when uncommitted work is outside an earlier review |
+| Next action | One executable frontier action, or the action that obtains missing evidence |
 
-- If it is absent, continue with automatic discovery and the existing command contract unchanged.
-- If it is present, read it fully and support `schema_version: 1`. Treat its repository-relative document paths, verification commands, default branch, publishing policy, cautions, and exclusions as authoritative routing and policy context, not as evidence that work is complete.
-- Resolve every configured path against the repository root and reject paths that escape it. Update listed status, handoff, plan, spec, and decision files in place; do not create platform-specific replacements.
-- Run configured verification commands from the repository root when they are relevant and safe. Record any command not run and why.
-- Compare the current branch with `git.default_branch`; never switch branches merely to match it. Treat a publishing-time mismatch as a blocker unless the user explicitly resolves it.
-- Respect exclusions during discovery, editing, staging, and publishing unless the user's current request requires an excluded path. Never let an exclusion hide applicable instruction files, Git safety metadata, or an explicitly listed document.
-- If the file is malformed, uses an unsupported schema version, contains unsafe paths, or points to missing files, report the exact issue and fall back to automatic discovery where safe. Do not silently treat an invalid file as absent or rewrite it without authorization.
+Write evidence as explicit field labels followed by a colon: `Verified:`, `Observed:`, `Assumption:`, `Not run:`, and `Blocked:`.
 
-## 3. Discover the documentation system
+- `Verified`: a named check executed during this closeout and only the scope it proves.
+- `Observed`: current inspected state or a historical result not rerun now.
+- `Assumption`: an inference plus the check that would confirm it.
+- `Not run`: an expected check plus why it was not executed.
+- `Blocked`: incomplete work plus blocker and recovery action.
 
-Use valid `PROJECT_CONTEXT.yaml` document mappings first when present. Do not assume one platform's filenames or create parallel ChatGPT/Codex, Claude, Gemini, and Antigravity documentation sets. Discover other relevant durable artifacts, including:
+The implementation defines current behavior. Accepted specifications and decisions define intended behavior. Record a difference as an implementation gap; update intended behavior only from an authorized decision. Resolve stale environment literals from current evidence and flag their durable correction.
 
-- current-state and handoff files such as `HANDOFF.md`, `STATUS.md`, `*_STATUS.md`, TODO, milestone, or progress documents;
-- plans, requirements, product or technical specs such as `*_SPEC.md`, PRDs, RFCs, ADRs, and roadmaps;
-- architecture, operational, setup, testing, deployment, changelog, and `README` documentation;
-- agent instruction files when commands, conventions, or architecture recorded there actually changed.
+Use links for existing detailed specs, plans, ADRs, and tickets. Add new constraints, useful failed approaches, and evidence that exist only in this session. Preserve unrelated content and sensitive data boundaries.
 
-Follow links between documents and search for references to changed features, old statuses, superseded decisions, commands, paths, or names. Prefer updating the existing source of truth. If no durable current-state or handoff artifact exists and repository conventions do not specify another location, create a concise root-level `HANDOFF.md`.
+## 3. Reconcile affected documents
 
-## 4. Preserve the confirmed plan in Plan Fidelity mode
+Update every authoritative document whose current claim changed. Keep identifiers, terminology, plan-body boundaries, and useful history. Put progress and evidence outside an immutable confirmed-plan body.
 
-Apply this section only when the `plan` flag is active.
+Remove stale claims when evidence resolves them. Preserve competing labeled claims when it does not. A completed historical entry may become one dated summary line once no decision, blocker, acceptance record, or next action depends on its detail.
 
-1. Select the canonical plan document. Use the valid `PROJECT_CONTEXT.yaml` plan path when configured. Otherwise update the repository's existing canonical plan document in place; if no convention or plan document exists, use root-level `IMPLEMENTATION_PLAN.md`. If multiple candidates remain authoritative and the repository does not resolve them, report `Blocked` instead of choosing silently.
-2. Locate the latest plan whose exact text the user explicitly confirmed in the current conversation or in durable project records. A durable record qualifies only when it clearly records both the user's confirmation and the exact confirmed plan text. Exclude AI-authored drafts or proposals that the user has not explicitly confirmed.
-3. Copy the confirmed plan text verbatim into the canonical plan document. Preserve every character of the plan body, including wording, identifiers, numbering, hierarchy, order, owners, dependencies, acceptance criteria, whitespace, and formatting. Do not summarize, paraphrase, merge, split, renumber, reorder, reformat, complete, or supplement it.
-4. When updating an existing document, replace only its clearly bounded confirmed-plan body. Preserve surrounding document structure and keep progress, verification evidence, status changes, and commentary outside that body. Never edit the confirmed-plan body to reflect execution progress.
-5. When the canonical plan document is new or does not yet record where its confirmed body came from, add a short provenance preface immediately before the body: the confirmation source (conversation or durable record), the confirmation date, and the executing session's platform or model if known. Separate the preface from the body with a clear boundary, such as a horizontal rule. Never let the preface's wording extend into or replace any part of the body, and never edit an existing preface to narrate progress; progress stays outside both the preface and the body.
-6. Compare the written plan body directly with the exact confirmed source before continuing. If the exact source text, confirmation state, destination, or replacement boundary cannot be established, make no plan edit and report `Blocked` with the missing evidence and recovery action. Never reconstruct plan text from memory, a summary, or inference.
+After editing, search the affected document set for contradictions, stale next actions, broken references, and duplicated platform-specific records.
 
-## 5. Reconcile facts across documents
+## 4. Verify
 
-Create a compact internal fact set covering: goal, completed work, current behavior, decisions, verification, remaining work, blockers, risks, and next action. Then update all documents whose claims are affected.
+1. Review the documentation and code/configuration diffs together for accuracy and scope.
+2. Run relevant, safe repository checks, including mandatory commands and `git diff --check`. A bootstrap receiver later treats these results as historical `Observed` evidence until rerun.
+3. Compare Plan Fidelity bodies directly when plan mode is active.
+4. Reinspect status, staging, sensitive paths, and unrelated changes.
 
-- Distinguish implemented, verified, in progress, planned, blocked, and deferred work explicitly.
-- Update checklists, milestone state, acceptance results, commands, links, file paths, interfaces, and architecture descriptions that changed.
-- Preserve useful history and project-specific structure. Do not replace detailed specs with summaries or perform broad cosmetic rewrites.
-- In Plan Fidelity mode, treat the confirmed-plan body as immutable. Record progress, verification evidence, and status changes in separate sections or documents.
-- Record unresolved issues honestly, with enough context for the next session to act.
-- Remove or qualify stale claims. Do not invent decisions, dates, owners, test results, or completion percentages.
-- Keep the handoff concise and actionable: current state, what changed, verification, decisions, remaining tasks in priority order, blockers/risks, and the exact next recommended action.
-- When a historical closeout entry no longer informs an open decision, blocker, or the next action, condense it to one dated summary line instead of preserving its full original text. Keep verbatim detail only for entries a current decision or acceptance record still depends on; this narrows, and does not conflict with, the earlier rule against replacing detailed specs with summaries.
+Fix in-scope failures or record the exact command, outcome, blocker, and recovery action.
 
-After editing, search the relevant documentation set again for contradictions and stale terminology. Resolve inconsistencies instead of merely listing them when the evidence is sufficient.
+## 5. Report
 
-## 6. Verify the closeout
-
-1. Review the documentation diff for factual accuracy, broken internal links, malformed Markdown, accidental scope expansion, and consistency with the code/configuration diff.
-2. In Plan Fidelity mode, compare the canonical confirmed-plan body character-for-character with its confirmed source and confirm that no unconfirmed draft content entered it.
-3. Run the best available non-destructive checks relevant to the completed work, favoring commands documented by the repository. Use a focused subset when the full suite is unavailable or disproportionately expensive.
-4. Run whitespace/diff checks supported by the repository, including `git diff --check` in Git projects.
-5. Recheck concise status. Ensure no generated secrets, credentials, local-only files, or unrelated changes are about to be committed.
-
-Fix in-scope failures when feasible. Otherwise record the exact command, outcome, and reason it remains unresolved.
-
-## 7. Publish only with explicit authorization
-
-Skip this entire section whenever publishing is not active, including default, `ncp`, and `plan`-only invocations.
-
-1. Reinspect the repository, named branch, configured upstream, exact remote URL, concise status, unstaged diff, staged names, and staged diff. Do not guess or change the destination. Treat detached HEAD, branch-policy mismatch, ambiguous remote, or unresolved merge state as blockers.
-2. Build an explicit candidate path list containing only completed current-phase work and its documentation. Positively establish ownership of every candidate and every pre-existing staged path. Leave unrelated work untouched; block publishing if staged or candidate ownership is ambiguous.
-3. Scan candidate filenames and diffs for sensitive material without exposing values. Do not stage `.env`, `.env.*`, private keys, credentials, tokens, secret-bearing connection strings, or generated local-only files by default. Review example/template environment files explicitly. Use repository secret scanners when available. Report only the path and risk category when blocking.
-4. Require all mandatory verification to pass before publication. A `publish` request alone does not override a failed check. Proceed after failure only when the user sees the exact failure and explicitly authorizes that override; record it in the closeout.
-5. Stage the explicit path list only. Never use `git add .`, `git add -A`, `git commit -a`, or another broad shortcut. Do not disturb pre-existing staging. If a problem is found after staging files staged solely by this workflow, unstage only those exact paths and preserve their worktree content.
-6. Inspect staged names and the complete staged diff again. Confirm scope, coherence, and absence of sensitive data. Stop before committing if anything is unrelated, ambiguous, generated, or risky.
-7. Create one descriptive commit unless repository conventions require another structure. If a relevant commit already exists and no scoped changes remain, do not create an empty commit.
-8. Push the current named branch to its configured upstream. If it has no upstream but one unambiguous `origin` exists and the publish request authorizes that destination, set the upstream for the current branch. Never force-push or rewrite published history.
-9. Verify the commit identifier, exact remote destination, push result, upstream state, and remaining worktree status.
-
-If commit or push is impossible because of permissions, hooks, authentication, detached HEAD, missing remote, or ambiguous files, complete every safe prior step and report the exact blocker and recovery command. Do not falsely report success.
-
-## 8. Report completion
-
-Return a compact closeout containing:
-
-- selected Plan Fidelity and publishing modes;
-- documents updated or created and the consistency issues resolved;
-- verification commands and results;
-- commit identifier and push destination, or `not performed (default)`, `not performed (ncp)`, `not performed (plan)`, or the exact policy/blocker;
-- active `PROJECT_CONTEXT.yaml` publishing policy and any configuration issues;
-- an evidence summary using the exact labels above, including every expected check that was not run or remained blocked;
-- remaining unrelated or unresolved changes;
-- the first action the next session should take.
+Report active modes, documents changed, verification results, evidence labels, unresolved or unrelated work, Git publication result, project-context policy, and the first next action. In non-publishing modes, state `not performed (default)`, `not performed (ncp)`, or `not performed (plan)`.

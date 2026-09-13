@@ -19,6 +19,7 @@ These files are maintained as one cross-platform project. Apply these instructio
 - Run `test-regressions.ps1 -Mode Validate` after changing either skill or any takeover fixture. After cross-platform continuity or evidence behavior changes, prepare fresh workspaces and forward-test all six directions before using `-Mode Check`.
 - Run `test-plan-fidelity.ps1 -Mode Validate` after changing Plan Fidelity behavior or fixtures. Forward-test all six directions before using `-Mode Check` for a behavioral release claim.
 - Run `test-installation.ps1` after changing installation paths or installation behavior.
+- Run `test-skill-packaging.ps1` after adding or changing files linked from either skill. It must validate each skill independently and reject a package with a missing required reference.
 - Run `test-update.ps1` after changing `update.ps1` or `install.ps1` logic, and before claiming any release's upgrade path is verified. It is self-contained and self-verifying (it targets `HEAD` against the previous release tag dynamically), so no separate live `update.ps1` run against a real global installation is needed to support that claim.
 - Preserve unrelated files and settings in every global configuration directory. Never replace an existing settings file merely to disable or enable these skills.
 - Update `STATUS.md` and `HANDOFF.md` whenever behavior, validation state, global paths, or outstanding work changes.
