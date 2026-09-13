@@ -8,9 +8,9 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 Current implementation phase (2026-09-13): [SKILL_CONTINUITY_PROPOSAL.md](SKILL_CONTINUITY_PROPOSAL.md) is the approved architecture record for IP-01 through IP-06. Tickets are complete under `.scratch/skill-continuity/issues/`, the candidate passed full-scope Standards and Spec review, and [SKILL_CONTINUITY_EVIDENCE.md](SKILL_CONTINUITY_EVIDENCE.md) records the isolated results. The original `IMPLEMENTATION_PLAN.md` body remains preserved with an appended current-work record.
 
-`Verified`: from fixed point `a902c18`, both six-direction behavior matrices, six receiver snapshots, Skill Creator, canonical verification, isolated packaging/installation, and the corrected updater regression passed. `Not run`: live global synchronization and hashes, host-native three-product runs, version bump, tag, and push. Earlier release entries below remain historical `Observed` evidence.
+`Verified`: from fixed point `a902c18`, both six-direction behavior matrices, six receiver snapshots, Skill Creator, canonical verification, isolated packaging/installation, corrected updater regression, global installation, and live 27-check verification passed. `Not run`: host-native three-product restart observation; release commit, tag, and pushes are authorized below.
 
-Version `2.3.0`, identified by annotated tag `v2.3.0`, is the current release. It adds Decision D-006 (a Plan Fidelity provenance preface convention, a closeout-pruning allowance, and an environment-specific-literal conflict subtype in `bootstrap`) and corrects this file's own "Installed global copies" wording, which had hardcoded a literal username instead of resolving to the current machine. `v2.2.1` remains the release that corrected Antigravity global skill discovery while retaining legacy compatibility; `v2.2.0` remains the Plan Fidelity release.
+Version `2.4.0` is the current release candidate and has explicit authorization for its release commit, annotated tag, and pushes. It substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage. `v2.3.0` remains the previous release.
 
 Since that release, Decision D-007 added `test-update.ps1`: an isolated dry-run regression for `update.ps1` (bare-repo origin, client, and user root, all disposable). It is a canonical-repo improvement, not a release -- `VERSION` was not bumped, because `install.ps1` never installs test scripts anywhere.
 
@@ -181,7 +181,18 @@ Version 2.3.0's upgrade path was then verified live on this machine: `update.ps1
 
 ## Next action
 
-The reviewed 35-file local implementation commit is complete and was not pushed. Standards and Spec reviews from fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a` report no remaining P0-P3 findings. Approved tickets are stored in `.scratch/skill-continuity/issues/`; detailed results are in `SKILL_CONTINUITY_EVIDENCE.md`. Await later authorization for global installation, version release, tag, or push.
+The reviewed 35-file implementation commit is complete. Global installation created `20260914-013140` backups and live verification passed 27 checks. Publish the authorized `2.4.0` release commit and annotated tag to `origin`, then confirm refs and a clean worktree.
+
+## Version 2.4.0 release handoff
+
+- Date: 2026-09-14
+- `Work`: release the completed IP-01 through IP-06 continuity implementation as `2.4.0`.
+- `Observed`: the user explicitly authorized global installation, `wrap-up publish`, and annotated tag `v2.4.0`.
+- `Verified`: global installation created eight `20260914-013140` backups and live verification reported 27 passes with every installed skill tree matching canonical.
+- `Verified`: Skill Creator, packaging, isolated installation, six-direction fixture definition validation, and `git diff --check` passed.
+- `Review`: the release document scope is exactly `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, `IMPLEMENTATION_PLAN.md`, `SKILL_CONTINUITY_PROPOSAL.md`, and `SKILL_CONTINUITY_EVIDENCE.md`; the underlying 35-file implementation already passed Standards and Spec review.
+- `Not run`: host-native post-restart discovery. Run `test-update.ps1` against the committed `2.4.0` HEAD before creating the tag or pushing.
+- `Next action`: create the release commit, run the committed-HEAD updater regression, create annotated tag `v2.4.0`, then push `main` and the tag.
 
 ## Skill continuity implementation handoff
 
@@ -190,7 +201,7 @@ The reviewed 35-file local implementation commit is complete and was not pushed.
 - `Verified`: takeover producers passed 6/6; six fresh bootstrap receivers recovered the same unfinished acceptance and external next action while preserving complete snapshots.
 - `Verified`: Plan Fidelity passed 6/6 and replay was byte-stable with one provenance preface. Explicit publish committed and pushed exactly three authorized paths to a local bare remote.
 - `Verified`: conditional references are independently packageable and missing-reference rejection is tested; updater regression selects the latest reachable prior tag with a different `VERSION`.
-- `Observed`: candidate behavior exists only in the canonical repository. Installed global copies remain at the released version.
-- `Not run`: global synchronization, live installed-copy verification, host-native three-product runs, version bump, tag, remote push, and release.
+- `Verified`: global installation created `20260914-013140` backups and live verification reported 27 passes with all eight installed skill trees matching canonical.
+- `Not run`: host-native three-product restart observation; release commit, tag, and pushes are authorized and pending.
 - `Review`: Standards and Spec reviews covered all 35 staged files from fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a`; no P0-P3 finding remains.
-- `Next action`: await later authorization for global installation, version release, tag, or push.
+- `Next action`: publish the `2.4.0` release commit and annotated tag, then verify refs and clean state.

@@ -99,4 +99,4 @@ IP-04 可分「條件分支與可安裝封裝」和「description 發現與 UI�
 
 ## 本階段下一步
 
-Tickets 已由使用者核准並保存。依 review findings 補齊或誠實降級未完成的 trigger/safety cases，通過 final gates 後建立本機 implementation commit；全域安裝、版本發布與 push 仍等待後續指示。
+Tickets、implementation、review 與全域安裝均已完成。此工作形成 `2.4.0` release；目前 next action 是完成已授權的 release commit、annotated tag 與 pushes，之後驗證 refs。

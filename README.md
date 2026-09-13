@@ -7,7 +7,7 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current release: `2.2.1` (`v2.2.1`). Previous release: `2.2.0` (`v2.2.0`); `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`). Version 2.2 adds the independent Plan Fidelity mode described below, and Version 2.2.1 corrects Antigravity global skill discovery while retaining legacy-path compatibility.
+Current release: `2.4.0` (`v2.4.0`). Previous release: `2.3.0` (`v2.3.0`); `v2.2.1` remains the Antigravity discovery correction, `v2.2.0` remains the Plan Fidelity release, and the recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`). Version 2.4 substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage.
 
 ## Version 2 command contract
 
@@ -118,7 +118,7 @@ The updater fetches the configured upstream, permits only a fast-forward, refuse
 
 目前實作已可正常使用。其餘可靠性、安全性、專案脈絡與作業系統支援改善，均整理於 `IMPLEMENTATION_PLAN.md`，可在不影響現有穩定基準的前提下逐步完成。
 
-目前 release：`2.2.1`（`v2.2.1`）。前一個 release：`2.2.0`（`v2.2.0`）；`v2.1.0` 仍是雙語全域偏好 release，`v2.0.0` 仍是第一個 Version 2 release，而可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。Version 2.2 新增下文說明的獨立 Plan Fidelity 模式，Version 2.2.1 則修正 Antigravity 全域 skill discovery，並保留舊路徑相容性。
+目前 release：`2.4.0`（`v2.4.0`）。前一個 release：`2.3.0`（`v2.3.0`）；`v2.2.1` 仍是 Antigravity discovery 修正版，`v2.2.0` 仍是 Plan Fidelity release，而可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。Version 2.4 大幅改善 fresh-session continuity、gap-driven reading、條件式 skill 封裝、具證據標籤的 handoff，以及隔離安全驗證。
 
 ## Version 2 指令契約
 

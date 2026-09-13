@@ -313,6 +313,6 @@ Confirm `wrap-up` and `bootstrap` in a restarted or new Antigravity session, and
 
 ## Current proposal routing (2026-09-13; outside the preserved roadmap)
 
-The roadmap above is preserved unchanged as historical project context. For the current user-requested planning phase, read [Skill continuity: architecture adaptation proposal](SKILL_CONTINUITY_PROPOSAL.md). It maps the external IP-01 through IP-06 draft onto the canonical skills, existing schema, runners, and fixtures without accepting or implementing new skill behavior. The proposal links exact source snapshots; it does not replace any confirmed plan body or accepted decision.
+The roadmap above is preserved unchanged as historical project context. [Skill continuity: architecture adaptation proposal](SKILL_CONTINUITY_PROPOSAL.md) maps IP-01 through IP-06 onto the canonical skills, schema, runners, and fixtures. The approved implementation is complete and forms the `2.4.0` release; the proposal links exact source snapshots and does not replace any confirmed plan body or accepted decision.
 
 Current-state correction: the Antigravity restarted-session confirmation named in the historical "Next implementation action" above was already completed according to HANDOFF.md. The user later approved the local tickets and authorized implementation plus isolated tests. Candidate work is tracked under `.scratch/skill-continuity/issues/`; current evidence and review work are recorded in `SKILL_CONTINUITY_EVIDENCE.md`, `STATUS.md`, and `HANDOFF.md`. Phase 5 remains deferred.

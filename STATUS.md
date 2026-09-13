@@ -9,13 +9,13 @@ Last updated: 2026-09-13
 - `Verified`: Skill Creator, canonical verification, packaging, isolated installation, AST, and diff checks pass. The updater same-version failure was reproduced and its regression now selects the latest reachable different-version tag.
 - `Not run`: global-copy synchronization, host-native discovery refresh, version release, tag, and push remain deferred.
 - `Blocked`: none. The reviewed local implementation commit is complete.
-- Next action: await later authorization for global installation, version release, tag, or push. Historical entries below remain historical unless rerun.
+- Next action: publish the verified `2.4.0` release commit and annotated `v2.4.0` tag to `origin`, as currently authorized.
 
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.3.0` is the current release, identified by annotated tag `v2.3.0`; `v2.2.1` is the previous release, `v2.1.0` remains the bilingual-global-preference release, `v2.0.0` remains the initial Version 2 release, and the intermediate `v1.1.0` release was not created.
+- Version `2.4.0` is the current release candidate; annotated tag `v2.4.0` will identify it after the authorized publish. `v2.3.0` is the previous release.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.
@@ -30,8 +30,8 @@ Last updated: 2026-09-13
 - Plan Fidelity is released in `2.2.0`: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
-- Released `2.3.0` copies are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
-- The canonical working copy is `C:\dev\wrap-up-bootstrap`; this unreleased continuity candidate is not yet synchronized to the eight global skill copies.
+- The `2.4.0` candidate skill directories are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
+- The canonical working copy is `C:\dev\wrap-up-bootstrap`; live verification confirms all eight global skill copies match the canonical candidate.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
 - `install.ps1` installs or updates all eight current and compatibility global skill copies and all three global rule files on Windows while preserving unrelated content.
@@ -146,8 +146,19 @@ Last updated: 2026-09-13
 - `Verified`: Plan Fidelity completed all six directed fixtures; confirmed bodies matched source by ordinal equality, unconfirmed bodies stayed unchanged, and a fresh replay preserved one provenance preface and the plan hash.
 - `Verified`: explicit publish created one scoped commit and advanced a local bare `origin/main`; default and plan fixtures did not publish.
 - `Observed`: progressive disclosure reduced the default wrap-up entry from 17,251 to 6,046 characters; full-package size is 10,347 characters. Runtime token accounting was unavailable, so no token claim is made.
-- `Not run`: real global installation, installed-copy hash synchronization, host-native discovery refresh, version release, tag, and push are deferred.
-- `Blocked`: none. Repository implementation and its local commit are complete.
+- `Verified`: global installation created timestamped `20260914-013140` backups for all eight changed skill entries; live `verify.ps1` reported 27 passes, no warnings, and no failures.
+- `Not run`: host-native discovery refresh after restart. The version release commit, tag, and push are authorized and pending.
+- `Blocked`: none for the authorized `2.4.0` release.
+
+## Version 2.4.0 skill continuity release
+
+- Date: 2026-09-14
+- `Observed`: the user classified this as a substantial change and explicitly authorized global installation, a scoped `wrap-up publish`, and annotated tag `v2.4.0`.
+- `Verified`: global installation created eight timestamped backups; live `verify.ps1` reported 27 passes, no warnings, and no failures.
+- `Verified`: both Skill Creator validators, independent skill packaging, isolated installation, both six-direction fixture validators, and `git diff --check` passed for the release candidate.
+- `Observed`: the authorized release-document scope is `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, `IMPLEMENTATION_PLAN.md`, `SKILL_CONTINUITY_PROPOSAL.md`, and `SKILL_CONTINUITY_EVIDENCE.md`.
+- `Not run`: host-native discovery after restarting Codex, Claude Code, and Antigravity. The updater regression must target the committed `2.4.0` release commit before tag creation and push.
+- `Blocked`: none before the release commit; tag creation and pushes wait for the committed-HEAD updater check.
 
 ## Version 2.2.1 Antigravity discovery closeout
 
