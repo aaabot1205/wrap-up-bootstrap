@@ -1,21 +1,22 @@
 # Status
 
-Last updated: 2026-09-13
+Last updated: 2026-09-14
 
-## Active implementation: skill continuity (2026-09-13)
+## Active follow-up: unchanged updater version (2026-09-14)
 
-- `Observed`: [SKILL_CONTINUITY_PROPOSAL.md](SKILL_CONTINUITY_PROPOSAL.md) is the approved IP-01 through IP-06 architecture record; tickets are saved under `.scratch/skill-continuity/issues/` and the earlier architecture-only boundary remains historical.
-- `Verified`: takeover and Plan Fidelity matrices each passed all six directions; six fresh bootstrap receivers preserved complete snapshots; explicit publish advanced only an isolated local bare remote with the authorized three-file commit.
-- `Verified`: Skill Creator, canonical verification, packaging, isolated installation, AST, and diff checks pass. The updater same-version failure was reproduced and its regression now selects the latest reachable different-version tag.
-- `Not run`: global-copy synchronization, host-native discovery refresh, version release, tag, and push remain deferred.
-- `Blocked`: none. The reviewed local implementation commit is complete.
-- Next action: publish the verified `2.4.0` release commit and annotated `v2.4.0` tag to `origin`, as currently authorized.
+- `Verified`: release commit `eb70e01`, `origin/main`, and the peeled annotated tag `v2.4.0` all resolve to the same published commit; the release worktree was clean and synchronized after publication.
+- `Observed`: running `git pull` before `update.ps1` caused the updater to report `Version transition: 2.4.0 -> 2.4.0`, because both values come from the checkout's `VERSION` file.
+- `Verified`: the regression now reruns the updater after a real isolated upgrade and requires `Version unchanged: 2.4.0` without a misleading transition. A temporary committed clone passed the full updater regression, including the real `2.3.0 -> 2.4.0` transition, unchanged-version rerun, backups, hashes, and both refusal cases.
+- `Observed`: the user authorized `wrap-up publish` for the exact follow-up scope: `update.ps1`, `test-update.ps1`, `README.md`, `INSTALL.md`, `STATUS.md`, and `HANDOFF.md`. `VERSION` and tag `v2.4.0` remain unchanged because this is a small post-release update on `main`.
+- `Not run`: global installation is not applicable because this follow-up changes the repository updater and its test, not installed skill files.
+- `Blocked`: none.
+- Next action: after the authorized scoped publish and remote-ref verification, no updater-message work remains.
 
 ## Current state
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.4.0` is the current release candidate; annotated tag `v2.4.0` will identify it after the authorized publish. `v2.3.0` is the previous release.
+- Version `2.4.0` is the current release; annotated tag `v2.4.0` identifies release commit `eb70e01`. `v2.3.0` is the previous release.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.
@@ -30,8 +31,8 @@ Last updated: 2026-09-13
 - Plan Fidelity is released in `2.2.0`: standalone `plan` preserves an explicitly user-confirmed plan body verbatim, remains non-publishing unless independently combined with `publish`, rejects unconfirmed drafts, and records progress or evidence outside the confirmed body.
 - `bootstrap` is read-only during context gathering and can begin a trailing follow-on task afterward.
 - `bootstrap` now preserves formal plan identifiers and wording when reporting current and next items.
-- The `2.4.0` candidate skill directories are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
-- The canonical working copy is `C:\dev\wrap-up-bootstrap`; live verification confirms all eight global skill copies match the canonical candidate.
+- The `2.4.0` skill directories are installed for Codex, Claude Code, and Antigravity, including current and legacy Antigravity roots.
+- The canonical working copy is `C:\dev\wrap-up-bootstrap`; live release verification confirmed all eight global skill copies matched the canonical release.
 - The canonical working copy is a Git repository on branch `main`, tracking the private GitHub remote `https://github.com/aaabot1205/wrap-up-bootstrap.git`.
 - Portable source copies of the three response-language and bilingual GitHub README preference files live under `global-rules/`.
 - `install.ps1` installs or updates all eight current and compatibility global skill copies and all three global rule files on Windows while preserving unrelated content.
@@ -147,8 +148,9 @@ Last updated: 2026-09-13
 - `Verified`: explicit publish created one scoped commit and advanced a local bare `origin/main`; default and plan fixtures did not publish.
 - `Observed`: progressive disclosure reduced the default wrap-up entry from 17,251 to 6,046 characters; full-package size is 10,347 characters. Runtime token accounting was unavailable, so no token claim is made.
 - `Verified`: global installation created timestamped `20260914-013140` backups for all eight changed skill entries; live `verify.ps1` reported 27 passes, no warnings, and no failures.
-- `Not run`: host-native discovery refresh after restart. The version release commit, tag, and push are authorized and pending.
-- `Blocked`: none for the authorized `2.4.0` release.
+- `Not run`: host-native discovery refresh after restart.
+- `Verified`: the completed `2.4.0` release is published at commit `eb70e01`, and the local branch was clean and synchronized with `origin/main` afterward.
+- `Blocked`: none.
 
 ## Version 2.4.0 skill continuity release
 
@@ -157,8 +159,9 @@ Last updated: 2026-09-13
 - `Verified`: global installation created eight timestamped backups; live `verify.ps1` reported 27 passes, no warnings, and no failures.
 - `Verified`: both Skill Creator validators, independent skill packaging, isolated installation, both six-direction fixture validators, and `git diff --check` passed for the release candidate.
 - `Observed`: the authorized release-document scope is `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, `IMPLEMENTATION_PLAN.md`, `SKILL_CONTINUITY_PROPOSAL.md`, and `SKILL_CONTINUITY_EVIDENCE.md`.
-- `Not run`: host-native discovery after restarting Codex, Claude Code, and Antigravity. The updater regression must target the committed `2.4.0` release commit before tag creation and push.
-- `Blocked`: none before the release commit; tag creation and pushes wait for the committed-HEAD updater check.
+- `Verified`: the committed-HEAD updater regression upgraded `v2.3.0` to `2.4.0`; annotated tag `v2.4.0` and `origin/main` were then published and verified at `eb70e01`.
+- `Not run`: host-native discovery after restarting Codex, Claude Code, and Antigravity.
+- `Blocked`: none.
 
 ## Version 2.2.1 Antigravity discovery closeout
 

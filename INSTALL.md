@@ -68,7 +68,7 @@ The updater requires:
 - a named current branch with a configured upstream;
 - no local commits ahead of or diverged from that upstream.
 
-It fetches the configured upstream, fast-forwards without merging, runs the installer, runs the verifier, and reports the old and new `VERSION`. Before replacing a different existing global file, the installer creates and reports a side-by-side `*.backup-<timestamp>` copy. If any safety check or verification fails, the updater exits nonzero and identifies the blocker; it never switches branches, resets work, force-pushes, or publishes local commits.
+Run the updater directly without a preceding `git pull`. It fetches the configured upstream, fast-forwards without merging, runs the installer, and runs the verifier. It reports a version transition when `VERSION` changes; when the checkout is already current, it reports `Version unchanged` and confirms that installation and verification completed. Before replacing a different existing global file, the installer creates and reports a side-by-side `*.backup-<timestamp>` copy. If any safety check or verification fails, the updater exits nonzero and identifies the blocker; it never switches branches, resets work, force-pushes, or publishes local commits.
 
 ## Cross-platform regression matrix
 

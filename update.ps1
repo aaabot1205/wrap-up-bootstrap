@@ -147,7 +147,12 @@ try {
     Write-Output 'Verifying installation...'
     Invoke-ProjectScript -PowerShellExecutable $PowerShellExecutable -ScriptPath $VerifyScript
 
-    Write-Output "Version transition: $PreviousVersion -> $CurrentVersion"
+    if ($PreviousVersion -ceq $CurrentVersion) {
+        Write-Output "Version unchanged: $CurrentVersion"
+        Write-Output 'Canonical files were installed and verified successfully.'
+    } else {
+        Write-Output "Version transition: $PreviousVersion -> $CurrentVersion"
+    }
     Write-Output "Update completed successfully on branch '$Branch' from '$Upstream'."
     exit 0
 } catch {

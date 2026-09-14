@@ -6,17 +6,17 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
-Current implementation phase (2026-09-13): [SKILL_CONTINUITY_PROPOSAL.md](SKILL_CONTINUITY_PROPOSAL.md) is the approved architecture record for IP-01 through IP-06. Tickets are complete under `.scratch/skill-continuity/issues/`, the candidate passed full-scope Standards and Spec review, and [SKILL_CONTINUITY_EVIDENCE.md](SKILL_CONTINUITY_EVIDENCE.md) records the isolated results. The original `IMPLEMENTATION_PLAN.md` body remains preserved with an appended current-work record.
+Current follow-up (2026-09-14): Version `2.4.0` is published. A small updater-message change replaces the misleading same-version transition with `Version unchanged` and adds a same-version rerun to the canonical updater regression. The user authorized `wrap-up publish` for the exact six-file follow-up scope on `main`; `VERSION` and tag `v2.4.0` remain unchanged.
 
-`Verified`: from fixed point `a902c18`, both six-direction behavior matrices, six receiver snapshots, Skill Creator, canonical verification, isolated packaging/installation, corrected updater regression, global installation, and live 27-check verification passed. `Not run`: host-native three-product restart observation; release commit, tag, and pushes are authorized below.
+`Verified`: release commit `eb70e01`, `origin/main`, and peeled annotated tag `v2.4.0` resolve to the same commit. For the follow-up, a temporary committed clone passed the full updater regression: real `2.3.0 -> 2.4.0` transition, clear unchanged-version rerun, backups, installed hashes, and dirty/ahead refusal.
 
-Version `2.4.0` is the current release candidate and has explicit authorization for its release commit, annotated tag, and pushes. It substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage. `v2.3.0` remains the previous release.
+Version `2.4.0` is the current release. It substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage. `v2.3.0` remains the previous release.
 
 Since that release, Decision D-007 added `test-update.ps1`: an isolated dry-run regression for `update.ps1` (bare-repo origin, client, and user root, all disposable). It is a canonical-repo improvement, not a release -- `VERSION` was not bumped, because `install.ps1` never installs test scripts anywhere.
 
 Phase 0 is complete, and Git tag `v1.0.0` identifies the recoverable `1.0.0` baseline. Decision D-001 preserves the Version 1 behavior and governs the released Version 2 publishing contract: plain `wrap-up` is non-publishing, `wrap-up publish` is explicit publication authorization, and `ncp` remains a non-publishing compatibility alias.
 
-Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs, verifies, and reports the version transition. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
+Phase 1 is released in `2.0.0`. `verify.ps1` checks all installations, hashes, managed rules, frontmatter, trigger descriptions, OpenAI UI metadata, and restart guidance. `update.ps1` refuses dirty, detached, upstream-less, ahead, or divergent state; it fetches and fast-forwards only, then installs and verifies. It reports a transition when the version changes and `Version unchanged` when it does not. `install.ps1` reports timestamped backups and repairs duplicate managed blocks while preserving unrelated content.
 
 Phase 2 is also released in `2.0.0`. The optional root-level `PROJECT_CONTEXT.yaml` Version 1 contract can route status, handoff, plan, spec, and decision documents; declare verification commands, default branch, publishing policy, cautions, and exclusions; and preserve discovery fallback when absent. Decision D-002 and the schema define path-safety, invalid-config, exclusion, and `skill-default`/`explicit`/`never` semantics. The intermediate `v1.1.0` release was not created; its planned work was folded into Version 2.
 
@@ -181,7 +181,7 @@ Version 2.3.0's upgrade path was then verified live on this machine: `update.ps1
 
 ## Next action
 
-The reviewed 35-file implementation commit is complete. Global installation created `20260914-013140` backups and live verification passed 27 checks. Publish the authorized `2.4.0` release commit and annotated tag to `origin`, then confirm refs and a clean worktree.
+After the authorized scoped publish and remote-ref verification, no updater-message work remains. For future updates, run `update.ps1` directly without a preceding `git pull` so it can report the actual version transition.
 
 ## Version 2.4.0 release handoff
 
@@ -191,8 +191,9 @@ The reviewed 35-file implementation commit is complete. Global installation crea
 - `Verified`: global installation created eight `20260914-013140` backups and live verification reported 27 passes with every installed skill tree matching canonical.
 - `Verified`: Skill Creator, packaging, isolated installation, six-direction fixture definition validation, and `git diff --check` passed.
 - `Review`: the release document scope is exactly `VERSION`, `README.md`, `STATUS.md`, `HANDOFF.md`, `IMPLEMENTATION_PLAN.md`, `SKILL_CONTINUITY_PROPOSAL.md`, and `SKILL_CONTINUITY_EVIDENCE.md`; the underlying 35-file implementation already passed Standards and Spec review.
-- `Not run`: host-native post-restart discovery. Run `test-update.ps1` against the committed `2.4.0` HEAD before creating the tag or pushing.
-- `Next action`: create the release commit, run the committed-HEAD updater regression, create annotated tag `v2.4.0`, then push `main` and the tag.
+- `Verified`: the committed-HEAD updater regression upgraded `v2.3.0` to `2.4.0`; release commit `eb70e01`, `origin/main`, and peeled annotated tag `v2.4.0` were then verified at the same commit with a clean synchronized worktree.
+- `Not run`: host-native post-restart discovery.
+- `Next action`: no release work remains; the separate updater-message follow-up is published independently on `main` without moving tag `v2.4.0`.
 
 ## Skill continuity implementation handoff
 
@@ -202,6 +203,6 @@ The reviewed 35-file implementation commit is complete. Global installation crea
 - `Verified`: Plan Fidelity passed 6/6 and replay was byte-stable with one provenance preface. Explicit publish committed and pushed exactly three authorized paths to a local bare remote.
 - `Verified`: conditional references are independently packageable and missing-reference rejection is tested; updater regression selects the latest reachable prior tag with a different `VERSION`.
 - `Verified`: global installation created `20260914-013140` backups and live verification reported 27 passes with all eight installed skill trees matching canonical.
-- `Not run`: host-native three-product restart observation; release commit, tag, and pushes are authorized and pending.
+- `Not run`: host-native three-product restart observation.
 - `Review`: Standards and Spec reviews covered all 35 staged files from fixed point `a902c18a69c3dfe32bee9d56b66b63ce3c6b6f9a`; no P0-P3 finding remains.
-- `Next action`: publish the `2.4.0` release commit and annotated tag, then verify refs and clean state.
+- `Next action`: no continuity-release work remains; the updater-message follow-up is published independently on `main` without moving tag `v2.4.0`.

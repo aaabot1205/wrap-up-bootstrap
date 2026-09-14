@@ -157,6 +157,13 @@ try {
     $ClientStatus = @(Invoke-Git -Repository $ClientPath -Arguments @('status', '--porcelain=v1', '--untracked-files=all'))
     Assert-Condition ($ClientStatus.Count -eq 0) 'Client worktree is not clean after update.ps1.'
 
+    Write-Output 'Confirming update.ps1 reports an unchanged version clearly when the repository is already current...'
+    $UnchangedResult = Invoke-ClientScript -ClientPath $ClientPath -ScriptName 'update.ps1' -ExtraArguments @('-UserRoot', $IsolatedUserRoot)
+    $UnchangedOutputText = $UnchangedResult.Output -join [Environment]::NewLine
+    Assert-Condition ($UnchangedResult.ExitCode -eq 0) "update.ps1 current-version rerun failed unexpectedly: $UnchangedOutputText"
+    Assert-Condition ($UnchangedOutputText -match [regex]::Escape("Version unchanged: $NewVersion")) "update.ps1 did not report the unchanged version clearly. Output: $UnchangedOutputText"
+    Assert-Condition ($UnchangedOutputText -notmatch 'Version transition:') "update.ps1 reported a misleading version transition when the version was unchanged. Output: $UnchangedOutputText"
+
     Write-Output 'Confirming update.ps1 refuses a dirty worktree...'
     $VersionFilePath = Join-Path $ClientPath 'VERSION'
     $OriginalVersionText = [System.IO.File]::ReadAllText($VersionFilePath)
@@ -176,7 +183,7 @@ try {
     Assert-Condition ($AheadResult.ExitCode -ne 0) 'update.ps1 did not refuse an ahead-of-upstream local branch.'
     Assert-Condition ($AheadOutputText -match 'ahead of') "update.ps1's ahead-of-upstream refusal message did not match. Output: $AheadOutputText"
 
-    Write-Output "[PASS] Isolated dry-run upgraded from '$OldRef' ($OldVersion) to HEAD ($NewVersion): version transition reported, backups created for changed skills, all installed files match canonical, and update.ps1 correctly refused both a dirty worktree and an ahead-of-upstream branch."
+    Write-Output "[PASS] Isolated dry-run upgraded from '$OldRef' ($OldVersion) to HEAD ($NewVersion): version transition and unchanged-version rerun reported clearly, backups created for changed skills, all installed files match canonical, and update.ps1 correctly refused both a dirty worktree and an ahead-of-upstream branch."
 } finally {
     if (Test-Path -LiteralPath $TestRoot) {
         Remove-Item -LiteralPath $TestRoot -Recurse -Force

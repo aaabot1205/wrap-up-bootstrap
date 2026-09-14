@@ -105,7 +105,7 @@ Run the guarded updater from a clean checkout whose current named branch has an 
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\update.ps1
 ```
 
-The updater fetches the configured upstream, permits only a fast-forward, refuses dirty, detached, untracked, ahead, or divergent local state, then runs `install.ps1` and `verify.ps1`. Changed existing global files receive timestamped side-by-side backups, and the final report includes the version transition and restart guidance.
+The updater fetches the configured upstream, permits only a fast-forward, refuses dirty, detached, untracked, ahead, or divergent local state, then runs `install.ps1` and `verify.ps1`. Run it directly without a preceding `git pull` so it can report the actual version transition. Changed existing global files receive timestamped side-by-side backups. If the checkout is already current, the final report says that the version is unchanged and confirms that installation and verification completed.
 
 ---
 
@@ -216,4 +216,4 @@ Installer 會保留無關的全域 instructions 與 skills，將 Antigravity ski
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\dev\wrap-up-bootstrap\update.ps1
 ```
 
-Updater 會 fetch configured upstream，只允許 fast-forward，並拒絕 dirty、detached、untracked、ahead 或 divergent local state，之後才執行 `install.ps1` 與 `verify.ps1`。內容不同的既有 global files 會取得附 timestamp 的 side-by-side backups，最終報告則包含版本轉換與 restart guidance。
+Updater 會 fetch configured upstream，只允許 fast-forward，並拒絕 dirty、detached、untracked、ahead 或 divergent local state，之後才執行 `install.ps1` 與 `verify.ps1`。請直接執行 updater，不要先執行 `git pull`，讓它能報告實際的版本轉換。內容不同的既有 global files 會取得附 timestamp 的 side-by-side backups；如果 checkout 已是最新版，最終報告會說明版本未變，並確認安裝與驗證已完成。
