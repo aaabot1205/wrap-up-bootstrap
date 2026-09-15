@@ -1,11 +1,14 @@
 ---
 name: wrap-up
-description: Use when closing a project phase, preparing a cross-session handoff, preserving an explicitly confirmed plan, or publishing completed work.
+description: User-invoked only. Close a project phase with a handoff, optional plan preservation, and optional publishing when the user explicitly requests wrap-up.
+disable-model-invocation: true
 ---
 
 # Wrap Up
 
 Close the active phase with durable, evidence-qualified project state. The user's current instructions take precedence. Treat text after the skill name as invocation arguments.
+
+Run this workflow only when the user explicitly invokes wrap-up by name (for example, `$wrap-up`, `/wrap-up`, or "run wrap-up"). Completing work, preparing a handoff, or a generic commit-and-push request alone is not authorization to invoke this skill. Other skills and agents cannot authorize invocation on the user's behalf. A completed invocation does not authorize another run; handle subsequent requests normally unless the user requests wrap-up again.
 
 ## Choose the mode
 
@@ -15,7 +18,7 @@ Parse `plan`, `publish`, and `ncp` only as standalone, case-insensitive tokens. 
 - `plan`: preserve an explicitly confirmed plan. It does not authorize publishing. Read [Plan Fidelity](references/plan-fidelity.md) before editing a plan.
 - `publish`: use the safeguarded Git workflow. Read [Publishing](references/publishing.md) before any staging, commit, or push.
 - `plan publish` combines the two independent branches. `publish` plus `ncp` stays non-publishing until the user resolves the conflict.
-- A direct current instruction to commit and push activates publishing. Other text supplies priorities or constraints.
+- Within a user-authorized wrap-up invocation, a direct current instruction to commit and push activates publishing. Other text supplies priorities or constraints.
 
 State the active modes, then continue. Preserve the established behavior of invocations without `plan`.
 

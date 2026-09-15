@@ -1,8 +1,25 @@
 # Status
 
-Last updated: 2026-09-14
+Last updated: 2026-09-15
 
-## Active follow-up: unchanged updater version (2026-09-14)
+## Version 2.5.0: user-invoked skills (2026-09-15)
+
+- Observed: the user explicitly requires both skills to be user-invoked only. New sessions, compaction, task continuation, completion, and other skills cannot authorize invocation. This correction supersedes the old automatic-trigger descriptions and the two-field frontmatter restriction (D-008).
+- Observed: version `2.5.0` adds Claude Code's `disable-model-invocation: true`, Codex's `policy.allow_implicit_invocation: false`, explicit authorization boundaries, and matching verifier checks. The user explicitly invoked `wrap-up publish tag v2.5.0` for this closeout; no bootstrap was invoked.
+- Verified: `test-invocation-policy.ps1` accepted valid metadata and rejected 12 missing, enabled, or string-valued mutations in an isolated copy; `test-installation.ps1` passed preservation, backups, installed hashes, verification, and idempotency. Packaging and six-direction takeover definition validation passed.
+- Observed: `install.ps1` synchronized all eight skill entries, with 16 file backups stamped `20260915-124154`. The installed skills contain the `2.5.0` correction; they are not the contents of tag `v2.4.0`.
+- Observed: an earlier local Codex app-server `skills/list` with `forceReload: true` accepted both installed entries with `enabled: true` and no target loader error. No agent turn or skill workflow was executed. The disposable probe is `.scratch/invocation-validation/inspect_loader.py`.
+- Observed: the refreshed automatic skill catalog excludes both skills. Earlier ordinary continuation requests did not invoke either workflow; this closeout follows a separate explicit user invocation. This is not a six-direction behavior test.
+- Observed: raw Skill Creator validation rejects the documented Claude extension. This is resolved through `test-skill-validation.py`, not by removing the extension or changing the external validator.
+- Verified: compatibility validation passed for both skills using isolated PyYAML 6.0.3 and the unmodified Skill Creator core validator on temporary standard-content projections. All 12 invalid variants were rejected and source hashes remained unchanged. A raw external-validator pass is not claimed.
+- Verified: release checks passed for `2.5.0`: live verification 27/0/0, isolated installation, invocation policy regression, packaging, both six-direction fixture definition validators, Python/PowerShell syntax, and whitespace validation. A temporary committed candidate passed `test-update.ps1` from `v2.4.0` to `2.5.0`, including unchanged-version rerun, backups, hashes, and dirty/ahead refusal. The real release HEAD is checked again before tagging or pushing.
+- Not run: explicit workflow execution in a fresh host, Claude Code/Antigravity native selection, and six-direction behavioral replay. Configuration and Codex loader checks do not prove all host invocation behavior; no `-Mode Check` behavioral claim is made.
+- Blocked: Antigravity's documented skill contract does not establish an explicit-only loader switch. The instructions require user authorization, but loader enforcement remains unverified.
+- Review: fixed point `a421c2edd490d66438be5df41d92857baaae881f`; review covers the complete working-tree change set and both new validation scripts, including changes not covered by any earlier commit review. The release scope is `.gitignore`, `AGENTS.md`, `DECISIONS.md`, `HANDOFF.md`, `IMPLEMENTATION_PLAN.md`, `INSTALL.md`, `README.md`, `STATUS.md`, `VERSION`, both skill entries and OpenAI metadata files, `verify.ps1`, `test-invocation-policy.ps1`, and `test-skill-validation.py`.
+- Publication: the user authorized one scoped release commit, annotated tag `v2.5.0`, and pushes to `origin/main` and `origin`'s tag ref. Verify Git refs for delivery state; `v2.4.0` stays fixed. No all-host runtime-enforcement claim accompanies this release.
+- Next action: confirm user-only selection in fresh host sessions; resolve Antigravity enforcement before claiming all three hosts prevent model invocation.
+
+## Previous follow-up: unchanged updater version (2026-09-14)
 
 - `Verified`: release commit `eb70e01`, `origin/main`, and the peeled annotated tag `v2.4.0` all resolve to the same published commit; the release worktree was clean and synchronized after publication.
 - `Observed`: running `git pull` before `update.ps1` caused the updater to report `Version transition: 2.4.0 -> 2.4.0`, because both values come from the checkout's `VERSION` file.
@@ -16,7 +33,7 @@ Last updated: 2026-09-14
 
 - The current implementation is usable as the working baseline; planned reliability and portability improvements are documented in `IMPLEMENTATION_PLAN.md`.
 - Phase 0 is complete, and tag `v1.0.0` identifies the recoverable `1.0.0` baseline.
-- Version `2.4.0` is the current release; annotated tag `v2.4.0` identifies release commit `eb70e01`. `v2.3.0` is the previous release.
+- Version `2.5.0` is the current release target; `v2.4.0` is the previous release and remains fixed at `eb70e01`.
 - Version `2.1.0` adds a portable preference requiring a GitHub repository's primary `README.md` to contain complete English and Traditional Chinese versions.
 - Version `2.2.0` adds the independent Plan Fidelity mode, exact confirmed-plan preservation, draft rejection, canonical-only verification, and its six-direction regression matrix.
 - Version `2.2.1` corrects Antigravity global discovery to `~/.gemini/config/skills/` and keeps `~/.gemini/antigravity/skills/` synchronized for legacy compatibility.

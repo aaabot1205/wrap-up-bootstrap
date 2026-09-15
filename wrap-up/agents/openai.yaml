@@ -2,3 +2,5 @@ interface:
   display_name: "Wrap Up"
   short_description: "Reconcile evidence or preserve a confirmed plan"
   default_prompt: "Use $wrap-up to close the current phase with evidence-qualified records. Add plan for verbatim confirmed-plan preservation or publish for safeguarded Git publication."
+policy:
+  allow_implicit_invocation: false

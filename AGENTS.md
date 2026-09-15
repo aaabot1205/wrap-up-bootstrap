@@ -10,16 +10,17 @@ These files are maintained as one cross-platform project. Apply these instructio
 - Treat `test-installation.ps1` as the canonical isolated Windows installation regression. Keep the current Antigravity global discovery path and its legacy compatibility path independently asserted.
 - Treat `test-update.ps1` as the canonical isolated `update.ps1` dry-run regression. Keep it exercising a real fast-forward from the most recent prior release tag to `HEAD` against an isolated bare-repo origin and an isolated user root, asserting version transition reporting, backup creation, installed-file hashes, and both dirty-worktree and ahead-of-upstream refusal.
 - Keep `install.ps1` idempotent and non-destructive toward unrelated global rules and skill files.
-- Preserve the open `SKILL.md` frontmatter contract with only `name` and `description` in each skill's frontmatter.
+- Both skills are user-invoked only. Preserve `name`, `description`, and `disable-model-invocation: true` in each skill's frontmatter, plus `policy.allow_implicit_invocation: false` in each `agents/openai.yaml`. The explicit-user-only instruction also applies on hosts without a documented enforcement switch.
 - Keep both skills platform-neutral. Do not fork their behavior by host unless a documented platform limitation requires a small compatibility layer.
 - Treat project documentation as project-owned, not agent-owned. Continue existing files from any AI platform instead of creating redundant platform-specific copies.
 - Keep `SKILL.md` concise and imperative. Put user-facing installation and disable guidance in `INSTALL.md`, not inside a skill folder.
-- After changing behavior, run the Skill Creator validator, forward-test the affected workflow in an isolated fixture, synchronize all global copies, and compare file hashes.
+- After changing behavior, run the Skill Creator validator through `test-skill-validation.py --validator <path-to-quick_validate.py>` (requires PyYAML), forward-test the affected workflow in an isolated fixture, synchronize all global copies, and compare file hashes. The adapter independently validates the required host extensions and sends only the standard-content projection to the unmodified external validator; keep malformed-extension and unrelated-error rejection tests.
 - Run `verify.ps1` after changing skills, installation logic, or the project-context contract.
 - Run `test-regressions.ps1 -Mode Validate` after changing either skill or any takeover fixture. After cross-platform continuity or evidence behavior changes, prepare fresh workspaces and forward-test all six directions before using `-Mode Check`.
 - Run `test-plan-fidelity.ps1 -Mode Validate` after changing Plan Fidelity behavior or fixtures. Forward-test all six directions before using `-Mode Check` for a behavioral release claim.
 - Run `test-installation.ps1` after changing installation paths or installation behavior.
 - Run `test-skill-packaging.ps1` after adding or changing files linked from either skill. It must validate each skill independently and reject a package with a missing required reference.
+- Run `test-invocation-policy.ps1` after changing skill invocation metadata or its verifier; its result proves configuration validation, not host-native invocation behavior.
 - Run `test-update.ps1` after changing `update.ps1` or `install.ps1` logic, and before claiming any release's upgrade path is verified. It is self-contained and self-verifying (it targets `HEAD` against the previous release tag dynamically), so no separate live `update.ps1` run against a real global installation is needed to support that claim.
 - Preserve unrelated files and settings in every global configuration directory. Never replace an existing settings file merely to disable or enable these skills.
 - Update `STATUS.md` and `HANDOFF.md` whenever behavior, validation state, global paths, or outstanding work changes.

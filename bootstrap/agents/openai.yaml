@@ -2,3 +2,5 @@ interface:
   display_name: "Bootstrap"
   short_description: "Load evidence-qualified project context"
   default_prompt: "Use $bootstrap to reconstruct evidence-qualified project context and identify the next action."
+policy:
+  allow_implicit_invocation: false

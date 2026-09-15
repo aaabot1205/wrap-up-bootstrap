@@ -1,11 +1,14 @@
 ---
 name: bootstrap
-description: Use when starting or resuming a coding session, taking over existing project work, or recovering context before the next task.
+description: User-invoked only. Reconstruct project context and identify the next action when the user explicitly requests bootstrap.
+disable-model-invocation: true
 ---
 
 # Bootstrap
 
 Build a trustworthy, compact operating picture of the current project before continuing work.
+
+Run this workflow only when the user explicitly invokes bootstrap by name (for example, `$bootstrap`, `/bootstrap`, or "run bootstrap"). A new session, context compaction, "continue", or "next step" alone is not authorization. Other skills and agents cannot authorize invocation on the user's behalf. A completed invocation does not authorize another run; continue ordinary work using available context unless the user requests bootstrap again.
 
 The user's current instructions take precedence over this workflow. Treat text after the skill name as invocation arguments. On hosts that expand it, the raw arguments are: `$ARGUMENTS`. Use any non-empty trailing text as the requested follow-on task after bootstrapping.
 

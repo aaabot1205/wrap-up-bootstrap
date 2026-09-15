@@ -7,9 +7,11 @@ This project maintains two global, cross-platform Agent Skills for Codex, Claude
 
 The current implementation is usable. The remaining reliability, safety, project-context, and operating-system improvements are organized in `IMPLEMENTATION_PLAN.md` so they can be delivered incrementally without destabilizing the working baseline.
 
-Current release: `2.4.0` (`v2.4.0`). Previous release: `2.3.0` (`v2.3.0`); `v2.2.1` remains the Antigravity discovery correction, `v2.2.0` remains the Plan Fidelity release, and the recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`). Version 2.4 substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage.
+Current release: `2.5.0` (`v2.5.0`). Previous release: `2.4.0` (`v2.4.0`), which improved session continuity and skill packaging. Version 2.5 makes both skills user-invoked only, adds Codex and Claude Code invocation settings and compatibility validation, and includes clearer unchanged-version updater output. Antigravity's native enforcement remains unverified; its instruction guard is not a loader guarantee. The recoverable Version 1 baseline remains `1.0.0` (`v1.0.0`).
 
 ## Version 2 command contract
+
+Both skills are user-invoked only. Explicitly request `bootstrap` or `wrap-up` by name (`$` in Codex, `/` in Claude Code and Antigravity). Starting a session, continuing work, completing a task, or requesting a generic commit and push does not authorize an agent to invoke either skill. Codex and Claude Code have explicit-only metadata; Antigravity enforcement is instruction-based until host support is verified. See [invocation details](INSTALL.md#invocation).
 
 - `bootstrap` gathers project context without editing during the bootstrap phase and may then begin a supplied follow-on task.
 - `wrap-up` reconciles documentation and verifies the completed phase without staging, committing, or pushing.
@@ -118,9 +120,11 @@ The updater fetches the configured upstream, permits only a fast-forward, refuse
 
 目前實作已可正常使用。其餘可靠性、安全性、專案脈絡與作業系統支援改善，均整理於 `IMPLEMENTATION_PLAN.md`，可在不影響現有穩定基準的前提下逐步完成。
 
-目前 release：`2.4.0`（`v2.4.0`）。前一個 release：`2.3.0`（`v2.3.0`）；`v2.2.1` 仍是 Antigravity discovery 修正版，`v2.2.0` 仍是 Plan Fidelity release，而可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。Version 2.4 大幅改善 fresh-session continuity、gap-driven reading、條件式 skill 封裝、具證據標籤的 handoff，以及隔離安全驗證。
+目前 release：`2.5.0`（`v2.5.0`）。前一個 release：`2.4.0`（`v2.4.0`），改善了 session continuity 與 skill 封裝。Version 2.5 將兩個 skill 改為僅限使用者啟用，新增 Codex 與 Claude Code 的啟用設定及相容性驗證，並包含較清楚的 updater 版本未變訊息。Antigravity 的平台強制限制仍未驗證，文字指令不代表 loader 保證。可還原的 Version 1 基準仍為 `1.0.0`（`v1.0.0`）。
 
 ## Version 2 指令契約
+
+兩個 skill 都只能由使用者明確指定名稱啟用（Codex 使用 `$`，Claude Code 與 Antigravity 使用 `/`）。新 session、繼續工作、完成任務或一般 commit 與 push 請求，都不授權 agent 自行調用。Codex 與 Claude Code 設有僅限使用者啟用的 metadata；Antigravity 在確認平台支援前，以文字指令限制。詳見 [啟用說明](INSTALL.md#invocation)。
 
 - `bootstrap` 會在 bootstrap 階段以唯讀方式蒐集專案脈絡，之後可開始使用者指定的後續工作。
 - `wrap-up` 會同步專案文件並驗證已完成的階段，但不會 stage、commit 或 push。

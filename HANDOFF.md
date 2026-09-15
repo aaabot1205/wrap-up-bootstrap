@@ -6,11 +6,25 @@ Maintain two AI-platform-neutral skills that make end-of-phase documentation and
 
 ## Current state
 
+Version `2.5.0` (2026-09-15): both skills require an explicit user invocation by name (D-008). This release contains native Codex and Claude Code settings, common instruction guards, configuration validation, and Skill Creator compatibility validation. The user explicitly invoked `wrap-up publish tag v2.5.0`; no bootstrap was invoked. Publication consists of one scoped commit on `main` and annotated tag `v2.5.0`; inspect the Git refs for delivery state.
+
+Observed: global synchronization created 16 file backups stamped `20260915-124154`; all eight installed skill entries contain the `2.5.0` correction. Reload host skill discovery before testing explicit commands and ordinary continuation. Configuration and installation checks do not prove native automatic-selection behavior.
+
+Verified: isolated invocation policy validation rejected all 12 malformed or permissive variants; installation, package validation, and the six-direction takeover definition validator passed. Observed: an earlier Codex native app-server `skills/list` accepted both installed entries with `enabled: true` and no target loader error, and the current session's refreshed automatic skill catalog excludes them. No workflow was executed for that loader check.
+
+Verified: `test-skill-validation.py` validates the required host fields and passes temporary standard-content projections to the unmodified Skill Creator validator. Both skills passed, all 12 invalid variants were rejected, and original source hashes stayed unchanged. The raw external validator still rejects the Claude extension; this compatibility check resolves that tooling mismatch without altering installed skill contents or claiming a raw validator pass.
+
+Verified: release checks passed for `2.5.0`: live verifier 27/0/0, isolated installation, invocation policy regression, packaging, both six-direction fixture definition validators, syntax and whitespace checks. An isolated committed candidate passed the real `v2.4.0 -> 2.5.0` updater regression with unchanged-version rerun, backups, hashes, and dirty/ahead refusal. The final committed HEAD is checked before publication; Git refs determine delivery state.
+
+Blocked: Antigravity loader enforcement has no confirmed setting; its instruction-level guard is not a substitute for native enforcement. Not run: fresh explicit workflow execution, Claude Code/Antigravity native selection, and six-direction behavioral replay. These remain limitations of the release, not claims of runtime success. Review: fixed point `a421c2edd490d66438be5df41d92857baaae881f`; all 16 release files, including the two new validators and uncommitted changes, are in scope. See STATUS.md for the exact path list.
+
+The following updater closeout is historical. Its `origin/main` equality with `v2.4.0` applied at release time; `main` subsequently advanced to updater fix `a421c2e`.
+
 Current follow-up (2026-09-14): Version `2.4.0` is published. A small updater-message change replaces the misleading same-version transition with `Version unchanged` and adds a same-version rerun to the canonical updater regression. The user authorized `wrap-up publish` for the exact six-file follow-up scope on `main`; `VERSION` and tag `v2.4.0` remain unchanged.
 
 `Verified`: release commit `eb70e01`, `origin/main`, and peeled annotated tag `v2.4.0` resolve to the same commit. For the follow-up, a temporary committed clone passed the full updater regression: real `2.3.0 -> 2.4.0` transition, clear unchanged-version rerun, backups, installed hashes, and dirty/ahead refusal.
 
-Version `2.4.0` is the current release. It substantially improves fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage. `v2.3.0` remains the previous release.
+Historical release `2.4.0` substantially improved fresh-session continuity, gap-driven reading, conditional skill packaging, evidence-qualified handoff, and isolated safety coverage. It remains fixed at tag `v2.4.0` as the baseline before `2.5.0`.
 
 Since that release, Decision D-007 added `test-update.ps1`: an isolated dry-run regression for `update.ps1` (bare-repo origin, client, and user root, all disposable). It is a canonical-repo improvement, not a release -- `VERSION` was not bumped, because `install.ps1` never installs test scripts anywhere.
 
@@ -181,7 +195,7 @@ Version 2.3.0's upgrade path was then verified live on this machine: `update.ps1
 
 ## Next action
 
-After the authorized scoped publish and remote-ref verification, no updater-message work remains. For future updates, run `update.ps1` directly without a preceding `git pull` so it can report the actual version transition.
+Confirm explicit-only selection in fresh Codex and Claude Code sessions and resolve Antigravity loader enforcement before claiming all three hosts block model invocation. The updater-message work is complete. Neither this next-action record nor another skill authorizes invoking bootstrap or wrap-up; wait for the user's explicit request by name.
 
 ## Version 2.4.0 release handoff
 

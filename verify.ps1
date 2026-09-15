@@ -98,11 +98,15 @@ function Test-SkillFrontmatter {
         $Values[$Key] = $Matches[2].Trim().Trim('"').Trim("'")
     }
 
-    $ExpectedKeys = @('name', 'description')
+    $ExpectedKeys = @('name', 'description', 'disable-model-invocation')
     $UnexpectedKeys = @($Keys | Where-Object { $_ -notin $ExpectedKeys })
-    if ($Keys.Count -ne 2 -or $UnexpectedKeys.Count -gt 0 -or
+    if ($Keys.Count -ne 3 -or $UnexpectedKeys.Count -gt 0 -or
         -not $Values.ContainsKey('name') -or -not $Values.ContainsKey('description')) {
-        Add-Failure "$SkillName frontmatter must contain only name and description."
+        Add-Failure "$SkillName frontmatter must contain name, description, and disable-model-invocation."
+    }
+    if ($Values['disable-model-invocation'] -cne 'true' -or
+        @($Lines[1..($ClosingIndex - 1)] | Where-Object { $_ -cmatch '^disable-model-invocation: true\s*$' }).Count -ne 1) {
+        Add-Failure "$SkillName must set disable-model-invocation to the boolean true."
     }
 
     if ($Values.ContainsKey('name') -and $Values['name'] -cne $SkillName) {
@@ -139,10 +143,23 @@ function Test-OpenAiMetadata {
     }
 
     $Values = @{}
+    $PolicyCount = 0
+    $ImplicitCount = 0
+    $ImplicitKeyCount = 0
+    $InPolicy = $false
     foreach ($Line in Get-Content -Encoding UTF8 -LiteralPath $MetadataPath) {
+        if ($Line -match '^\S') {
+            $InPolicy = $Line -cmatch '^policy:\s*$'
+            if ($InPolicy) { $PolicyCount++ }
+        }
+        if ($InPolicy -and $Line -cmatch '^  allow_implicit_invocation: false\s*$') { $ImplicitCount++ }
+        if ($Line -match '^\s*allow_implicit_invocation:') { $ImplicitKeyCount++ }
         if ($Line -match '^\s{2}(display_name|short_description|default_prompt):\s+"(.*)"\s*$') {
             $Values[$Matches[1]] = $Matches[2]
         }
+    }
+    if ($PolicyCount -ne 1 -or $ImplicitCount -ne 1 -or $ImplicitKeyCount -ne 1) {
+        Add-Failure "$SkillName must set policy.allow_implicit_invocation to the boolean false."
     }
     foreach ($RequiredKey in @('display_name', 'short_description', 'default_prompt')) {
         if (-not $Values.ContainsKey($RequiredKey) -or [string]::IsNullOrWhiteSpace($Values[$RequiredKey])) {
@@ -529,8 +546,8 @@ if (-not (Test-Path -LiteralPath $VersionPath -PathType Leaf)) {
     }
 }
 
-Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('closing', 'handoff', 'plan', 'publishing')
-Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('starting', 'resuming', 'taking over', 'recovering context')
+Test-SkillFrontmatter -SkillName 'wrap-up' -SkillPath (Join-Path $ProjectRoot 'wrap-up\SKILL.md') -RequiredDescriptionTerms @('user-invoked only', 'handoff', 'plan', 'publishing')
+Test-SkillFrontmatter -SkillName 'bootstrap' -SkillPath (Join-Path $ProjectRoot 'bootstrap\SKILL.md') -RequiredDescriptionTerms @('user-invoked only', 'project context')
 Test-OpenAiMetadata -SkillName 'wrap-up' -MetadataPath (Join-Path $ProjectRoot 'wrap-up\agents\openai.yaml')
 Test-OpenAiMetadata -SkillName 'bootstrap' -MetadataPath (Join-Path $ProjectRoot 'bootstrap\agents\openai.yaml')
 Test-CanonicalGlobalRules

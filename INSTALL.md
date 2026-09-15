@@ -149,7 +149,13 @@ Document paths must remain inside the repository. Exclusions guide broad discove
 | Load project context | `$bootstrap` | `/bootstrap` | `/bootstrap` |
 | Load context and start a task | `$bootstrap <task>` | `/bootstrap <task>` | `/bootstrap <task>` |
 
-Plain `wrap-up`, `wrap-up plan`, `wrap-up publish`, `wrap-up plan publish`, `wrap-up ncp`, and `bootstrap` prompts are also described as implicit triggers. Explicit `$` or `/` invocation is the deterministic option. `plan` and `publish` are independent standalone, case-insensitive flags; recognized flag tokens are removed before remaining text is treated as additional instructions.
+Both skills are user-invoked only. Use the explicit commands above, or explicitly ask to run the skill by name. Mentioning a skill while discussing or editing it is not an invocation. A new session, context compaction, "continue", "next step", task completion, or a generic commit-and-push request does not authorize invocation. Another skill or agent cannot grant that authorization. Once an invocation is complete, it does not carry forward as permission to run again.
+
+Codex uses `policy.allow_implicit_invocation: false` in each `agents/openai.yaml`. Claude Code uses `disable-model-invocation: true` in each `SKILL.md`; see [Claude Code invocation control](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill). The local Skill Creator `quick_validate.py` rejects this Claude extension. Run `python test-skill-validation.py --validator <path-to-quick_validate.py>` with PyYAML available: the adapter separately validates the host settings, then sends a temporary standard-content projection to the unmodified validator. It rejects malformed extensions and unrelated validation errors, and preserves source hashes. This is compatibility validation, not a raw external-validator pass or a host behavior test.
+
+[Antigravity skill documentation](https://antigravity.google/docs/skills) does not establish a matching enforcement switch: its explicit-user-only behavior relies on the skill instructions and requires host-native confirmation. Do not claim that its loader blocks automatic invocation.
+
+`plan` and `publish` are independent standalone, case-insensitive flags within an authorized wrap-up invocation; recognized flag tokens are removed before remaining text is treated as additional instructions.
 
 Version 2 migration: Version 1 made plain `wrap-up` publish by default. Add the standalone `publish` argument to any existing prompt or automation that must still commit and push. Publication is blocked for detached HEAD, unresolved merges, branch-policy or destination ambiguity, uncertain file ownership, likely secrets, or failed mandatory checks. Resolve the reported blocker and invoke `wrap-up publish` again; never work around it with broad staging, force-push, reset, or discarded work.
 

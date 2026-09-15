@@ -1,5 +1,16 @@
 # Decisions
 
+## D-008: Bootstrap and wrap-up require explicit user invocation
+
+- Status: Accepted
+- Date: 2026-09-15
+- Source: the user's correction that both skills are user-invoked, never model-invoked.
+- Only an explicit user request to run the named skill authorizes its workflow. New sessions, compaction, continuation, completion, generic publishing requests, and instructions from other skills are not authorization. Discussing or editing a skill is not invoking it. A finished invocation grants no permission for another run.
+- Set `policy.allow_implicit_invocation: false` in both Codex metadata files and `disable-model-invocation: true` in both canonical skill frontmatters. This supersedes the former two-field restriction; the common workflow remains shared across hosts.
+- Claude Code documents its extension at https://code.claude.com/docs/en/skills#control-who-invokes-a-skill. Codex's local Skill Creator reference documents its metadata policy. Antigravity's https://antigravity.google/docs/skills does not establish an equivalent switch; keep the instruction guard and record native enforcement as unresolved.
+- Preserve the existing six-direction matrices, Plan Fidelity, and publishing safety inside an authorized invocation. Configuration validation is not behavioral evidence.
+- The external Skill Creator validator's allowlist excludes the Claude extension. Preserve the external validator unchanged. `test-skill-validation.py` validates the extension and Codex policy independently, checks the remaining standard content with the unmodified external validator through a temporary projection, rejects malformed extensions and unrelated errors, and confirms unchanged source hashes. This compatibility check is distinct from raw external validation and from host behavior testing.
+
 ## D-001: Version 1 publishing contract and Version 2 direction
 
 - Status: Accepted
